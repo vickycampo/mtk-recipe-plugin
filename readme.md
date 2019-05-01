@@ -15,6 +15,9 @@ List of sections and features.
 * Membership protected Area
 * Chat System
 
+Source:
+1. Youtube videos: https://www.youtube.com/playlist?list=PLriKzYyLb28kR_CPMz8uierDWC2y3znI2
+2. Github files: https://github.com/Alecaddd/WordPressPlugin101
 Modifications:
 1. After Creating the full plugin change the composer to a more specific name. The inc is too generic and may cause problems.
 2. To create another plugin change all the variables and recreate the composer found in part 10.
