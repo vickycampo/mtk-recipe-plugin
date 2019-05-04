@@ -23,6 +23,7 @@
 		<div id="tab-1" class="tab-pane active">
 			<form method="post" action="options.php">
 				<?php
+					/* All the options we have set will apear in the options tab */
 					settings_fields( 'mtk_options_group' );
 					do_settings_sections( 'mtk_plugin' );
 					submit_button();

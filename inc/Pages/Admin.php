@@ -50,7 +50,7 @@ class Admin extends BaseController
 				'callback' => array( $this->callbacks, 'adminDashboard' ),
 				'icon_url' => 'dashicons-carrot',
 				'position' => 110
-			)
+			)		,
 		);
 	}
 	public function setSubpages()
@@ -120,7 +120,7 @@ class Admin extends BaseController
 				'title' => 'Text Example',
 				'callback' => array( $this->callbacks, 'mtkTextExample' ),
 				'page' => 'mtk_plugin', //The slug of the page
-				'section' => 'mtk_admin_index', // The id of the seciton 
+				'section' => 'mtk_admin_index', // The id of the seciton
 				'args' => array(
 					'label_for' => 'text_example',
 					'class' => 'example-class'
