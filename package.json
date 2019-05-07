@@ -1,11 +1,11 @@
 {
-	"name": "alecaddd-plugin",
+	"name": "mtk-recipe-plugin",
 	"version": "1.0.0",
-	"description": "Awesome starter plugin example",
-	"author": "Alessandro Castellani <me@alecaddd.com> (http://alecaddd.com)",
+	"description": "A recipe plugin developed for the MTK website",
+	"author": "Virginia Campo <info@virginiacampo.com> (http://virginiacampo.com)",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Alecaddd/WordPressPlugin101"
+		"url": "https://github.com/vickycampo/mtk-recipe-plugin"
 	},
 	"keywords": [
 		"wordpress",

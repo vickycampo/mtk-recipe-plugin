@@ -44,13 +44,13 @@ var phpWatch     = './**/*.php';
 // Tasks
 gulp.task( 'browser-sync', function() {
 	browserSync.init({
-		proxy: projectURL,
-		https: {
-			key: '/Users/alecaddd/.valet/Certificates/test.dev.key',
-			cert: '/Users/alecaddd/.valet/Certificates/test.dev.crt'
-		},
-		injectChanges: true,
-		open: false
+		// proxy: projectURL,
+		// https: {
+		// 	key: '/Users/alecaddd/.valet/Certificates/test.dev.key',
+		// 	cert: '/Users/alecaddd/.valet/Certificates/test.dev.crt'
+		// },
+		// injectChanges: true,
+		// open: false
 	});
 });
 
