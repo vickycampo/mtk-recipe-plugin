@@ -17,7 +17,7 @@ use Inc\Api\Callbacks\AdminCallbacks;
 /**
  * Enqueue - Enqueue the scripts and style files
  */
-class CustomPostTypeController extends BaseController
+class MediaWidgetController extends BaseController
 {
      public $callbacks;
      public $subpages = array();
@@ -25,7 +25,7 @@ class CustomPostTypeController extends BaseController
      {
 
           $option = get_option ( 'mtk_plugin' );
-          $activated = isset ($option['cpt_manager']) ? $option['cpt_manager'] : false;
+          $activated = isset ($option['media_widget']) ? $option['media_widget'] : false;
           if ( ! $activated )
           {
                return;
@@ -45,32 +45,16 @@ class CustomPostTypeController extends BaseController
 		$this->subpages = array(
 			array(
 				'parent_slug' => 'mtk_plugin',
-				'page_title' => 'Custom Post Types',
-				'menu_title' => 'CPT Manager',
+				'page_title' => 'Media Widgets',
+				'menu_title' => 'Media Widgets',
 				'capability' => 'manage_options',
-				'menu_slug' => 'mtk_cpt',
-				'callback' => array( $this->callbacks, 'adminCPT' )
+				'menu_slug' => 'mtk_media_widget',
+				'callback' => array( $this->callbacks, 'adminWidgets' )
 			)
 		);
 	}
      public function activate ()
      {
-          $post_type = 'mtk_recipe_cpt';
 
-          $args ['labels'] = array (
-               'name' => 'Recipes',
-               'singular-name' => 'Recipe',
-
-          );
-          $args ['description'] = 'Recipes Plugin';
-          $args ['public'] = true;
-          $args ['has_archive'] = true;
-          $args ['publicly_queryable'] = true;
-          $args ['exclude_from_search'] = false;
-          $args ['show_in_nav_menus'] = false;
-          $args ['show_in_admin_bar'] = true;
-
-
-          register_post_type ( $post_type , $args  );
      }
 }

@@ -33,14 +33,22 @@ class AdminCallbacks extends BaseController
      {
           return require_once ( "$this->plugin_path/templates/widget.php" ) ;
      }
-     // public function mtkOptionsGroup ( $input )
-     // {
-     //      return ($input) ;
-     // }
-     // public function mtkAdminSection (  )
-     // {
-     //      echo ('Check this section.');
-     // }
+     public function adminTestimonial ()
+     {
+          return require_once ( "$this->plugin_path/templates/widget.php" ) ;
+     }
+     public function adminLogin ()
+     {
+          return require_once ( "$this->plugin_path/templates/widget.php" ) ;
+     }
+     public function adminMembership ()
+     {
+          return require_once ( "$this->plugin_path/templates/widget.php" ) ;
+     }
+     public function adminChat ()
+     {
+          return require_once ( "$this->plugin_path/templates/widget.php" ) ;
+     }
      public function mtkTextExample ()
      {
           $value = esc_attr( get_option( 'text_example' ) );
