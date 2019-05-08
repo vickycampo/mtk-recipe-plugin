@@ -26,15 +26,18 @@ class CustomTypes
      {
           $post_type = 'mtk_recipe_cpt';
 
-          $args ['label'] = 'MTK Recipes';
-          $args ['description'] = 'Recipes Plugin';
+          $args ['labels'] = array (
+               'name' => 'Recipes',
+               'singular-name' => 'Recipe',
 
+          );
+          $args ['description'] = 'Recipes Plugin';
           $args ['public'] = true;
+          $args ['has_archive'] = true;
           $args ['publicly_queryable'] = true;
           $args ['exclude_from_search'] = false;
           $args ['show_in_nav_menus'] = false;
           $args ['show_in_admin_bar'] = true;
-          $args ['menu_position'] = 25;
 
 
           register_post_type ( $post_type , $args  );

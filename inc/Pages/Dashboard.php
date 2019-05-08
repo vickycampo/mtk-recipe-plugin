@@ -4,7 +4,7 @@
 @package mkt-recipe-plugin
 
      ===================================
-          ADMIN.PHP
+          DASHBOARD.PHP
      ===================================
 *
 *
@@ -17,13 +17,13 @@ use Inc\Api\Callbacks\ManagerCallbacks;
 /**
 *
 */
-class Admin extends BaseController
+class Dashboard extends BaseController
 {
 	public $settings;
 	public $callbacks;
 	public $callbacks_mngr;
 	public $pages = array();
-	public $subpages = array();
+	// public $subpages = array();
 
 
 	public function register()
@@ -35,13 +35,13 @@ class Admin extends BaseController
 		$this->callbacks_mngr = new ManagerCallbacks();
 		/* Create the pages and Subpages arrays*/
 		$this->setPages();
-		$this->setSubpages();
+		// $this->setSubpages();
 		/* Create the pages and subpages */
 		$this->setSettings();
 		$this->setSections();
 		$this->setFields();
 
-		$this->settings->addPages( $this->pages )->withSubPage( 'Dashboard' )->addSubPages( $this->subpages )->register();
+		$this->settings->addPages( $this->pages )->withSubPage( 'Dashboard' )->register();
 	}
 
 	public function setPages()
@@ -58,35 +58,35 @@ class Admin extends BaseController
 			)		,
 		);
 	}
-	public function setSubpages()
-	{
-		$this->subpages = array(
-			array(
-				'parent_slug' => 'mtk_plugin',
-				'page_title' => 'Custom Post Types',
-				'menu_title' => 'CPT',
-				'capability' => 'manage_options',
-				'menu_slug' => 'mtk_cpt',
-				'callback' => array( $this->callbacks, 'adminCpt' )
-			),
-			array(
-				'parent_slug' => 'mtk_plugin',
-				'page_title' => 'Custom Taxonomies',
-				'menu_title' => 'Taxonomies',
-				'capability' => 'manage_options',
-				'menu_slug' => 'mtk_taxonomies',
-				'callback' => array( $this->callbacks, 'adminTaxonomy' )
-			),
-			array(
-				'parent_slug' => 'mtk_plugin',
-				'page_title' => 'Custom Widgets',
-				'menu_title' => 'Widgets',
-				'capability' => 'manage_options',
-				'menu_slug' => 'mtk_widgets',
-				'callback' => array( $this->callbacks, 'adminWidget' )
-			)
-		);
-	}
+	// public function setSubpages()
+	// {
+	// 	$this->subpages = array(
+	// 		array(
+	// 			'parent_slug' => 'mtk_plugin',
+	// 			'page_title' => 'Custom Post Types',
+	// 			'menu_title' => 'CPT',
+	// 			'capability' => 'manage_options',
+	// 			'menu_slug' => 'mtk_cpt',
+	// 			'callback' => array( $this->callbacks, 'adminCpt' )
+	// 		),
+	// 		array(
+	// 			'parent_slug' => 'mtk_plugin',
+	// 			'page_title' => 'Custom Taxonomies',
+	// 			'menu_title' => 'Taxonomies',
+	// 			'capability' => 'manage_options',
+	// 			'menu_slug' => 'mtk_taxonomies',
+	// 			'callback' => array( $this->callbacks, 'adminTaxonomy' )
+	// 		),
+	// 		array(
+	// 			'parent_slug' => 'mtk_plugin',
+	// 			'page_title' => 'Custom Widgets',
+	// 			'menu_title' => 'Widgets',
+	// 			'capability' => 'manage_options',
+	// 			'menu_slug' => 'mtk_widgets',
+	// 			'callback' => array( $this->callbacks, 'adminWidget' )
+	// 		)
+	// 	);
+	// }
 	/* Create the settings */
 	public function setSettings()
 	{

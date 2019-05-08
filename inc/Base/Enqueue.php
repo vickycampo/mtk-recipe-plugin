@@ -10,7 +10,7 @@
 *
 */
 namespace Inc\Base;
-use \Inc\Base\BaseController;
+use Inc\Base\BaseController;
 /**
  * Enqueue - Enqueue the scripts and style files
  */
