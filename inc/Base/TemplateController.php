@@ -24,12 +24,8 @@ class TemplateController extends BaseController
      public function register ()
      {
 
-          $option = get_option ( 'mtk_plugin' );
-          $activated = isset ($option['template_manager']) ? $option['template_manager'] : false;
-          if ( ! $activated )
-          {
-               return;
-          }
+          /* Check if it is active */
+          if ( ! ( $this->activated( 'template_manager' ) ) ) return;
 
           /* Initialize the class that will actually generate the menu pages and subpages */
 		$this->settings = new SettingsApi();

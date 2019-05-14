@@ -107,7 +107,7 @@ class Dashboard extends BaseController
 		$args = array(
 			array(
 				'id' => 'mtk_admin_index',
-				'title' => 'Settings',
+				'title' => 'Settings Manager',
 				'callback' => array( $this->callbacks_mngr, 'adminSectionManager' ),
 				'page' => 'mtk_plugin' //The slug of the page where
 			)
@@ -117,10 +117,7 @@ class Dashboard extends BaseController
 	/* Create the fields */
 	public function setFields()
 	{
-		/* Create the Fields with the features list */
-		/*
-			$this->features
-		*/
+
 		foreach ($this->managers as $key => $value)
 		{
 			$args[] = array(

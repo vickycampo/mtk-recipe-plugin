@@ -24,13 +24,8 @@ class ChatController extends BaseController
      public function register ()
      {
 
-          $option = get_option ( 'mtk_plugin' );
-          $activated = isset ($option['chat_manager']) ? $option['chat_manager'] : false;
-          if ( ! $activated )
-          {
-               return;
-          }
-
+          /* Check if it is active */
+          if ( ! ( $this->activated( 'chat_manager' ) ) ) return;
           /* Initialize the class that will actually generate the menu pages and subpages */
 		$this->settings = new SettingsApi();
           /* Initialize the class that manages the */

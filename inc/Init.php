@@ -27,6 +27,7 @@ final class Init //final - cannot be extended
                Base\CustomPostTypeController::class,
                Base\TaxonomyController::class,
                Base\MediaWidgetController::class,
+               Base\GalleryController::class,
                Base\TestimonialController::class,
                Base\LoginController::class,
                Base\MembershipController::class,

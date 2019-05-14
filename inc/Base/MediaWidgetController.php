@@ -23,13 +23,8 @@ class MediaWidgetController extends BaseController
      public $subpages = array();
      public function register ()
      {
-
-          $option = get_option ( 'mtk_plugin' );
-          $activated = isset ($option['media_widget']) ? $option['media_widget'] : false;
-          if ( ! $activated )
-          {
-               return;
-          }
+          /* Check if it is active */
+          if ( ! ( $this->activated( 'media_widget' ) ) ) return;
 
           /* Initialize the class that will actually generate the menu pages and subpages */
 		$this->settings = new SettingsApi();

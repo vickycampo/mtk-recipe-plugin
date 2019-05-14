@@ -23,14 +23,8 @@ class TaxonomyController extends BaseController
      public $subpages = array();
      public function register ()
      {
-
-          $option = get_option ( 'mtk_plugin' );
-          $activated = isset ($option['taxonomy_manager']) ? $option['taxonomy_manager'] : false;
-          if ( ! $activated )
-          {
-               return;
-          }
-
+          /* Check if it is active */
+          if ( ! ( $this->activated( 'taxonomy_manager' ) ) ) return;
           /* Initialize the class that will actually generate the menu pages and subpages */
 		$this->settings = new SettingsApi();
           /* Initialize the class that manages the */

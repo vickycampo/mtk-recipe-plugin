@@ -17,14 +17,16 @@ use Inc\Api\Callbacks\AdminCallbacks;
 /**
  * Enqueue - Enqueue the scripts and style files
  */
-class TestimonialController extends BaseController
+class GalleryController extends BaseController
 {
      public $callbacks;
      public $subpages = array();
      public function register ()
      {
+
           /* Check if it is active */
-          if ( ! ( $this->activated( 'testimonial_manager' ) ) ) return;
+          if ( ! ( $this->activated( 'gallery_manager' ) ) ) return;
+
           /* Initialize the class that will actually generate the menu pages and subpages */
 		$this->settings = new SettingsApi();
           /* Initialize the class that manages the */
@@ -39,29 +41,16 @@ class TestimonialController extends BaseController
 		$this->subpages = array(
 			array(
 				'parent_slug' => 'mtk_plugin',
-				'page_title' => 'Testimonial Manager',
-				'menu_title' => 'Testimonial Manager',
+				'page_title' => 'Gallery Manager',
+				'menu_title' => 'Gallery Manager',
 				'capability' => 'manage_options',
-				'menu_slug' => 'mtk_testimonial',
-				'callback' => array( $this->callbacks, 'adminTestimonial' )
+				'menu_slug' => 'mtk_gallery',
+				'callback' => array( $this->callbacks, 'adminGallery' )
 			)
 		);
 	}
      public function activate ()
      {
-          /*** MTK categories ***/
 
-          /* Name should only contain lowercase letters and the underscore character, and not be more than 32 characters long */
-          $taxonomy = 'mtk_bycountryoforigin';
-          /* Name of the object type for the taxonomy object. */
-          //$object_type = 'mtk_recipe_cpt';
-          $object_type = 'mtk_recipe_cpt';
-          /* An array of Arguments.  */
-          $args = array (
-               'label' => __( 'By Country of origin' , 'wpTheme'),
-               'rewrite' => array ( 'slug' => 'mtk_bycountryoforigin' ),
-               'hierarchical'      => true
-          );
-          register_taxonomy( $taxonomy, $object_type, $args );
      }
 }
