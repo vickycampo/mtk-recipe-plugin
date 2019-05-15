@@ -88,7 +88,8 @@ class CustomPostTypeController extends BaseController
 		$args = array(
 			array(
 				'id' => 'mtk_cpt_index',
-				'title' => 'Custom Post Type Manager',
+				//'title' => 'Custom Post Type Manager',
+                    'title' => '',
 				'callback' => array( $this->cpt_callbacks, 'cptSectionManager' ),
 				'page' => 'mtk_cpt' //The slug of the page where
 			)
@@ -228,6 +229,12 @@ class CustomPostTypeController extends BaseController
 	}
      public function storeCustomPostTypes()
 	{
+
+          if ( ! ( get_option ( 'mtk_plugin_cpt' ) ) )
+		{
+               update_option ( 'mtk_plugin_cpt' , array () );
+			return;
+		}
           $options = get_option ('mtk_plugin_cpt');
           foreach ( $options as $option)
           {
@@ -265,14 +272,14 @@ class CustomPostTypeController extends BaseController
      			'supports'              => array ( 'title' , 'editor' , 'thumbnail' ),
      			'taxonomies'            => array( 'category' , 'post_tag' ),
      			'hierarchical'          => false,
-     			'public'                => $option['public'],
+     			'public'                => isset ( $option['public'] ) ?: false,
      			'show_ui'               => true,
      			'show_in_menu'          => true,
      			'menu_position'         => 5,
      			'show_in_admin_bar'     => true,
      			'show_in_nav_menus'     => true,
      			'can_export'            => true,
-     			'has_archive'           => $option['has_archive'],
+     			'has_archive'           => isset ( $option['has_archive'] ) ?: false,
      			'exclude_from_search'   => false,
      			'publicly_queryable'    => true,
      			'capability_type'       => 'post'
