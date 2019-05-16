@@ -8,8 +8,12 @@
 *
 *
 */
+/* Import the files for code-prettify */
+import 'code-prettify';
 window.addEventListener ( "load" , function ()
 {
+     /* Load the code prettify function */
+     PR.prettyPrint();
      //Store tabs variables
      var tabs = document.querySelectorAll ("ul.nav-tabs > li");
      for (var i = 0; i < tabs.length; i++ )
