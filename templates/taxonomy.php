@@ -100,7 +100,7 @@
 		</div>
 		<div id="tab-3" class="tab-pane">
 			<h3>
-				Export your Custom Taxonomies Types
+				Export your Taxonomies
 			</h3>
 
 		</div>
