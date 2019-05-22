@@ -111,7 +111,8 @@ class CustomPostTypeController extends BaseController
                     'args' => array(
                          'option_name' => 'mtk_plugin_cpt',
                          'label_for' => 'post_type',
-                         'placeholder' => 'eg. product'
+                         'placeholder' => 'eg. product',
+					'array' => 'post_type'
 
                     )
                ),
@@ -125,7 +126,8 @@ class CustomPostTypeController extends BaseController
                     'args' => array(
                          'option_name' => 'mtk_plugin_cpt',
                          'label_for' => 'singular_name',
-                         'placeholder' => 'eg. Product'
+                         'placeholder' => 'eg. Product',
+					'array' => 'post_type'
 
                     )
                ),
@@ -139,7 +141,8 @@ class CustomPostTypeController extends BaseController
                     'args' => array(
                          'option_name' => 'mtk_plugin_cpt',
                          'label_for' => 'plural_name',
-                         'placeholder' => 'eg. Products'
+                         'placeholder' => 'eg. Products',
+					'array' => 'post_type'
 
                     )
                ),
@@ -153,7 +156,8 @@ class CustomPostTypeController extends BaseController
                     'args' => array(
                          'option_name' => 'mtk_plugin_cpt',
                          'label_for' => 'public', /* The label should always match the id, that is the way we are sending the information to the callback function */
-                         'class' => 'ui-toggle'
+                         'class' => 'ui-toggle',
+					'array' => 'post_type'
                     )
                ),
                // has_archive
@@ -166,7 +170,8 @@ class CustomPostTypeController extends BaseController
                     'args' => array(
                          'option_name' => 'mtk_plugin_cpt',
                          'label_for' => 'has_archive', /* The label should always match the id, that is the way we are sending the information to the callback function */
-                         'class' => 'ui-toggle'
+                         'class' => 'ui-toggle',
+					'array' => 'post_type'
                     )
                )
           );

@@ -30,7 +30,7 @@
 	<div class="tab-content">
 		<div id="tab-1" class="tab-pane <?php echo ( isset ( $_POST["edit_post"] ) ? '' : 'active' ); ?>">
                <h3>
-                    Your Custom Post types
+                    Manage Your Custom Post types
                </h3>
                <?php
                     /* We check if we have set post types, if not we return an empty array to avoid any problem with the page.  */

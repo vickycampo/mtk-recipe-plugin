@@ -1,0 +1,147 @@
+<?php
+/*
+
+@package mkt-recipe-plugin
+
+     ===================================
+          CUSTOMPOSTTYPECONTROLLER.PHP
+     ===================================
+*
+*
+*/
+namespace Inc\Base;
+use Inc\Api\SettingsApi;
+use Inc\Base\BaseController;
+use Inc\Api\Callbacks\AdminCallbacks;
+use Inc\Api\Callbacks\TaxonomyCallbacks;
+
+/**
+ * Enqueue - Enqueue the scripts and style files
+ */
+class CustomTaxonomyController extends BaseController
+{
+     public $settings;
+     public $callbacks;
+     public $tax_callbacks;
+     public $subpages = array ();
+     public $taxonomies = array ();
+     public function register ()
+     {
+          /* Check if it is active */
+          if ( ! ( $this->activated( 'taxonomy_manager' ) ) ) return;
+          /* Initialize the class that will actually generate the menu pages and subpages */
+		$this->settings = new SettingsApi();
+          /* Initialize the class that manages the */
+		$this->callbacks = new AdminCallbacks();
+          /* New instance of TaxonomyCallbacks */
+          $this->tax_callbacks = new TaxonomyCallbacks();
+          /* Call the subpages method */
+          $this->setSubpages();
+		$this->setSettings();
+		$this->setSections();
+		$this->setFields();
+          $this->settings->addSubPages( $this->subpages )->register();
+          add_action ( 'init' , array ( $this , 'activate') );
+     }
+     public function setSubpages()
+	{
+		$this->subpages = array(
+			array(
+				'parent_slug' => 'mtk_plugin',
+				'page_title' => 'Taxonomy Manager',
+				'menu_title' => 'Taxonomy Manager',
+				'capability' => 'manage_options',
+				'menu_slug' => 'mtk_taxonomy',
+				'callback' => array( $this->callbacks, 'adminTaxonomy' )
+			)
+		);
+	}
+     public function activate ()
+     {
+          /*** MTK categories ***/
+
+          /* Name should only contain lowercase letters and the underscore character, and not be more than 32 characters long */
+          $taxonomy = 'mtk_bycountryoforigin';
+          /* Name of the object type for the taxonomy object. */
+          //$object_type = 'mtk_recipe_cpt';
+          $object_type = 'mtk_recipe_cpt';
+          /* An array of Arguments.  */
+          $args = array (
+               'label' => __( 'By Country of origin' , 'wpTheme'),
+               'rewrite' => array ( 'slug' => 'mtk_bycountryoforigin' ),
+               'hierarchical'      => true
+          );
+          register_taxonomy( $taxonomy, $object_type, $args );
+     }
+     public function setSettings()
+     {
+          $args = array (
+               array (
+                    'option_group' => 'mtk_plugin_tax_settings',
+                    'option_name' => 'mtk_plugin_tax',
+                    'callback' => array ($this->tax_callbacks, 'taxSanitize')
+               )
+          );
+          $this->settings->setSettings($args);
+     }
+     public function setSections()
+     {
+          $args = array (
+               array (
+                    'id' => 'mtk_tax_index',
+                    'title' => 'Custom Taxonomy Manager',
+                    'callback' => array ( $this->tax_callbacks , 'taxSectionManager' ),
+                    'page' => 'mtk_taxonomy'
+               )
+          );
+          $this->settings->setSections($args);
+     }
+     public function setFields()
+     {
+          $args = array (
+               array (
+                    'id' => 'taxonomy',
+                    'title' => 'Custom Taxonomy ID',
+                    'callback' => array ( $this->tax_callbacks , 'textField' ),
+                    'page' => 'mtk_taxonomy',
+                    'section' => 'mtk_tax_index',
+                    'args' => array (
+                         'option_name' => 'mtk_plugin_tax',
+                         'label_for' => 'taxonomy',
+                         'placeholder' => 'eg. genre',
+					'array' => 'taxonomy'
+                    )
+               ),
+               // Singular name
+               array(
+                    'id' => 'singular_name',
+                    'title' => 'Singular Name',
+                    'callback' => array ($this->tax_callbacks , 'textField'),
+                    'page' => 'mtk_taxonomy', //The slug of the page
+                    'section' => 'mtk_tax_index', // The id of the seciton
+                    'args' => array(
+                         'option_name' => 'mtk_plugin_tax',
+                         'label_for' => 'singular_name',
+                         'placeholder' => 'eg. Genre',
+					'array' => 'taxonomy'
+
+                    )
+               ),
+               // public
+               array(
+                    'id' => 'hierarchical',
+                    'title' => 'Hierarchical',
+                    'callback' => array ($this->tax_callbacks , 'checkboxField'),
+                    'page' => 'mtk_taxonomy', //The slug of the page
+                    'section' => 'mtk_tax_index', // The id of the seciton
+                    'args' => array(
+                         'option_name' => 'mtk_plugin_tax',
+                         'label_for' => 'hierarchical', /* The label should always match the id, that is the way we are sending the information to the callback function */
+                         'class' => 'ui-toggle',
+					'array' => 'taxonomy'
+                    )
+               )
+          );
+          $this->settings->setFields($args);
+     }
+}
