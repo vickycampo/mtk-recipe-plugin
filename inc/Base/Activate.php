@@ -24,9 +24,15 @@ class Activate
 		{
 			update_option ( 'mtk_plugin' , $default );
 		}
+		/* Creates empty option is the cpt doesn't exist */
 		if ( ! ( get_option ( 'mtk_plugin_cpt' ) ) )
 		{
 			update_option ( 'mtk_plugin_cpt' , $default );
+		}
+		/* Creates empty option is the taxonomy doesn't exist */
+		if ( ! ( get_option ( 'mtk_plugin_tax' ) ) )
+		{
+			update_option ( 'mtk_plugin_tax' , $default );
 		}
 		return;
 		/* Now we can create the default data */
