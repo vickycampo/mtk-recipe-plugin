@@ -35,7 +35,7 @@
                <?php
                     /* We check if we have set post types, if not we return an empty array to avoid any problem with the page.  */
                     $options =  get_option ( 'mtk_plugin_cpt' )?: array();
-                    echo ('<table class="wp-list-table widefat fixed striped posts">');
+                    echo ('<table class="wp-list-table widefat fixed striped posts cpt-table">');
                     echo ('<tr class="cpt_title_row">');
                          echo ('<th><span>ID</span></th>');
                          echo ('<th><span>Singular Name</span></th>');
