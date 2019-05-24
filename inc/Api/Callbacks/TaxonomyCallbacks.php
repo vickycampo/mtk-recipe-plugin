@@ -99,5 +99,47 @@ class TaxonomyCallbacks
                     </label>
                </div>');
      }
+     public function checkboxPostTypesField ( $args )
+     {
+          /* populate the values */
+          if ( isset ( $_POST['edit_taxonomy'] ) )
+          {
+               $checkbox = get_option ( $option_name );
+               $checked = isset ( $checkbox[$_POST['edit_taxonomy']][$name] ) ?: false;
+          }
+          /* Arrange the values that we got with the args */
+          $name = $args['label_for'];
+          $classes = $args['class'];
+          $option_name = $args['option_name'];
+          $checked = false;
+          /* Wwith the args that we recieve we can generate the check box */
+          $output = '';
+          /* Get all the post types */
+          $post_types = get_post_types ( array(
+               'show_ui' => true
+          ) );
+          foreach ($post_types as $post)
+          {
+
+               $output .= '<div class="' . $classes . ' mb-10">';
+               $output .= '<input type="checkbox" id="' . $post . '" name="' . $option_name . '[' . $name . ']['. $post .']';
+               $output .= '" value="1" class="' . $classes . '"' . ( $checked ? 'checked' : '' ) . '>';
+               $output .= '<label for="' . $name . '">';
+               $output .= '<div>';
+               $output .= '</div>';
+               $output .= '</label>';
+               $output .= '<strong>'. $post .'</strong>';
+               $output .= '</div>';
+          }
+          echo ('<pre>');
+          print_r ($output);
+          echo ('</pre>');
+
+
+
+
+
+
+     }
 
 }

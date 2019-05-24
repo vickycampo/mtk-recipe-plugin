@@ -139,11 +139,26 @@ class CustomTaxonomyController extends BaseController
 
                     )
                ),
-               // public
+               // hierarchical
                array(
                     'id' => 'hierarchical',
                     'title' => 'Hierarchical',
                     'callback' => array ($this->tax_callbacks , 'checkboxField'),
+                    'page' => 'mtk_taxonomy', //The slug of the page
+                    'section' => 'mtk_tax_index', // The id of the seciton
+                    'args' => array(
+                         'option_name' => 'mtk_plugin_tax',
+                         'label_for' => 'hierarchical', /* The label should always match the id, that is the way we are sending the information to the callback function */
+                         'class' => 'ui-toggle',
+					'array' => 'taxonomy'
+                    )
+               ),
+               /* Associated Post Tyhpes */
+               array(
+                    'id' => 'objects',
+                    'title' => 'Post Types',
+                    /* We want a list of all the available post types */
+                    'callback' => array ($this->tax_callbacks , 'checkboxPostTypesField'),
                     'page' => 'mtk_taxonomy', //The slug of the page
                     'section' => 'mtk_tax_index', // The id of the seciton
                     'args' => array(
