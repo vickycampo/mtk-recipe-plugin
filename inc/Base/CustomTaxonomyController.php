@@ -163,7 +163,7 @@ class CustomTaxonomyController extends BaseController
                     'section' => 'mtk_tax_index', // The id of the seciton
                     'args' => array(
                          'option_name' => 'mtk_plugin_tax',
-                         'label_for' => 'hierarchical', /* The label should always match the id, that is the way we are sending the information to the callback function */
+                         'label_for' => 'objects', /* The label should always match the id, that is the way we are sending the information to the callback function */
                          'class' => 'ui-toggle',
 					'array' => 'taxonomy'
                     )
@@ -203,6 +203,7 @@ class CustomTaxonomyController extends BaseController
 				'show_admin_column' => true,
 				'query_var'         => true,
 				'rewrite'           => array( 'slug' => $option['taxonomy'] ),
+                    'objects'           => isset ( $option['objects'] ) ? $option['objects'] : null
 			);
           }
      }
@@ -210,7 +211,8 @@ class CustomTaxonomyController extends BaseController
      {
           foreach ( $this->taxonomies as $taxonomy )
           {
-               register_taxonomy ( $taxonomy['rewrite']['slug'] , array( 'post' ) , $taxonomy );
+               $objects = isset ( $taxonomy['objects'] ) ? array_keys ($taxonomy['objects']) : null ;
+               register_taxonomy ( $taxonomy['rewrite']['slug'] , $objects , $taxonomy );
           }
      }
 }

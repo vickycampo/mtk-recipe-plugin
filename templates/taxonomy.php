@@ -36,12 +36,13 @@
                <?php
                     /* We check if we have set taxonomy, if not we return an empty array to avoid any problem with the page.  */
                     $options =  get_option ( 'mtk_plugin_tax' )?: array();
-                    
+
                     echo ('<table class="wp-list-table widefat fixed striped posts tax-table">');
                     echo ('<tr class="tax_title_row">');
                          echo ('<th><span>ID</span></th>');
                          echo ('<th><span>Singular Name</span></th>');
                          echo ('<th><span>Hierarchical</span></th>');
+                         echo ('<th><span>Associated Post Types</span></th>');
                          echo ('<th><span>Actions</span></th>');
                     echo ('</tr>');
                     foreach ($options as $option)
@@ -53,6 +54,29 @@
                               echo ("<td><span>$hierarchical</span></td>");
                               /* add the edit form */
                               ?>
+                              <td>
+                                   <?php
+                                   /* Add the associated post types */
+                                   /* Check if it exists or is null */
+                                   //var_dump ( $option['objects'] );
+                                   if ( ! ( isset ( $option['objects'] ) ) || $option['objects'] === null )
+                                   {
+                                        ?>
+                                        <small> Empty </small>
+                                        <?php
+                                   }
+                                   else
+                                   {
+                                        /* display the list */
+                                        echo ('<ul class="tax_post_list">');
+                                        foreach ($option['objects'] as $keyName => $value)
+                                        {
+                                             echo ( '<li>'. $keyName .'</li>' );
+                                        }
+                                        echo ('</ul>');
+                                   }
+                                   ?>
+                              </td>
                               <td>
                               <form method="post" action="" class="inline-block">
                               <?php

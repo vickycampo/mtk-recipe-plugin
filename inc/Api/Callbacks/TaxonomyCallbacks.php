@@ -101,17 +101,17 @@ class TaxonomyCallbacks
      }
      public function checkboxPostTypesField ( $args )
      {
-          /* populate the values */
-          if ( isset ( $_POST['edit_taxonomy'] ) )
-          {
-               $checkbox = get_option ( $option_name );
-               $checked = isset ( $checkbox[$_POST['edit_taxonomy']][$name] ) ?: false;
-          }
           /* Arrange the values that we got with the args */
           $name = $args['label_for'];
           $classes = $args['class'];
           $option_name = $args['option_name'];
           $checked = false;
+          /* populate the values */
+          if ( isset ( $_POST['edit_taxonomy'] ) )
+          {
+               $checkbox = get_option ( $option_name );
+          }
+
           /* Wwith the args that we recieve we can generate the check box */
           $output = '';
           /* Get all the post types */
@@ -120,11 +120,16 @@ class TaxonomyCallbacks
           ) );
           foreach ($post_types as $post)
           {
+               /* Check if the value should be checked */
+               if ( isset ( $_POST['edit_taxonomy'] ) )
+               {
+                    $checked = isset ( $checkbox[$_POST['edit_taxonomy']][$name][$post] ) ?: false;
+               }
 
                $output .= '<div class="' . $classes . ' mb-10">';
                $output .= '<input type="checkbox" id="' . $post . '" name="' . $option_name . '[' . $name . ']['. $post .']';
                $output .= '" value="1" class="' . $classes . '"' . ( $checked ? 'checked' : '' ) . '>';
-               $output .= '<label for="' . $name . '">';
+               $output .= '<label for="' . $post . '">';
                $output .= '<div>';
                $output .= '</div>';
                $output .= '</label>';
