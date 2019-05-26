@@ -9,7 +9,7 @@
 *
 *
 */
-namespace Inc\Api;
+namespace Inc\Api\Widgets;
 use WP_Widget;
 
 /**
@@ -25,7 +25,7 @@ class MediaWidget extends WP_Widget
      {
           $this->widget_ID = 'mtk_media_widget';
           $this->widget_name = 'My Tiny Kitchen Widget';
-          $this->$widget_options = array (
+          $this->control_options = array (
                'classname' => $this->widget_ID,
                'description' => $this->widget_name,
                'customize_selective_refresh' => true
@@ -38,7 +38,7 @@ class MediaWidget extends WP_Widget
      public function register ()
      {
           /* We call the construct */
-          parent :: __construct ( $this->widget_ID , $this->widget_name ,  $this->$widget_options , $this->control_options );
+          parent :: __construct ( $this->widget_ID , $this->widget_name ,  $this->widget_options , $this->control_options );
           /* Initialize the widget and extend the parent class */
           add_action ( 'widgets_init' , array ( $this , 'widgetInit') );
 
@@ -54,25 +54,31 @@ class MediaWidget extends WP_Widget
           3.- update () - Updates the information of a widget
           */
      }
-     public function widget ()
+     public function widget($args, $instance)
      {
-
+          echo ( $args['before_widget'] );
+          echo ('mtk_recipe_plugin - widget');
+          echo ( $args['after_widget'] );
      }
      public function form ( $instance )
      {
-          /* Super simple widget */
-          $title = ! empty ( $instance['title'] ) ? $instance['title']  : esc_html_( 'Custom Text' , 'mtk-recipe-plugin' );
-          $titleID = esc_attr( $this->get_field_id ('title') );
+          $title = ! empty( $instance['title'] ) ? $instance['title'] : esc_html__( 'Custom Text', 'mtk_recipe_plugin' );
+          $image = ! empty( $instance['image'] ) ? $instance['image'] : '';
           ?>
           <p>
-               <label for="<?php echo ( $titleID ); ?>">Title </label>
-               <input type="text" class="widefat" id="<?php echo ( $titleID ) ); ?>" name="">
+               <label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title:', 'mtk_recipe_plugin' ); ?></label>
+               <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
+          </p>
+          <p>
+               <label for="<?php echo esc_attr( $this->get_field_id( 'image' ) ); ?>"><?php esc_attr_e( 'Image:', 'mtk_recipe_plugin' ); ?></label>
+               <input class="widefat image-upload" id="<?php echo esc_attr( $this->get_field_id( 'image' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'image' ) ); ?>" type="text" value="<?php echo esc_url( $image ); ?>">
+               <button type="button" class="button button-primary js-image-upload">Select Image</button>
           </p>
           <?php
      }
-     public function update()
-     {
-
-     }
+     // public function update()
+     // {
+     //
+     // }
 
 }

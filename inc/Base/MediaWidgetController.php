@@ -11,6 +11,7 @@
 */
 namespace Inc\Base;
 use Inc\Base\BaseController;
+use Inc\Api\Widgets\MediaWidget;
 /**
  * Enqueue - Enqueue the scripts and style files
  */
@@ -22,7 +23,10 @@ class MediaWidgetController extends BaseController
      {
           /* Check if it is active */
           if ( ! ( $this->activated( 'media_widget' ) ) ) return;
-          /* We don't need to add a subpage becasue we are going to use the page of the widgets */
+          /* Crate a new instance of the MediaWidget class */
+          $media_widget = new MediaWidget ();
+          $media_widget -> register ();
+
 
      }
 
