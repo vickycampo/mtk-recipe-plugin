@@ -37,6 +37,6 @@ class BaseController
      public function activated ( string $key )
      {
           $option = get_option ( 'mtk_plugin' );
-          return ( isset ( $option[ $key ] ) ? $option[ $key ] : flase );
+          return ( isset ( $option[ $key ] ) ? $option[ $key ] : false );
      }
 }

@@ -4,16 +4,13 @@
 @package mkt-recipe-plugin
 
      ===================================
-          CUSTOMPOSTTYPECONTROLLER.PHP
+          MEDIAWIDGET.PHP
      ===================================
 *
 *
 */
 namespace Inc\Base;
-use Inc\Api\SettingsApi;
 use Inc\Base\BaseController;
-use Inc\Api\Callbacks\AdminCallbacks;
-
 /**
  * Enqueue - Enqueue the scripts and style files
  */
@@ -25,29 +22,10 @@ class MediaWidgetController extends BaseController
      {
           /* Check if it is active */
           if ( ! ( $this->activated( 'media_widget' ) ) ) return;
+          /* We don't need to add a subpage becasue we are going to use the page of the widgets */
 
-          /* Initialize the class that will actually generate the menu pages and subpages */
-		$this->settings = new SettingsApi();
-          /* Initialize the class that manages the */
-		$this->callbacks = new AdminCallbacks();
-          /* Call the subpages method */
-          $this->setSubpages();
-          $this->settings->addSubPages( $this->subpages )->register();
-          add_action ( 'init' , array ( $this , 'activate') );
      }
-     public function setSubpages()
-	{
-		$this->subpages = array(
-			array(
-				'parent_slug' => 'mtk_plugin',
-				'page_title' => 'Media Widgets',
-				'menu_title' => 'Media Widgets',
-				'capability' => 'manage_options',
-				'menu_slug' => 'mtk_media_widget',
-				'callback' => array( $this->callbacks, 'adminWidgets' )
-			)
-		);
-	}
+
      public function activate ()
      {
 
