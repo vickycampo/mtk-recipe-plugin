@@ -49,7 +49,7 @@ jQuery(document).ready( function ($) {
      //when the document is clicked,
      //on an elements with this class js-image-upload
      //ejecutes the function sending the target element e
-     $(document).on('click', 'js-image-upload', function (e){
+     $(document).on('click', '.js-image-upload', function (e){
           /*  Prevent the default behavior of the element */
           e.preventDefault();
           var $button = $(this);
@@ -61,7 +61,7 @@ jQuery(document).ready( function ($) {
                },
                button: {
                     /* Customize the button text */
-                    text: 'Select Image'
+                    text: 'Select Image 01'
                },
                multiple: false
                /* Has many more options */
