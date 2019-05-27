@@ -65,6 +65,7 @@ jQuery(document).ready(function ($) {
           });
           file_frame.on('select', function() {
           			var attachment = file_frame.state().get('selection').first().toJSON();
+                         console.log((attachment.url);
           			$button.siblings('.image-upload').val(attachment.url);
           });
 
