@@ -67,7 +67,13 @@ class MediaWidget extends WP_Widget
                //Title
                echo ( apply_filters ( 'widget_title' , $instance['title'] ) );
                //After Title
-               echo ( $args['aftere_title'] );
+               echo ( $args['after_title'] );
+          }
+          /* Image */
+          if ( ! ( empty ( $instance['image'] ) ) )
+          {
+               /* Prints the image */
+               echo ( '<img src="' . esc_url( $instance['image'] ) . '" alt="">');
           }
           //after the Widget
           echo ( $args['after_widget'] );
@@ -94,7 +100,8 @@ class MediaWidget extends WP_Widget
           $instance = $old_instance;
           /* We modify only the parameter we want */
           /* We prevent the user to inject new parameters that are not in our old instance */
-          $instance['title'] =? sanitize_text_field ( $new_instance['title'] ); //This is a function of word press
+          $instance['title'] = sanitize_text_field ( $new_instance['title'] ); //This is a function of word press
+          $instance['image'] = ! empty( $instance['image'] ) ? $instance['image'] : '';; //This is a function of word press
           return ( $instance );
      }
 

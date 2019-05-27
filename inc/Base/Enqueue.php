@@ -24,8 +24,13 @@ class Enqueue extends BaseController
      //Enqueue function
      function enqueue()
      {
+          /* Built in script of Wordpress */
+          wp_enqueue_script ( 'media-upload' );
+          wp_enqueue_media ();
 
+          /* Adds My styles */
           wp_enqueue_style( 'mypluginstyle', $this->plugin_url . 'assets/mystyle.css' );
+          /* Adds My Sctip */
 		wp_enqueue_script( 'mypluginscript', $this->plugin_url . 'assets/myscript.js' );
      }
 }
