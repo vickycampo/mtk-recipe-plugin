@@ -56,8 +56,20 @@ class MediaWidget extends WP_Widget
      }
      public function widget($args, $instance)
      {
+          //Before the Widget
           echo ( $args['before_widget'] );
-          echo ('mtk_recipe_plugin - widget');
+          /* The Widget */
+          /* Title */
+          if ( ! ( empty ( $instance['title'] ) ) )
+          {
+               //Before Title
+               echo ( $args['before_title'] );
+               //Title
+               echo ( apply_filters ( 'widget_title' , $instance['title'] ) );
+               //After Title
+               echo ( $args['aftere_title'] );
+          }
+          //after the Widget
           echo ( $args['after_widget'] );
      }
      public function form ( $instance )
@@ -76,9 +88,14 @@ class MediaWidget extends WP_Widget
           </p>
           <?php
      }
-     // public function update()
-     // {
-     //
-     // }
+     public function update( $new_instance , $old_instance)
+     {
+          /* We get the old information from the old instance because we know it works */
+          $instance = $old_instance;
+          /* We modify only the parameter we want */
+          /* We prevent the user to inject new parameters that are not in our old instance */
+          $instance['title'] =? sanitize_text_field ( $new_instance['title'] ); //This is a function of word press
+          return ( $instance );
+     }
 
 }
