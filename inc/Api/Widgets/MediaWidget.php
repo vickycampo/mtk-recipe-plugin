@@ -90,6 +90,7 @@ class MediaWidget extends WP_Widget
           <p>
                <label for="<?php echo esc_attr( $this->get_field_id( 'image' ) ); ?>"><?php esc_attr_e( 'Image:', 'mtk_recipe_plugin' ); ?></label>
                <input class="widefat image-upload" id="<?php echo esc_attr( $this->get_field_id( 'image' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'image' ) ); ?>" type="text" value="<?php echo esc_url( $image ); ?>">
+
                <button type="button" class="button button-primary js-image-upload">Select Image</button>
           </p>
           <?php
@@ -101,7 +102,7 @@ class MediaWidget extends WP_Widget
           /* We modify only the parameter we want */
           /* We prevent the user to inject new parameters that are not in our old instance */
           $instance['title'] = sanitize_text_field ( $new_instance['title'] ); //This is a function of word press
-          $instance['image'] = ! empty( $instance['image'] ) ? $instance['image'] : '';; //This is a function of word press
+          $instance['image'] = ! empty( $new_instance['image'] ) ? $new_instance['image'] : ''; //This is a function of word press
           return ( $instance );
      }
 
