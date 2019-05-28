@@ -63,20 +63,17 @@ jQuery(document).ready(function ($) {
 			},
 			multiple: false
           });
-          file_frame.on('select', function() {
-<<<<<<< HEAD
-          			var attachment = file_frame.state().get('selection').first().toJSON();
-                         console.log((attachment.url);
-          			$button.siblings('.image-upload').val(attachment.url);
-=======
+          file_frame.on('select', function()
+          {
+			var attachment = file_frame.state().get('selection').first().toJSON();
+               console.log((attachment.url);
+			$button.siblings('.image-upload').val(attachment.url);
 			var attachment = file_frame.state().get('selection').first().toJSON();
 			$button.siblings('.image-upload').val(attachment.url);
                /*  Enable the Widget save button */
                $('.widget-control-save' ,'.widget-control-actions' ).val('Save');
                $('.widget-control-save' , '.widget-control-actions').attr("disabled", false);
                console.log ('here');
-
->>>>>>> abf6791f64828a8d436af16e9e11bfc4f0701e89
           });
 
           file_frame.open();
