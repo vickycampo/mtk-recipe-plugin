@@ -45,6 +45,24 @@ class TestimonialController extends BaseController
 
           /* Setup and activate the shortcodes */
           $this->setShortcodePage();
+          /* Generate the Shorcode subpage */
+          add_shortcode ( 'terstimonial-form' , array ( $this , 'terstimonial_form' ) );
+          add_shortcode ( 'terstimonial-slideshow'  , array ( $this , 'terstimonial_slideshow' ));
+
+     }
+     /* Function that Generate the testimonial form */
+     public function terstimonial_form()
+     {
+          /* require one simple php file that contains the form */
+          /* Read but don't execute */
+          ob_start ();
+          require_once ( "$this->plugin_path/templates/contact-form.php");
+          echo ( "<script src=\"$this->plugin_url/src/js/form.js\"></script> " );
+          return ( ob_get_clean () );
+     }
+     /* Function that Generate the testimonial slideshow */
+     public function terstimonial_slideshow()
+     {
 
      }
      /* Activates the Shurtcodes */
