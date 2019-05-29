@@ -12,18 +12,24 @@
 namespace Inc\Base;
 use Inc\Api\SettingsApi;
 use Inc\Base\BaseController;
-use Inc\Api\Callbacks\AdminCallbacks;
+use Inc\Api\Callbacks\TestimonialsCallbacks;
 
 /**
  * Enqueue - Enqueue the scripts and style files
  */
 class TestimonialController extends BaseController
 {
+     public $settings;
+     public $callbacks;
 
      public function register ()
      {
           /* Check if it is active */
           if ( ! ( $this->activated( 'testimonial_manager' ) ) ) return;
+          /* Initialize */
+          $this->settings = new SettingsApi();
+          $this->callbacks = new TestimonialsCallbacks();
+
           /* Trigger the generation of a custom post type */
           add_action( 'init', array( $this, 'testimonial_cpt' ) );
           /* Add metabox */
@@ -37,7 +43,26 @@ class TestimonialController extends BaseController
           /* add a filter to make the columns sortable */
           add_filter ( 'manage_edit-testimonial_sortable_columns' , array ( $this , 'set_custom_columns_sortable' ) );
 
+          /* Setup and activate the shortcodes */
+          $this->setShortcodePage();
+
      }
+     /* Activates the Shurtcodes */
+     public function setShortcodePage()
+     {
+          /* We are going to add a subpage */
+          $subpage = array (
+               array (
+                    'parent_slug' => 'edit.php?post_type=testimonial', //We use the url of the Testimonial posts
+                    'page_title' => 'Shortcodes',
+                    'menu_title' => 'Shortcodes',
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'mtk_testimonial_shortcode',
+                    'callback' => array ( $this->callbacks , 'shortcodePage' )
+          ));
+          $this->settings->addSubPages( $subpage )->register();
+     }
+     /* Crates the Custome Post Type for the Testimonials */
      public function testimonial_cpt ()
 	{
 		$labels = array(
@@ -55,6 +80,7 @@ class TestimonialController extends BaseController
 		);
 		register_post_type ( 'testimonial', $args );
 	}
+     /* Adds the meta boxes */
      public function add_meta_boxes()
      {
           /* Author Name */
@@ -70,6 +96,7 @@ class TestimonialController extends BaseController
           /* approved [checkbox] */
           /* featured [checkbox] */
      }
+     /* Creates the actual meta box that is previously added */
      public function render_features_box ( $post )
      {
           /*  validate that the contents of the form request */
@@ -108,6 +135,7 @@ class TestimonialController extends BaseController
 		</div>
           <?php
      }
+     /* Saves the data we have added to the Meta box */
      public function save_meta_box( $post_id )
      {
           /* Happens every time the user saves the post */
@@ -144,6 +172,7 @@ class TestimonialController extends BaseController
 		);
           update_post_meta( $post_id, '_mtk_testimonial_key', $data );
      }
+     /*  Customizes the fields of the list we see in the Testimonial list */
      public function set_custom_column( $columns )
      {
           /* We are going to rearrange the information */
@@ -158,6 +187,7 @@ class TestimonialController extends BaseController
           $columns['date'] = $date;
           return ( $columns );
      }
+     /* Sets the data that will be display in the list of Testimonials */
      public function set_custom_columns_data( $column , $post_id )
      {
           $data  = get_post_meta ( $post_id , '_mtk_testimonial_key' , true );
@@ -184,6 +214,7 @@ class TestimonialController extends BaseController
                     break;
           }
      }
+     /* Sets Which fields are sortable */
      public function set_custom_columns_sortable ( $columns )
      {
           $columns['name'] = 'name';
