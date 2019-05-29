@@ -63,14 +63,9 @@ class TestimonialController extends BaseController
           /* Author email */
           /* approved [checkbox] */
           /* featured [checkbox] */
-
-
-
      }
-
      public function render_features_box ( $post )
      {
-
           /*  validate that the contents of the form request */
           wp_nonce_field( 'mtk_testimonial_author' , 'mtk_testimonial_author_nonce' );
           /* Get the data */
