@@ -30,6 +30,12 @@ class TestimonialController extends BaseController
           add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
           /* Save new fields of the meta boxes */
           add_action ( 'save_post' , array ( $this , 'save_meta_box') );
+          /* Edit the custom columns of the custom post type */
+          add_action ( 'manage_testimonial_posts_columns' , array ( $this , 'set_custom_column' ) );
+          /* We are going to hook the custom columns with the information */
+          add_action ( 'manage_testimonial_posts_custom_column' , array ( $this , 'set_custom_columns_data' ) , 10 , 2 );
+          /* add a filter to make the columns sortable */
+          add_filter ( 'manage_edit-testimonial_sortable_columns' , array ( $this , 'set_custom_columns_sortable' ) );
 
      }
      public function testimonial_cpt ()
@@ -70,9 +76,6 @@ class TestimonialController extends BaseController
           wp_nonce_field( 'mtk_testimonial_author' , 'mtk_testimonial_author_nonce' );
           /* Get the data */
           $data  = get_post_meta ( $post->ID , '_mtk_testimonial_key' , true );
-          // echo ('<pre>');
-          // print_r ($data);
-          // echo ('</pre>');
           /* Create the variables where we are going to sort the information */
           /* Author Name */
           $name = isset($data['name']) ? $data['name'] : '';
@@ -141,5 +144,51 @@ class TestimonialController extends BaseController
 		);
           update_post_meta( $post_id, '_mtk_testimonial_key', $data );
      }
+     public function set_custom_column( $columns )
+     {
+          /* We are going to rearrange the information */
+          $title = $columns['title'];
+          $date = $columns['date'];
+          unset ( $columns['title'] , $columns['date'] );
 
+          $columns['name'] = 'Author Name';
+          $columns['title'] = $title;
+          $columns['approved'] = 'Approved';
+          $columns['featured'] = 'Featured';
+          $columns['date'] = $date;
+          return ( $columns );
+     }
+     public function set_custom_columns_data( $column , $post_id )
+     {
+          $data  = get_post_meta ( $post_id , '_mtk_testimonial_key' , true );
+          /* Create the variables where we are going to sort the information */
+          /* Author Name */
+          $name = isset($data['name']) ? $data['name'] : '';
+          /* Email */
+          $email = isset($data['email']) ? $data['email'] : '';
+          /* approved */
+          $approved = ( isset($data['approved']) && ( $data['approved'] === 1 ) ) ? '<strong>YES</strong>' : 'NO';
+          /* featured */
+          $featured = ( isset($data['featured']) && ( $data['featured'] === 1 ) ) ? '<strong>YES</strong>' : 'NO';
+
+          switch ( $column )
+          {
+               case 'name':
+                    echo '<strong>' . $name . '</strong><br /><a href="mailto:'. $email .'">'. $email .'</a>';
+                    break;
+                    case 'approved':
+                         echo ($approved);
+                         break;
+               case 'featured':
+                    echo ($featured);
+                    break;
+          }
+     }
+     public function set_custom_columns_sortable ( $columns )
+     {
+          $columns['name'] = 'name';
+          $columns['approved'] = 'approved';
+          $columns['featured'] = 'featured';
+          return ( $columns );
+     }
 }
