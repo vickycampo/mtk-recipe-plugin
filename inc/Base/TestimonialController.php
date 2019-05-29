@@ -74,7 +74,10 @@ class TestimonialController extends BaseController
           /*  validate that the contents of the form request */
           wp_nonce_field( 'mtk_testimonial_author' , 'mtk_testimonial_author_nonce' );
           /* Get the data */
-          $data  = get_post_meta ( $post->ID , '_mtk_testimonial_author_key' , true );
+          $data  = get_post_meta ( $post->ID , '_mtk_testimonial_key' , true );
+          // echo ('<pre>');
+          // print_r ($data);
+          // echo ('</pre>');
           /* Create the variables where we are going to sort the information */
           /* Author Name */
           $name = isset($data['name']) ? $data['name'] : '';
@@ -110,10 +113,7 @@ class TestimonialController extends BaseController
      public function save_meta_box( $post_id )
      {
           /* Happens every time the user saves the post */
-          echo ('<pre>');
-          print_r ($_POST);
-          echo ('</pre>');
-          if ( ! ( isset ( $_POST['mtk_testimonial_author_nonce'] ) ) )
+          if ( ! ( isset ( $_POST['mtk_testimonial_author'] ) ) )
           {
                /* If the another post is saved, not the testimonial type then we just return the post id*/
                return ( $post_id );
