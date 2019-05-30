@@ -57,11 +57,11 @@ class TestimonialController extends BaseController
           /* Read but don't execute */
           ob_start ();
           /* Load the styles*/
-          echo ( "<link href=\"$this->plugin_url/src/js/form.js\"></link> " );
+          echo ( "<link href=\"$this->plugin_url/assets/form.css\"></link> " );
           /* Load the contact form */
           require_once ( "$this->plugin_path/templates/contact-form.php");
           /* only enqueues the javascript file if I am using the form */
-          echo ( "<script src=\"$this->plugin_url/src/js/form.js\"></script> " );
+          echo ( "<script src=\"$this->plugin_url/assets/form.js\"></script> " );
           return ( ob_get_clean () );
      }
      /* Function that Generate the testimonial slideshow */

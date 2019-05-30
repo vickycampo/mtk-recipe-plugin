@@ -31,10 +31,14 @@ var reload       = browserSync.reload;
 var projectURL   = 'https://test.dev';
 
 var styleSRC     = './src/scss/mystyle.scss';
+var styleFront   = './src/scss/form.scss';
 var styleURL     = './assets/';
 var mapURL       = './';
 
-var jsSRC        = './src/js/myscript.js';
+var jsSRC        = './src/js/';
+var jsAdmin	  = 'myscript.js';
+var jsFront	  = 'form.js';
+var jsFiles	  = [jsAdmin , jsFront];
 var jsURL        = './assets/';
 
 var styleWatch   = './src/scss/**/*.scss';
@@ -55,7 +59,7 @@ gulp.task( 'browser-sync', function() {
 });
 
 gulp.task( 'styles', function() {
-	gulp.src( styleSRC )
+	gulp.src( [styleSRC , styleFront] )
 		.pipe( sourcemaps.init() )
 		.pipe( sass({
 			errLogToConsole: true,
@@ -69,19 +73,23 @@ gulp.task( 'styles', function() {
 });
 
 gulp.task( 'js', function() {
-	return browserify({
-		entries: [jsSRC]
-	})
-	.transform( babelify, { presets: [ 'env' ] } )
-	.bundle()
-	.pipe( source( 'myscript.js' ) )
-	.pipe( buffer() )
-	.pipe( gulpif( options.has( 'production' ), stripDebug() ) )
-	.pipe( sourcemaps.init({ loadMaps: true }) )
-	.pipe( uglify() )
-	.pipe( sourcemaps.write( '.' ) )
-	.pipe( gulp.dest( jsURL ) )
-	.pipe( browserSync.stream() );
+	jsFiles.map (function(entry)
+	{
+		return browserify({
+			entries: [jsSRC + entry]
+		})
+		.transform( babelify, { presets: [ 'env' ] } )
+		.bundle()
+		.pipe( source( entry ) )
+		.pipe( buffer() )
+		.pipe( gulpif( options.has( 'production' ), stripDebug() ) )
+		.pipe( sourcemaps.init({ loadMaps: true }) )
+		.pipe( uglify() )
+		.pipe( sourcemaps.write( '.' ) )
+		.pipe( gulp.dest( jsURL ) )
+		.pipe( browserSync.stream() );
+	});
+
  });
 
 function triggerPlumber( src, url ) {
