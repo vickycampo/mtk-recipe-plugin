@@ -10,19 +10,19 @@
 *
 */
 ?>
-<form action="#" method="post" data-url="<?php echo admin_url('admin-ajax.php'); ?>">
+<form id="mtk-testimonial-form" action="#" method="post" data-url="<?php echo admin_url('admin-ajax.php'); ?>">
 
-	<div class="form-group">
-		<input type="text" class="form-field" placeholder="Your Name" id="name" name="name" required>
+	<div class="field-container">
+		<input type="text" class="field-input" placeholder="Your Name" id="name" name="name" required>
 		<small class="field-msg error">Your Name is Required</small>
 	</div>
 
-	<div class="form-group">
-		<input type="email" class="form-field" placeholder="Your Email" id="email" name="email" required>
+	<div class="field-container">
+		<input type="email" class="field-input" placeholder="Your Email" id="email" name="email" required>
 		<small class="field-msg error">Your Email is Required</small>
 	</div>
 
-	<div class="form-group">
+	<div class="field-container">
 		<textarea name="message" id="message" class="form-field" placeholder="Your Message" required></textarea>
 		<small class="field-msg error">A Message is Required</small>
 	</div>

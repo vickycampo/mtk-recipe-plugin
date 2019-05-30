@@ -57,7 +57,7 @@ class TestimonialController extends BaseController
           /* Read but don't execute */
           ob_start ();
           /* Load the styles*/
-          echo ( "<link href=\"$this->plugin_url/assets/form.css\"></link> " );
+          echo ( "<link rel=\"stylesheet\" href=\"$this->plugin_url/assets/form.css\" type=\"text/css\" media=\"all\" /> " );
           /* Load the contact form */
           require_once ( "$this->plugin_path/templates/contact-form.php");
           /* only enqueues the javascript file if I am using the form */
