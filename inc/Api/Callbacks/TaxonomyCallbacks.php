@@ -136,14 +136,7 @@ class TaxonomyCallbacks
                $output .= '<strong>'. $post .'</strong>';
                $output .= '</div>';
           }
-          echo ('<pre>');
-          print_r ($output);
-          echo ('</pre>');
-
-
-
-
-
+          echo ($output);
 
      }
 
