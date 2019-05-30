@@ -17,7 +17,7 @@
           CPT Manager
      </h1>
 	<?php settings_errors(); ?>
-
+     
 	<ul class="nav nav-tabs">
 		<li class=" <?php echo ( ! isset ( $_POST["edit_post"] ) ? 'active' : '' ); ?>"><a href="#tab-1">Your custom post types</a></li>
 		<li class=" <?php echo ( isset ( $_POST["edit_post"] ) ? 'active' : '' ); ?>">
@@ -35,6 +35,7 @@
                <?php
                     /* We check if we have set post types, if not we return an empty array to avoid any problem with the page.  */
                     $options =  get_option ( 'mtk_plugin_cpt' )?: array();
+
                     echo ('<table class="wp-list-table widefat fixed striped posts cpt-table">');
                     echo ('<tr class="cpt_title_row">');
                          echo ('<th><span>ID</span></th>');

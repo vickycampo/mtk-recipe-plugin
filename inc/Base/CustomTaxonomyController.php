@@ -53,7 +53,8 @@ class CustomTaxonomyController extends BaseController
           {
                add_action ( 'init' , array( $this , 'registerCustomTaxonomy') );
           }
-
+          /* Update taxonomies based on posible post changes */
+          $this->updateChanges ();
      }
      public function setSubpages()
 	{
@@ -214,5 +215,10 @@ class CustomTaxonomyController extends BaseController
                $objects = isset ( $taxonomy['objects'] ) ? array_keys ($taxonomy['objects']) : null ;
                register_taxonomy ( $taxonomy['rewrite']['slug'] , $objects , $taxonomy );
           }
+     }
+     /* Update taxonomies based on posible post changes */
+     public function updateChanges ()
+     {
+          /* Get the */
      }
 }

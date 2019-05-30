@@ -146,6 +146,21 @@ class CustomPostTypeController extends BaseController
 
                     )
                ),
+               /* Associated Taxonomies */
+               array(
+                    'id' => 'taxonomies', /* an unique Id*/
+                    'title' => 'Taxonomies', /* Text to display in the field */
+                    /* We want a list of all the available post types */
+                    'callback' => array ($this->cpt_callbacks , 'checkboxTaxonomiesField'), /* Call Back function that generates the field */
+                    'page' => 'mtk_cpt', //The slug of the page
+                    'section' => 'mtk_cpt_index', // The id of the seciton
+                    'args' => array(
+                         'option_name' => 'mtk_plugin_cpt',
+                         'label_for' => 'taxonomies', /* The label should always match the id, that is the way we are sending the information to the callback function */
+                         'class' => 'ui-toggle',
+					'array' => 'mtk_plugin_cpt'
+                    )
+               ),
                // public
                array(
                     'id' => 'public',
@@ -180,6 +195,7 @@ class CustomPostTypeController extends BaseController
 	}
      public function registerCustomPostTypes()
 	{
+
 		foreach ($this->custom_post_types as $post_type) {
 			register_post_type( $post_type['post_type'],
 				array(
@@ -241,8 +257,25 @@ class CustomPostTypeController extends BaseController
 			return;
 		}
           $options = get_option ('mtk_plugin_cpt');
+
+
           foreach ( $options as $option)
           {
+               /* we fix the taxonomies array */
+               if ( isset ($option['taxonomies']) )
+               {
+                    $taxonomies_array = $option['taxonomies'];
+                    unset ( $option['taxonomies'] );
+                    foreach ( $taxonomies_array as $key => $value )
+                    {
+                          $option['taxonomies'][] = $key;
+                    }
+
+               }
+               else {
+                    $option['taxonomies'] = array( 'category' , 'post_tag' );
+               }
+
                $this->custom_post_types[] = array(
      			'post_type'             => $option['post_type'],
      			'name'                  => $option['plural_name'],
@@ -275,7 +308,7 @@ class CustomPostTypeController extends BaseController
      			'label'                 => $option['singular_name'],
      			'description'           => $option['plural_name'] . ' Custom Post Type',
      			'supports'              => array ( 'title' , 'editor' , 'thumbnail' ),
-     			'taxonomies'            => array( 'category' , 'post_tag' ),
+     			'taxonomies'            => $option['taxonomies'],
      			'hierarchical'          => false,
      			'public'                => isset ( $option['public'] ) ?: false,
      			'show_ui'               => true,

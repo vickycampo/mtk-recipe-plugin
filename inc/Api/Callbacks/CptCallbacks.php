@@ -23,8 +23,11 @@ class CptCallbacks
      }
      public function cptSanitize ( $input )
      {
+          error_log('input');
+          error_log(print_r($input, true));
           /* We get the options that are stored in the database */
           $output = get_option ( 'mtk_plugin_cpt' );
+
           if ( isset ( $_POST['remove'] ) )
           {
                /* we unset the key that we want to remove */
@@ -65,15 +68,18 @@ class CptCallbacks
           {
                $input = get_option ( $option_name );
                $value = $input[$_POST['edit_post']][$name];
+               $hiddenField = '';
                if ('post_type' === $name)
                {
                     $extra_information = 'disabled';
+                    $hiddenField = '<input type="hidden"  name="' . $option_name . '[' . $name . ']" value="' . $value . '">';
                }
           }
 
           echo (
                '<input type="text" class="regular-text" id"' . $name . ' name="' . $option_name . '[' . $name . ']" value="' . $value . '" placeholder="' . $args['placeholder'] . '" ' . $extra_information . '>'
           );
+          echo ($hiddenField);
           //return input
      }
      public function checkboxField ( $args )
@@ -99,5 +105,51 @@ class CptCallbacks
                          </div>
                     </label>
                </div>');
+     }
+     /* Check box for the multiple types of taxonomies that the user can select for the post */
+     public function checkboxTaxonomiesField ( $args )
+     {
+          /* Arrange the values that we got with the args */
+          $name          = $args['label_for'];
+          $classes       = $args['class'];
+          $option_name   = $args['option_name'];
+          $checked = false;
+          /* populate the values */
+          if ( isset ( $_POST['edit_post'] ) )
+          {
+               $checkbox = get_option ( $option_name );
+          }
+
+          /* Wwith the args that we recieve we can generate the check box */
+          $output = '';
+          /* Get all the post types */
+          $taxonomies = get_taxonomies ( array(
+               'show_ui' => true
+          ) );
+
+          foreach ($taxonomies as $taxonomy)
+          {
+               /* Check if the value should be checked */
+               if ( isset ( $_POST['edit_post'] ) )
+               {
+                    $checked = isset ( $checkbox[$_POST['edit_post']][$name][$taxonomy] ) ?: false;
+               }
+
+               $output .= '<div class="' . $classes . ' mb-10">';
+               /*
+               <input type="checkbox" id="' . $name . '" name="' . $option_name . '[' . $name . ']' .  '" value="1" class="' . $classes . '"' . ( $checked ? 'checked' : '' ) . '>
+               <label for="' . $name . '">
+               */
+               $output .= '<input type="checkbox" id="' . $taxonomy . '" name="' . $option_name . '[' . $name . ']['. $taxonomy .']';
+               $output .= '" value="1" class="' . $classes . '"' . ( $checked ? 'checked' : '' ) . '>';
+               $output .= '<label for="' . $taxonomy . '">';
+               $output .= '<div>';
+               $output .= '</div>';
+               $output .= '</label>';
+               $output .= '<strong>'. $taxonomy .'</strong>';
+               $output .= '</div>';
+          }
+          echo ($output);
+
      }
 }
