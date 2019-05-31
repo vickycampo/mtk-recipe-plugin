@@ -9,7 +9,12 @@
 *
 *
 */
+/* Load the styles for the icon picker */
+echo ( "<link rel=\"stylesheet\" href=\"$this->plugin_url/assets/dashicons-picker.css\" type=\"text/css\" media=\"all\" /> " );
+/* only enqueues the javascript file if I am using the form */
+echo ( "<script src=\"$this->plugin_url/assets/dashicons-picker.js\"></script> " );
 ?>
+
 <div class="wrap">
 </div>
 <div class="wrap">
@@ -17,7 +22,7 @@
           CPT Manager
      </h1>
 	<?php settings_errors(); ?>
-     
+
 	<ul class="nav nav-tabs">
 		<li class=" <?php echo ( ! isset ( $_POST["edit_post"] ) ? 'active' : '' ); ?>"><a href="#tab-1">Your custom post types</a></li>
 		<li class=" <?php echo ( isset ( $_POST["edit_post"] ) ? 'active' : '' ); ?>">

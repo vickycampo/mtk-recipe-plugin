@@ -146,19 +146,34 @@ class CustomPostTypeController extends BaseController
 
                     )
                ),
-               /* Associated Taxonomies */
+               // /* Associated Taxonomies */
+               // array(
+               //      'id' => 'taxonomies', /* an unique Id*/
+               //      'title' => 'Taxonomies', /* Text to display in the field */
+               //      /* We want a list of all the available post types */
+               //      'callback' => array ($this->cpt_callbacks , 'checkboxTaxonomiesField'), /* Call Back function that generates the field */
+               //      'page' => 'mtk_cpt', //The slug of the page
+               //      'section' => 'mtk_cpt_index', // The id of the seciton
+               //      'args' => array(
+               //           'option_name' => 'mtk_plugin_cpt',
+               //           'label_for' => 'taxonomies', /* The label should always match the id, that is the way we are sending the information to the callback function */
+               //           'class' => 'ui-toggle',
+			// 		'array' => 'mtk_plugin_cpt'
+               //      )
+               // ),
+               // Add an icon
                array(
-                    'id' => 'taxonomies', /* an unique Id*/
-                    'title' => 'Taxonomies', /* Text to display in the field */
-                    /* We want a list of all the available post types */
-                    'callback' => array ($this->cpt_callbacks , 'checkboxTaxonomiesField'), /* Call Back function that generates the field */
+                    'id' => 'menu_icon',
+                    'title' => 'Menu Icon',
+                    'callback' => array ($this->cpt_callbacks , 'iconPicker'),
                     'page' => 'mtk_cpt', //The slug of the page
                     'section' => 'mtk_cpt_index', // The id of the seciton
                     'args' => array(
                          'option_name' => 'mtk_plugin_cpt',
-                         'label_for' => 'taxonomies', /* The label should always match the id, that is the way we are sending the information to the callback function */
-                         'class' => 'ui-toggle',
-					'array' => 'mtk_plugin_cpt'
+                         'label_for' => 'menu_icon',
+                         'placeholder' => 'eg. dashicons-admin-tools',
+					'array' => 'post_type'
+
                     )
                ),
                // public
@@ -237,6 +252,7 @@ class CustomPostTypeController extends BaseController
 					'show_ui'                   => $post_type['show_ui'],
 					'show_in_menu'              => $post_type['show_in_menu'],
 					'menu_position'             => $post_type['menu_position'],
+                         'menu_icon'                 => $post_type['menu_icon'],
 					'show_in_admin_bar'         => $post_type['show_in_admin_bar'],
 					'show_in_nav_menus'         => $post_type['show_in_nav_menus'],
 					'can_export'                => $post_type['can_export'],
@@ -274,6 +290,11 @@ class CustomPostTypeController extends BaseController
                }
                else {
                     $option['taxonomies'] = array( 'category' , 'post_tag' );
+               }
+               /* Fix icon */
+               if ( ! ( isset ( $option['menu_icon'] ) ) )
+               {
+                    $option['menu_icon'] = '';
                }
 
                $this->custom_post_types[] = array(
@@ -314,6 +335,7 @@ class CustomPostTypeController extends BaseController
      			'show_ui'               => true,
      			'show_in_menu'          => true,
      			'menu_position'         => 5,
+                    'menu_icon'             => $option['menu_icon'],
      			'show_in_admin_bar'     => true,
      			'show_in_nav_menus'     => true,
      			'can_export'            => true,

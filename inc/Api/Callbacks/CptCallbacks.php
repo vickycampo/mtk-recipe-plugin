@@ -68,7 +68,15 @@ class CptCallbacks
           if ( isset ( $_POST['edit_post'] ) )
           {
                $input = get_option ( $option_name );
-               $value = $input[$_POST['edit_post']][$name];
+               if ( isset ( $input[$_POST['edit_post']][$name] ) )
+               {
+                    $value = $input[$_POST['edit_post']][$name];
+               }
+               else
+               {
+                    $value = '';
+               }
+
 
                if ('post_type' === $name)
                {
@@ -78,7 +86,7 @@ class CptCallbacks
           }
 
           echo (
-               '<input type="text" class="regular-text" id"' . $name . ' name="' . $option_name . '[' . $name . ']" value="' . $value . '" placeholder="' . $args['placeholder'] . '" ' . $extra_information . '>'
+               '<input type="text" class="regular-text" id="' . $name . '" name="' . $option_name . '[' . $name . ']" value="' . $value . '" placeholder="' . $args['placeholder'] . '" ' . $extra_information . '>'
           );
           echo ($hiddenField);
           //return input
@@ -152,5 +160,35 @@ class CptCallbacks
           }
           echo ($output);
 
+     }
+     public function iconPicker ( $args )
+     {
+          // var_dump ( $args );
+          $name = $args['label_for'];
+          $option_name = $args['option_name'];
+          $value = '';
+          $extra_information = 'required';
+          /* populate the values */
+          $hiddenField = '';
+          if ( isset ( $_POST['edit_post'] ) )
+          {
+               $input = get_option ( $option_name );
+               if ( isset ( $input[$_POST['edit_post']][$name] ) )
+               {
+                    $value = $input[$_POST['edit_post']][$name];
+               }
+               else
+               {
+                    $value = '';
+               }
+          }
+
+          ?>
+
+
+
+          <input type="text" class="regular-text" id="<?php echo ($name);?>" name="<?php echo ( $option_name . '[' . $name . ']' );?>" placeholder="<?php echo ($args['placeholder']);?>" value="<?php echo ($value);?>"/>
+          <input class="button dashicons-picker" type="button" value="Choose Icon" data-target="#<?php echo ($name);?>" />
+          <?php
      }
 }
