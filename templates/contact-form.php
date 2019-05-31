@@ -27,7 +27,7 @@
 		<small class="field-msg error">A Message is Required</small>
 	</div>
 
-	<div class="text-center">
+	<div class="field-container">
 		<div>
             <button type="stubmit" class="btn btn-default btn-lg btn-sunset-form">Submit</button>
         </div>

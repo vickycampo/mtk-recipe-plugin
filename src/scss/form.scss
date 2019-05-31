@@ -1,8 +1,28 @@
 #mtk-testimonial-form
 {
+     width: 100%;
+}
+#mtk-testimonial-form
+{
+
      .field-container
      {
           position: relative;
+          margin-bottom: 20px;
+     }
+     .field-input
+     {
+          width:100%
+     }
+     .field-msg
+     {
+          position: absolute;
+          left: 2px;
+          bottom: -14px;
+          font-size: 9px;
+          text-transform: uppercase;
+          font-weight: 600;
+          letter-spacing: 0.05em;
      }
      .error
      {
