@@ -25,6 +25,7 @@ class CustomPostTypeController extends BaseController
      public $cpt_callbacks;
      public $subpages = array();
      public $custom_post_types = array();
+     public $customColumns = array ();
      public function register ()
      {
           /* Check if it is active */
@@ -203,7 +204,21 @@ class CustomPostTypeController extends BaseController
                          'class' => 'ui-toggle',
 					'array' => 'post_type'
                     )
-               )
+               ),
+               /* customColumns */
+               array(
+                    'id' => 'customColumns',
+                    'title' => 'Customize Columns',
+                    'callback' => array ($this->cpt_callbacks , 'customColumns'),
+                    'page' => 'mtk_cpt', //The slug of the page
+                    'section' => 'mtk_cpt_index', // The id of the seciton
+                    'args' => array(
+                         'option_name' => 'mtk_plugin_cpt',
+                         'label_for' => 'customColumns', /* The label should always match the id, that is the way we are sending the information to the callback function */
+                         'class' => 'ui-toggle',
+					'array' => 'post_type'
+                    )
+               ),
           );
 
 		$this->settings->setFields( $args );
@@ -344,7 +359,82 @@ class CustomPostTypeController extends BaseController
      			'publicly_queryable'    => true,
      			'capability_type'       => 'post'
      		);
+               /* Add the information to the local variable */
+               if ( isset ( $option['customColumns'] ) )
+               {
+                    $this->getColumns ( $option['post_type'] , $option['customColumns'] );
+               }
+
           }
 
 	}
+
+     /* We are going to manage the custom columns of the cpt */
+     /* Set columns */
+     public function getColumns ( $post_type , $customColumns)
+     {
+          $this->customColumns[$post_type] =$customColumns;
+
+     }
+     public function manage_cpt_columns ( $post_type )
+     {
+          /* Edit the custom columns of the custom post type */
+          add_action ( 'manage_' . $post_type . '_posts_columns' , array ( $this , 'set_custom_column' ) );
+          /* We are going to hook the custom columns with the information */
+          add_action ( 'manage_' . $post_type . '_custom_column' , array ( $this , 'set_custom_columns_data' ) , 10 , 2 );
+          /* add a filter to make the columns sortable */
+          add_filter ( 'manage_edit-' . $post_type . '_sortable_columns' , array ( $this , 'set_custom_columns_sortable' ) );
+
+     }
+     /*  Customizes the fields of the list we see in the Testimonial list */
+     public function set_custom_column( $columns )
+     {
+          /* We are going to rearrange the information */
+          $title = $columns['title'];
+          $date = $columns['date'];
+          unset ( $columns['title'] , $columns['date'] );
+
+          $columns['name'] = 'Author Name';
+          $columns['title'] = $title;
+          $columns['approved'] = 'Approved';
+          $columns['featured'] = 'Featured';
+          $columns['date'] = $date;
+          return ( $columns );
+     }
+     /* Sets the data that will be display in the list of Testimonials */
+     public function set_custom_columns_data( $column , $post_id )
+     {
+          $data  = get_post_meta ( $post_id , '_mtk_testimonial_key' , true );
+          /* Create the variables where we are going to sort the information */
+          /* Author Name */
+          $name = isset($data['name']) ? $data['name'] : '';
+          /* Email */
+          $email = isset($data['email']) ? $data['email'] : '';
+          /* approved */
+          $approved = ( isset($data['approved']) && ( $data['approved'] === 1 ) ) ? '<strong>YES</strong>' : 'NO';
+          /* featured */
+          $featured = ( isset($data['featured']) && ( $data['featured'] === 1 ) ) ? '<strong>YES</strong>' : 'NO';
+
+          switch ( $column )
+          {
+               case 'name':
+                    echo '<strong>' . $name . '</strong><br /><a href="mailto:'. $email .'">'. $email .'</a>';
+                    break;
+                    case 'approved':
+                         echo ($approved);
+                         break;
+               case 'featured':
+                    echo ($featured);
+                    break;
+          }
+     }
+     /* Sets Which fields are sortable */
+     public function set_custom_columns_sortable ( $columns )
+     {
+          $columns['name'] = 'name';
+          $columns['approved'] = 'approved';
+          $columns['featured'] = 'featured';
+          return ( $columns );
+     }
+
 }

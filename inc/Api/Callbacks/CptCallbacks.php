@@ -191,4 +191,18 @@ class CptCallbacks
           <input class="button dashicons-picker" type="button" value="Choose Icon" data-target="#<?php echo ($name);?>" />
           <?php
      }
+     public function customColumns ( $args )
+     {
+          echo ('<pre>');
+          print_r ( $args );
+          echo ('</pre>');
+
+          $name = $args['label_for'];
+          $option_name = $args['option_name'];
+          $value = '';
+          $extra_information = 'required';
+
+          $field_name = $option_name . '[' . $name . ']';
+
+     }
 }

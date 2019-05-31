@@ -36,6 +36,7 @@ class TestimonialController extends BaseController
           add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
           /* Save new fields of the meta boxes */
           add_action ( 'save_post' , array ( $this , 'save_meta_box') );
+
           /* Edit the custom columns of the custom post type */
           add_action ( 'manage_testimonial_posts_columns' , array ( $this , 'set_custom_column' ) );
           /* We are going to hook the custom columns with the information */
@@ -45,6 +46,7 @@ class TestimonialController extends BaseController
 
           /* Setup and activate the shortcodes */
           $this->setShortcodePage();
+
           /* Generate the Shorcode subpage */
           add_shortcode ( 'terstimonial-form' , array ( $this , 'terstimonial_form' ) );
           add_shortcode ( 'terstimonial-slideshow'  , array ( $this , 'terstimonial_slideshow' ));
