@@ -78,10 +78,11 @@ $off: #8c8c8c;
 div.ui-toggle {
 	@include ui-toggle(20px, $on, $off);
 
-
-}
-
-div.ui-toggle.mb-10
-{
-	margin-bottom: 10px;
+	&.mb-10 {
+		margin-bottom: 10px;
+	}
+	& label
+	{
+		margin-right: 10px;
+	}
 }

@@ -64,11 +64,12 @@ class CptCallbacks
           $value = '';
           $extra_information = 'required';
           /* populate the values */
+          $hiddenField = '';
           if ( isset ( $_POST['edit_post'] ) )
           {
                $input = get_option ( $option_name );
                $value = $input[$_POST['edit_post']][$name];
-               $hiddenField = '';
+
                if ('post_type' === $name)
                {
                     $extra_information = 'disabled';
