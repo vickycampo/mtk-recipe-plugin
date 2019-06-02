@@ -191,18 +191,63 @@ class CptCallbacks
           <input class="button dashicons-picker" type="button" value="Choose Icon" data-target="#<?php echo ($name);?>" />
           <?php
      }
-     public function customColumns ( $args )
+     public function customFields ( $args )
      {
-          echo ('<pre>');
-          print_r ( $args );
-          echo ('</pre>');
-
           $name = $args['label_for'];
           $option_name = $args['option_name'];
           $value = '';
           $extra_information = 'required';
+          $placeholder = $args['placeholder'];
 
           $field_name = $option_name . '[' . $name . ']';
+          /* if is an edit we need to get the previous values */
+          /* Check if the value should be checked */
+          if ( isset ( $_POST['edit_post'] ) )
+          {
+               /* Retrieve Values */
+               $options = get_option ( $option_name );
+               if ( isset ( $options[$name] ) )
+               {
+                    $customColumns = $options[$name];
+               }
+          }
+          /* Check if we have any infomration in the CustomColumns array, if not we create an empty one to start with */
+          if ( ! isset ( $customColumns ) )
+          {
+               $customColumns[0] = $placeholder;
+          }
+
+          /*1. add a field to start with */
+          /* Keep count of the number of fields we have been adding */
+          $i = 0;
+          /* We add a container div that will we out target for jquery */
+          ?>
+          <div class="<?php echo ($name);?>_container">
+               <?php
+               foreach ($customColumns as $i => $colunm)
+               {
+                    ?>
+                    <div id="customFields_container_<?php echo ($i);?>">
+                    <?php
+                    foreach ($colunm as $fieldType => $fieldText )
+                    {
+                         ?>
+                         <input type="text" class="regular-text <?php echo ($name);?>_input" name="<?php echo ( $option_name . '[' . $name . '][][' . $fieldType . ']' );?>" placeholder="<?php echo ( $fieldText ) ; ?>" value= "<?php echo ($value);?>" />
+                         <?php
+                    }
+                    /* 2. add the remove button */
+                    ?>
+                    <span class="dashicons dashicons-plus-alt add-substract-button <?php echo ($name);?>_addButton" id="add_<?php echo ($i);?>" ></span>
+                    <span class="dashicons dashicons-dismiss add-substract-button <?php echo ($name);?>_removeButton" id="remove_<?php echo ($i);?>"></span>
+                    </div>
+                    <?php
+
+               }
+               ?>
+          </div>
+          <?php
+
+          /*2. add a button of add more fields */
 
      }
 }

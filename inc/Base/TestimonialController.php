@@ -32,6 +32,7 @@ class TestimonialController extends BaseController
 
           /* Trigger the generation of a custom post type */
           add_action( 'init', array( $this, 'testimonial_cpt' ) );
+
           /* Add metabox */
           add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
           /* Save new fields of the meta boxes */
