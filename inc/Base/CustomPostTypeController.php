@@ -25,7 +25,9 @@ class CustomPostTypeController extends BaseController
      public $cpt_callbacks;
      public $subpages = array();
      public $custom_post_types = array();
-     public $customColumns = array ();
+     public $customFields = array ();
+
+
      public function register ()
      {
           /* Check if it is active */
@@ -205,7 +207,7 @@ class CustomPostTypeController extends BaseController
 					'array' => 'post_type'
                     )
                ),
-               /* customColumns */
+               /* customFields */
                array(
                     'id' => 'customFields',
                     'title' => 'Customize Fields',
@@ -304,7 +306,6 @@ class CustomPostTypeController extends BaseController
                     {
                           $option['taxonomies'][] = $key;
                     }
-
                }
                else {
                     $option['taxonomies'] = array( 'category' , 'post_tag' );
@@ -315,7 +316,7 @@ class CustomPostTypeController extends BaseController
                     $option['menu_icon'] = '';
                }
 
-               $this->custom_post_types[] = array(
+               $this->custom_post_types[$option['post_type']] = array(
      			'post_type'             => $option['post_type'],
      			'name'                  => $option['plural_name'],
      			'singular_name'         => $option['singular_name'],
@@ -363,61 +364,88 @@ class CustomPostTypeController extends BaseController
      			'capability_type'       => 'post'
      		);
                /* Add the information to the local variable */
-               if ( isset ( $option['customColumns'] ) )
-               {
-                    $this->getColumns ( $option['post_type'] , $option['customColumns'] );
-               }
 
+               if ( isset ( $option['customFields'] ) )
+               {
+                    /* Add the custom Fields to a variable that we are going to use in the rest of the functions */
+                    $this->getColumns ( $option['post_type'] , $option['customFields'] );
+               }
           }
+          /* Manage CPT columns */
+          if ( isset ( $this->customFields ) )
+          {
+               $this->manage_cpt_columns (  );
+          }
+
 
 	}
 
      /* We are going to manage the custom columns of the cpt */
      /* Set columns */
-     public function getColumns ( $post_type , $customColumns)
+     public function getColumns ( $post_type , $customFields)
      {
-          $this->customColumns[$post_type] =$customColumns;
+          $this->customFields[$post_type] = $customFields;
 
      }
-     public function manage_cpt_columns ( $post_type )
+     public function manage_cpt_columns (  )
      {
-          /* Add metabox */
-          add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-          /* Save new fields of the meta boxes */
-          add_action ( 'save_post' , array ( $this , 'save_meta_box') );
+          foreach ( $this->customFields as $post_type => $customFields )
+          {
+               /* Add metabox */
+               add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+               /* Save new fields of the meta boxes */
+               add_action ( 'save_post' , array ( $this , 'save_meta_box') );
 
-          /* Edit the custom columns of the custom post type */
-          add_action ( 'manage_' . $post_type . '_posts_columns' , array ( $this , 'set_custom_column' ) );
-          /* We are going to hook the custom columns with the information */
-          add_action ( 'manage_' . $post_type . '_custom_column' , array ( $this , 'set_custom_columns_data' ) , 10 , 2 );
-          /* add a filter to make the columns sortable */
-          add_filter ( 'manage_edit-' . $post_type . '_sortable_columns' , array ( $this , 'set_custom_columns_sortable' ) );
+               /* Edit the custom columns of the custom post type */
+               add_action ( 'manage_' . $post_type . '_posts_columns' , array ( $this , 'set_custom_column' ) );
+               /* We are going to hook the custom columns with the information */
+               add_action ( 'manage_' . $post_type . '_custom_column' , array ( $this , 'set_custom_columns_data' ) , 10 , 2 );
+               /* add a filter to make the columns sortable */
+               add_filter ( 'manage_edit-' . $post_type . '_sortable_columns' , array ( $this , 'set_custom_columns_sortable' ) );
+          }
+
 
      }
      /* Adds the meta boxes */
-     public function add_meta_boxes()
+     public function add_meta_boxes( $post_type )
      {
+          /* Get the post type information to set in the meta box */
+          // echo ('<pre>');
+          // print_r ( $this->custom_post_types[$post_type] );
+          // echo ('</pre>');
+          $singular_name = $this->custom_post_types[$post_type]['singular_name'];
           /* Author Name */
-          add_meta_box(
-               'testimonial_options',
-               'Testimonial Options',
-               array ( $this , 'render_features_box'),
-               'testimonial',
-               'side',
-               'default'
-          );
+          $id = $post_type . '_options';
+          $title = $singular_name . ' Options';
+          $callback = array ( $this , 'render_features_box');
+          $screen = $post_type;
+          $context = 'advanced';
+          $priority = 'default';
+          $callback_args = $this->customFields[$post_type];
+
+          add_meta_box ( $id, $title, $callback, $screen, $context, $priority, $callback_args );
           /* Author email */
           /* approved [checkbox] */
           /* featured [checkbox] */
      }
      /* Creates the actual meta box that is previously added */
-     public function render_features_box ( $post )
+     public function render_features_box ( $post , $callback_args )
      {
+          echo ('434 adding the post type');
+          $post_type = $post['post_type'];
+          echo ('<pre>');
+          var ( $callback_args );
+          echo ('</pre>');
           /*  validate that the contents of the form request */
-          wp_nonce_field( 'mtk_testimonial_author' , 'mtk_testimonial_author_nonce' );
+          wp_nonce_field( 'mtk_' . $post_type . '_author' , 'mtk_' . $post_type . '_author_nonce' );
           /* Get the data */
-          $data  = get_post_meta ( $post->ID , '_mtk_testimonial_key' , true );
+          $data  = get_post_meta ( $post->ID , '_mtk_' . $post_type . '_key' , true );
           /* Create the variables where we are going to sort the information */
+          //foreach ( $callback_args as  )
+          {
+
+          }
+
           /* Author Name */
           $name = isset($data['name']) ? $data['name'] : '';
           /* Email */

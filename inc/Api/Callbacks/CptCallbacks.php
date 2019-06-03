@@ -202,19 +202,22 @@ class CptCallbacks
           $field_name = $option_name . '[' . $name . ']';
           /* if is an edit we need to get the previous values */
           /* Check if the value should be checked */
+
           if ( isset ( $_POST['edit_post'] ) )
           {
                /* Retrieve Values */
                $options = get_option ( $option_name );
-               if ( isset ( $options[$name] ) )
+
+               if ( isset ( $options[$_POST['edit_post']][$name] ) )
                {
-                    $customColumns = $options[$name];
+
+                    $customFields = $options[$_POST['edit_post']][$name];
                }
           }
           /* Check if we have any infomration in the CustomColumns array, if not we create an empty one to start with */
-          if ( ! isset ( $customColumns ) )
+          if ( ! isset ( $customFields ) )
           {
-               $customColumns[0] = $placeholder;
+               $customFields[0] = $placeholder;
           }
 
           /*1. add a field to start with */
@@ -224,15 +227,15 @@ class CptCallbacks
           ?>
           <div class="<?php echo ($name);?>_container">
                <?php
-               foreach ($customColumns as $i => $colunm)
+               foreach ($customFields as $i => $field)
                {
                     ?>
                     <div id="customFields_container_<?php echo ($i);?>">
                     <?php
-                    foreach ($colunm as $fieldType => $fieldText )
+                    foreach ($field as $fieldType => $fieldText )
                     {
                          ?>
-                         <input type="text" class="regular-text <?php echo ($name);?>_input" name="<?php echo ( $option_name . '[' . $name . '][][' . $fieldType . ']' );?>" placeholder="<?php echo ( $fieldText ) ; ?>" value= "<?php echo ($value);?>" />
+                         <input type="text" class="regular-text <?php echo ($name);?>_input" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" placeholder="<?php echo ( $fieldText ) ; ?>" value= "<?php echo ($value);?>" />
                          <?php
                     }
                     /* 2. add the remove button */

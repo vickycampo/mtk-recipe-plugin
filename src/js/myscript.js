@@ -74,9 +74,9 @@ window.addEventListener ( "load" , function ()
           console.log ( index );
           /* We have to add an element like the previous*/
           var inputElement = '<div id="customFields_container_' + index + '">';
-          inputElement += '<input type="text" class="regular-text customFields_input" name="mtk_plugin_cpt[customFields][][ID]" placeholder="author_name" value=""/>';
-          inputElement += '<input type="text" class="regular-text customFields_input" name="mtk_plugin_cpt[customFields][][Name]" placeholder="author_name" value=""/>';
-          inputElement += '<input type="text" class="regular-text customFields_input" name="mtk_plugin_cpt[customFields][][Parent]" placeholder="parent_field" value=""/>';
+          inputElement += '<input type="text" class="regular-text customFields_input" name="mtk_plugin_cpt[customFields][' + index + '][ID]" placeholder="author_name" value=""/>';
+          inputElement += '<input type="text" class="regular-text customFields_input" name="mtk_plugin_cpt[customFields][' + index + '][Name]" placeholder="author_name" value=""/>';
+          inputElement += '<input type="text" class="regular-text customFields_input" name="mtk_plugin_cpt[customFields][' + index + '][Parent]" placeholder="parent_field" value=""/>';
           inputElement += '<span class="dashicons dashicons-plus-alt add-substract-button customFields_addButton" id="add_' + index + '" ></span>';
           inputElement += '<span class="dashicons dashicons-dismiss add-substract-button customFields_removeButton" id="remove_' + index + '"></span>';
           inputElement += '</div>';
