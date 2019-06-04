@@ -77,6 +77,43 @@ window.addEventListener ( "load" , function ()
           inputElement += '<input type="text" class="regular-text customFields_input" name="mtk_plugin_cpt[customFields][' + index + '][ID]" placeholder="author_name" value=""/>';
           inputElement += '<input type="text" class="regular-text customFields_input" name="mtk_plugin_cpt[customFields][' + index + '][Name]" placeholder="author_name" value=""/>';
           inputElement += '<input type="text" class="regular-text customFields_input" name="mtk_plugin_cpt[customFields][' + index + '][Parent]" placeholder="parent_field" value=""/>';
+          /* add the select */
+          /* We create an array with all the select values */
+          var inputArray = new Array;
+          inputArray[0] = 'button';
+          inputArray[1] = 'checkbox';
+          inputArray[2] = 'button';
+          inputArray[3] = 'checkbox';
+          inputArray[4] = 'color';
+          inputArray[5] = 'date';
+          inputArray[6] = 'datetime-local';
+          inputArray[7] = 'email';
+          inputArray[8] = 'file';
+          inputArray[9] = 'hidden';
+          inputArray[10] = 'image';
+          inputArray[11] = 'month';
+          inputArray[12] = 'number';
+          inputArray[13] = 'password';
+          inputArray[14] = 'radio';
+          inputArray[15] = 'range';
+          inputArray[16] = 'reset';
+          inputArray[17] = 'search';
+          inputArray[18] = 'submit';
+          inputArray[19] = 'tel';
+          inputArray[20] = 'text';
+          inputArray[21] = 'time';
+          inputArray[22] = 'url';
+          inputArray[23] = 'week';
+          /* Create the select */
+          inputElement += '<select class=regular-text customFields_input" name="mtk_plugin_cpt[customFields][' + index + '][Type]">';
+          inputElement += '<option value="">Choose here</option>';
+          /* Add the options in the array */
+          for (var i = 0; i < inputArray.length; i++ )
+          {
+               inputElement += '<option value="' + inputArray[i] + '" >' + inputArray[i]  + '</option>';
+          }
+          inputElement += '</select>';
+
           inputElement += '<span class="dashicons dashicons-plus-alt add-substract-button customFields_addButton" id="add_' + index + '" ></span>';
           inputElement += '<span class="dashicons dashicons-dismiss add-substract-button customFields_removeButton" id="remove_' + index + '"></span>';
           inputElement += '</div>';

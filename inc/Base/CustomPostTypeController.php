@@ -220,6 +220,7 @@ class CustomPostTypeController extends BaseController
                          'placeholder' => array(
                               'ID' => 'author_name',
                               'Name' => 'Author Name',
+                              'Type' => '',
                               'Parent' =>'parent_field' ),
 					'array' => 'post_type'
                     )
@@ -282,8 +283,22 @@ class CustomPostTypeController extends BaseController
 					'capability_type'           => $post_type['capability_type']
 				)
 			);
+               /* After adding the post type we should add the filter to fix the title */
+
+
+               add_filter( 'enter_title_here', array( $this , 'mtk_change_title_text' ) );
 		}
 	}
+     public function mtk_change_title_text( $title )
+     {
+          $screen = get_current_screen();
+
+          if  ( 'events' == $screen->post_type ) {
+               $title = 'Enter event name with date';
+          }
+
+          return $title;
+     }
      public function storeCustomPostTypes()
 	{
 
@@ -293,7 +308,6 @@ class CustomPostTypeController extends BaseController
 			return;
 		}
           $options = get_option ('mtk_plugin_cpt');
-
 
           foreach ( $options as $option)
           {
@@ -374,6 +388,7 @@ class CustomPostTypeController extends BaseController
           /* Manage CPT columns */
           if ( isset ( $this->customFields ) )
           {
+
                $this->manage_cpt_columns (  );
           }
 
@@ -389,13 +404,15 @@ class CustomPostTypeController extends BaseController
      }
      public function manage_cpt_columns (  )
      {
+
+
+          /* Add metabox */
+          add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+          /* Save new fields of the meta boxes */
+          add_action ( 'save_post' , array ( $this , 'save_meta_box') );
+
           foreach ( $this->customFields as $post_type => $customFields )
           {
-               /* Add metabox */
-               add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-               /* Save new fields of the meta boxes */
-               add_action ( 'save_post' , array ( $this , 'save_meta_box') );
-
                /* Edit the custom columns of the custom post type */
                add_action ( 'manage_' . $post_type . '_posts_columns' , array ( $this , 'set_custom_column' ) );
                /* We are going to hook the custom columns with the information */
@@ -410,18 +427,20 @@ class CustomPostTypeController extends BaseController
      public function add_meta_boxes( $post_type )
      {
           /* Get the post type information to set in the meta box */
-          // echo ('<pre>');
-          // print_r ( $this->custom_post_types[$post_type] );
-          // echo ('</pre>');
+          //var_dump ( $post_type );
+          if ( ! isset ( $this->custom_post_types[$post_type] ) )
+          {
+               return ;
+          }
           $singular_name = $this->custom_post_types[$post_type]['singular_name'];
           /* Author Name */
           $id = $post_type . '_options';
           $title = $singular_name . ' Options';
           $callback = array ( $this , 'render_features_box');
           $screen = $post_type;
-          $context = 'advanced';
-          $priority = 'default';
-          $callback_args = $this->customFields[$post_type];
+          $context = 'side';
+          $priority = 'high';
+          $callback_args = '';
 
           add_meta_box ( $id, $title, $callback, $screen, $context, $priority, $callback_args );
           /* Author email */
@@ -429,68 +448,66 @@ class CustomPostTypeController extends BaseController
           /* featured [checkbox] */
      }
      /* Creates the actual meta box that is previously added */
-     public function render_features_box ( $post , $callback_args )
+     public function render_features_box ( $post )
      {
+
           echo ('434 adding the post type');
-          $post_type = $post['post_type'];
-          echo ('<pre>');
-          var ( $callback_args );
-          echo ('</pre>');
+          $post_type = $post->post_type;
           /*  validate that the contents of the form request */
-          wp_nonce_field( 'mtk_' . $post_type . '_author' , 'mtk_' . $post_type . '_author_nonce' );
+          wp_nonce_field( 'mtk_' . $post_type . '' , 'mtk_' . $post_type . '_nonce' );
+
           /* Get the data */
           $data  = get_post_meta ( $post->ID , '_mtk_' . $post_type . '_key' , true );
-          /* Create the variables where we are going to sort the information */
-          //foreach ( $callback_args as  )
-          {
 
+          /* Create the variables where we are going to sort the information */
+          if ( isset ( $this->customFields[$post_type] ) )
+          {
+               $cf = $this->customFields[$post_type];
+               foreach ( $cf as $i => $fieldInfo )
+               {
+
+
+                    $ID = $fieldInfo['ID'];
+                    $Name = $fieldInfo['Name'];
+                    $Type = $fieldInfo['Type'];
+                    $Parent = $fieldInfo['Parent'];
+
+                    $value = isset($data['ID']) ? $data['ID'] : '';
+                    $field_name = 'mtk_' . $post_type . '_' .$ID;
+                    ?>
+                    <div class="meta-container">
+                         <label class="meta-label" for="<?php echo ( $field_name );?>"><?php echo ( $Name );?></label>
+                         <input type="<?php echo ( $Type );?>" id="<?php echo ( $field_name );?>" name="<?php echo ( $field_name );?>" value="<?php echo ( esc_attr( $value ) ); ?>">
+          		</div>
+                    <?php
+
+               }
           }
 
-          /* Author Name */
-          $name = isset($data['name']) ? $data['name'] : '';
-          /* Email */
-          $email = isset($data['email']) ? $data['email'] : '';
-          /* approved */
-          $approved = isset($data['approved']) ? $data['approved'] : false;
-          /* featured */
-          $featured = isset($data['featured']) ? $data['featured'] : false;
+          return;
+
           ?>
-          <label class="meta-label" for="mtk_testimonial_author">Author Name</label>
-          <input type="text" id="mtk_testimonial_author" name="mtk_testimonial_author" value="<?php echo ( esc_attr( $name ) ); ?>"
-          <label class="meta-label" for="mtk_testimonial_author">Author Email</label>
-          <input type="text" id="mtk_testimonial_author" name="mtk_testimonial_email" value="<?php echo ( esc_attr( $name ) ); ?>"
-          <div class="meta-container">
-			<label class="meta-label w-50 text-left" for="mtk_testimonial_approved">Approved</label>
-			<div class="text-right w-50 inline">
-				<div class="ui-toggle inline"><input type="checkbox" id="mtk_testimonial_approved" name="mtk_testimonial_approved" value="1" <?php echo $approved ? 'checked' : ''; ?>>
-					<label for="mtk_testimonial_approved"><div></div></label>
-				</div>
-			</div>
-		</div>
-          <div class="meta-container">
-			<label class="meta-label w-50 text-left" for="mtk_testimonial_featured">Featured</label>
-			<div class="text-right w-50 inline">
-				<div class="ui-toggle inline"><input type="checkbox" id="mtk_testimonial_featured" name="mtk_testimonial_featured" value="1" <?php echo $featured ? 'checked' : ''; ?>>
-					<label for="mtk_testimonial_featured"><div></div></label>
-				</div>
-			</div>
-		</div>
+
           <?php
      }
      /* Saves the data we have added to the Meta box */
      public function save_meta_box( $post_id )
      {
+          // error_log('$_POST');
+          error_log(print_r($_POST, true));
+          $post_type = $_POST['post_type'];
           /* Happens every time the user saves the post */
-          if ( ! ( isset ( $_POST['mtk_testimonial_author'] ) ) )
+          if ( ! ( isset ( $_POST['mtk_'.$post_type.''] ) ) )
           {
                /* If the another post is saved, not the testimonial type then we just return the post id*/
+               error_log('504 Exit - If the another post is saved, not the testimonial type then we just return the post id');
                return ( $post_id );
           }
           /* then wer stoe our extra variables */
           /* We store our custom nonce */
-          $nonce = $_POST['mtk_testimonial_author_nonce'];
+          $nonce = $_POST['mtk_'.$post_type.'_nonce'];
           /* Verify the that the none is valid */
-          if ( ! ( wp_verify_nonce ( $nonce , 'mtk_testimonial_author' ) ) )
+          if ( ! ( wp_verify_nonce ( $nonce , 'mtk_'.$post_type.'_author' ) ) )
           {
                /* if is not valid we stop the execution of the script */
                return ( $post_id );
@@ -506,17 +523,21 @@ class CustomPostTypeController extends BaseController
                return ( $post_id );
           }
           /* Store this metabox */
-          $data = array(
-			'name' => sanitize_text_field( $_POST['mtk_testimonial_author'] ),
-			'email' => sanitize_text_field( $_POST['mtk_testimonial_email'] ),
-			'approved' => isset($_POST['mtk_testimonial_approved']) ? 1 : 0,
-			'featured' => isset($_POST['mtk_testimonial_featured']) ? 1 : 0,
-		);
-          update_post_meta( $post_id, '_mtk_testimonial_key', $data );
+
+
+          foreach ($this->customFields[$post_type] as $i => $customFields)
+          {
+               $data[$customFields['ID']] = sanitize_text_field( $_POST['mtk_'.$post_type.'_' .$customFields['ID']] );
+          }
+          error_log('$data');
+          error_log(print_r($data, true));
+          update_post_meta( $post_id, '_mtk_'.$post_type.'_key', $data );
      }
-     /*  Customizes the fields of the list we see in the Testimonial list */
+     /*  Customizes the fields of the list we see in the  list */
      public function set_custom_column( $columns )
      {
+          var_dump ($columns);
+
           /* We are going to rearrange the information */
           $title = $columns['title'];
           $date = $columns['date'];
@@ -529,10 +550,10 @@ class CustomPostTypeController extends BaseController
           $columns['date'] = $date;
           return ( $columns );
      }
-     /* Sets the data that will be display in the list of Testimonials */
+     /* Sets the data that will be display in the list */
      public function set_custom_columns_data( $column , $post_id )
      {
-          $data  = get_post_meta ( $post_id , '_mtk_testimonial_key' , true );
+          $data  = get_post_meta ( $post_id , '_mtk_'.$post_type.'_key' , true );
           /* Create the variables where we are going to sort the information */
           /* Author Name */
           $name = isset($data['name']) ? $data['name'] : '';

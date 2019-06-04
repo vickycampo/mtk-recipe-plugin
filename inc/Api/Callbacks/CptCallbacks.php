@@ -210,8 +210,9 @@ class CptCallbacks
 
                if ( isset ( $options[$_POST['edit_post']][$name] ) )
                {
-
+                    /* Holds the values to fill the form */
                     $customFields = $options[$_POST['edit_post']][$name];
+                    
                }
           }
           /* Check if we have any infomration in the CustomColumns array, if not we create an empty one to start with */
@@ -229,14 +230,66 @@ class CptCallbacks
                <?php
                foreach ($customFields as $i => $field)
                {
+
                     ?>
                     <div id="customFields_container_<?php echo ($i);?>">
                     <?php
+                    /* Create an array with the options */
+                    $inputArray[0] = 'button';
+                    $inputArray[1] = 'checkbox';
+                    $inputArray[2] = 'button';
+                    $inputArray[3] = 'checkbox';
+                    $inputArray[4] = 'color';
+                    $inputArray[5] = 'date';
+                    $inputArray[6] = 'datetime-local';
+                    $inputArray[7] = 'email';
+                    $inputArray[8] = 'file';
+                    $inputArray[9] = 'hidden';
+                    $inputArray[10] = 'image';
+                    $inputArray[11] = 'month';
+                    $inputArray[12] = 'number';
+                    $inputArray[13] = 'password';
+                    $inputArray[14] = 'radio';
+                    $inputArray[15] = 'range';
+                    $inputArray[16] = 'reset';
+                    $inputArray[17] = 'search';
+                    $inputArray[18] = 'submit';
+                    $inputArray[19] = 'tel';
+                    $inputArray[20] = 'text';
+                    $inputArray[21] = 'time';
+                    $inputArray[22] = 'url';
+                    $inputArray[23] = 'week';
                     foreach ($field as $fieldType => $fieldText )
                     {
-                         ?>
-                         <input type="text" class="regular-text <?php echo ($name);?>_input" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" placeholder="<?php echo ( $fieldText ) ; ?>" value= "<?php echo ($value);?>" />
-                         <?php
+
+                         /* if the field type is type we have to display all the input types */
+                         if ( $fieldType === 'Type' )
+                         {
+                              ?>
+                              <select class="regular-text <?php echo ($name);?>_input" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>">
+                                   <option value="">Choose here</option>
+                                   <?php foreach ($inputArray as $j => $inputType)
+                                   {
+                                        $extra_information = '';
+                                        /* we check if is selected */
+                                        if ($fieldText == $inputType)
+                                        {
+                                             $extra_information = 'selected';
+                                        }
+                                        ?>
+                                        <option value="<?php echo ($inputType);?>" <?php echo ($extra_information);?> ><?php echo ($inputType);?></option>
+                                        <?php
+                                   }?>
+                              </select>
+                              <?php
+                         }
+                         else
+                         {
+                              ?>
+                              <input type="text" class="regular-text <?php echo ($name);?>_input" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" placeholder="<?php echo ( $fieldText ) ; ?>" value= "<?php echo ($fieldText);?>" />
+                              <?php
+                         }
+
                     }
                     /* 2. add the remove button */
                     ?>
