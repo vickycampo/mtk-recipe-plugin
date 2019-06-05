@@ -212,7 +212,7 @@ class CptCallbacks
                {
                     /* Holds the values to fill the form */
                     $customFields = $options[$_POST['edit_post']][$name];
-                    
+
                }
           }
           /* Check if we have any infomration in the CustomColumns array, if not we create an empty one to start with */
@@ -220,13 +220,52 @@ class CptCallbacks
           {
                $customFields[0] = $placeholder;
           }
+          /* We create the array with the information we need to fill the selects */
+          /* Input type */
+               $inputArray[0] = 'button';
+               $inputArray[1] = 'checkbox';
+               $inputArray[2] = 'button';
+               $inputArray[3] = 'checkbox';
+               $inputArray[4] = 'color';
+               $inputArray[5] = 'date';
+               $inputArray[6] = 'datetime-local';
+               $inputArray[7] = 'email';
+               $inputArray[8] = 'file';
+               $inputArray[9] = 'hidden';
+               $inputArray[10] = 'image';
+               $inputArray[11] = 'month';
+               $inputArray[12] = 'number';
+               $inputArray[13] = 'password';
+               $inputArray[14] = 'radio';
+               $inputArray[15] = 'range';
+               $inputArray[16] = 'reset';
+               $inputArray[17] = 'search';
+               $inputArray[18] = 'submit';
+               $inputArray[19] = 'tel';
+               $inputArray[20] = 'text';
+               $inputArray[21] = 'time';
+               $inputArray[22] = 'url';
+               $inputArray[23] = 'week';
+          /* Custom Fields */
+               foreach ($customFields as $i => $field)
+               {
+                    error_log('input');
+                    error_log(print_r($field, true));
+                    $parent_options[$field['ID']] = $field['Name'];
+               }
+
 
           /*1. add a field to start with */
           /* Keep count of the number of fields we have been adding */
           $i = 0;
           /* We add a container div that will we out target for jquery */
+          /* We add a note that if we use the same ids as the existing ones we can override them */
           ?>
           <div class="<?php echo ($name);?>_container">
+               <small>
+                    You can override any previous fields by using the same identifiers: title / categories / tags
+               </small>
+
                <?php
                foreach ($customFields as $i => $field)
                {
@@ -234,40 +273,17 @@ class CptCallbacks
                     ?>
                     <div id="customFields_container_<?php echo ($i);?>">
                     <?php
-                    /* Create an array with the options */
-                    $inputArray[0] = 'button';
-                    $inputArray[1] = 'checkbox';
-                    $inputArray[2] = 'button';
-                    $inputArray[3] = 'checkbox';
-                    $inputArray[4] = 'color';
-                    $inputArray[5] = 'date';
-                    $inputArray[6] = 'datetime-local';
-                    $inputArray[7] = 'email';
-                    $inputArray[8] = 'file';
-                    $inputArray[9] = 'hidden';
-                    $inputArray[10] = 'image';
-                    $inputArray[11] = 'month';
-                    $inputArray[12] = 'number';
-                    $inputArray[13] = 'password';
-                    $inputArray[14] = 'radio';
-                    $inputArray[15] = 'range';
-                    $inputArray[16] = 'reset';
-                    $inputArray[17] = 'search';
-                    $inputArray[18] = 'submit';
-                    $inputArray[19] = 'tel';
-                    $inputArray[20] = 'text';
-                    $inputArray[21] = 'time';
-                    $inputArray[22] = 'url';
-                    $inputArray[23] = 'week';
-                    foreach ($field as $fieldType => $fieldText )
-                    {
 
+                    foreach ($placeholder as $type => $text )
+                    {
+                         $fieldType = $type;
+                         $fieldText = isset( $field[$type] ) ? $field[$type] : $text;
                          /* if the field type is type we have to display all the input types */
                          if ( $fieldType === 'Type' )
                          {
                               ?>
                               <select class="regular-text <?php echo ($name);?>_input" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>">
-                                   <option value="">Choose here</option>
+                                   <option value="">Choose input type</option>
                                    <?php foreach ($inputArray as $j => $inputType)
                                    {
                                         $extra_information = '';
@@ -282,6 +298,39 @@ class CptCallbacks
                                    }?>
                               </select>
                               <?php
+                         }
+                         else if ( $fieldType === 'Parent' )
+                         {
+                              /* if the field is the parent we are going to add a select but it will be empty and with JS we are going to add the options */
+                              /* if is edit we already have some options to start with */
+                              if ( ( $field['ID'] != 'title' ) && ( $field['ID'] != 'categories' ) && ( $field['ID'] != 'tags' ))
+                              {
+                                   ?>
+                                   <select class="regular-text <?php echo ($name);?>_input" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>">
+                                        <option value="">Choose parent field</option>
+                                        <?php
+                                        foreach ($parent_options as $id => $value)
+                                        {
+                                             /* We remove the title and etc... */
+                                             if ( ( $id === 'title' ) && ( $id === 'categories' ) && ( $id === 'tags' ))
+                                             {
+                                                  $extra_information = '';
+                                                  /* we check if is selected */
+                                                  if ($fieldText == $id)
+                                                  {
+                                                       $extra_information = 'selected';
+                                                  }
+                                                  ?>
+                                                  <option value="<?php echo ($id);?>" <?php echo ($extra_information);?> ><?php echo ($value);?></option>
+                                                  <?php
+                                             }
+
+                                        }
+                                        ?>
+                                   </select>
+                                   <?php
+                              }
+
                          }
                          else
                          {
