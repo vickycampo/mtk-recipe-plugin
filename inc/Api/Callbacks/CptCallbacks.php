@@ -271,7 +271,7 @@ class CptCallbacks
                {
 
                     ?>
-                    <div id="customFields_container_<?php echo ($i);?>">
+                    <div class="<?php echo ($name);?>_div" id="customFields_container_<?php echo ($i);?>">
                     <?php
 
                     foreach ($placeholder as $type => $text )
@@ -281,8 +281,7 @@ class CptCallbacks
                          /* if the field type is type we have to display all the input types */
                          if ( $fieldType === 'Type' )
                          {
-                              ?>
-                              <select class="regular-text <?php echo ($name);?>_input" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>">
+                              ?><select class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_select" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>">
                                    <option value="">Choose input type</option>
                                    <?php foreach ($inputArray as $j => $inputType)
                                    {
@@ -295,9 +294,7 @@ class CptCallbacks
                                         ?>
                                         <option value="<?php echo ($inputType);?>" <?php echo ($extra_information);?> ><?php echo ($inputType);?></option>
                                         <?php
-                                   }?>
-                              </select>
-                              <?php
+                                   }?></select><?php
                          }
                          else if ( $fieldType === 'Parent' )
                          {
@@ -305,8 +302,7 @@ class CptCallbacks
                               /* if is edit we already have some options to start with */
                               if ( ( $field['ID'] != 'title' ) && ( $field['ID'] != 'categories' ) && ( $field['ID'] != 'tags' ))
                               {
-                                   ?>
-                                   <select class="regular-text <?php echo ($name);?>_input" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>">
+                                   ?><select id="<?php echo ($fieldType);?>_<?php echo ($i);?>" class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_select" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>">
                                         <option value="">Choose parent field</option>
                                         <?php
                                         foreach ($parent_options as $id => $value)
@@ -326,17 +322,13 @@ class CptCallbacks
                                              }
 
                                         }
-                                        ?>
-                                   </select>
-                                   <?php
+                                        ?></select><?php
                               }
 
                          }
                          else
                          {
-                              ?>
-                              <input type="text" class="regular-text <?php echo ($name);?>_input" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" placeholder="<?php echo ( $fieldText ) ; ?>" value= "<?php echo ($fieldText);?>" />
-                              <?php
+                              ?><input type="text" class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_input" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" placeholder="<?php echo ( $fieldText ); ?>" value= "<?php echo ($fieldText);?>" /><?php
                          }
 
                     }

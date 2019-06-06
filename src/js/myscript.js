@@ -54,8 +54,12 @@ window.addEventListener ( "load" , function ()
      addEventListeners ();
      function addEventListeners ()
      {
-          addFieldsButton = document.querySelectorAll (".customFields_addButton");
-          removeFieldsButton = document.querySelectorAll (".customFields_removeButton");
+          /* add event listener to the add and remove buttons */
+          var addFieldsButton = document.querySelectorAll (".customFields_addButton");
+          var removeFieldsButton = document.querySelectorAll (".customFields_removeButton");
+          var customFields_ID_input = document.querySelectorAll (".customFields_ID_input");
+          var customFields_Name_input = document.querySelectorAll (".customFields_Name_input");
+
           index = addFieldsButton.length-1;
           for (var i = 0; i < addFieldsButton.length; i++ )
           {
@@ -65,6 +69,15 @@ window.addEventListener ( "load" , function ()
           {
                removeFieldsButton[i].addEventListener( "click" , removeField );
           }
+          for (var i = 0; i < customFields_ID_input.length; i++ )
+          {
+               customFields_ID_input[i].addEventListener( "change" , updateParentSelector );
+          }
+          for (var i = 0; i < customFields_Name_input.length; i++ )
+          {
+               customFields_Name_input[i].addEventListener( "change" , updateParentSelector );
+          }
+
      }
 
      function addField ( event )
@@ -73,10 +86,10 @@ window.addEventListener ( "load" , function ()
           index ++;
           console.log ( index );
           /* We have to add an element like the previous*/
-          var inputElement = '<div id="customFields_container_' + index + '">';
-          inputElement += '<input type="text" class="regular-text customFields_input" name="mtk_plugin_cpt[customFields][' + index + '][ID]" placeholder="author_name" value=""/>';
-          inputElement += '<input type="text" class="regular-text customFields_input" name="mtk_plugin_cpt[customFields][' + index + '][Name]" placeholder="author_name" value=""/>';
-          inputElement += '<input type="text" class="regular-text customFields_input" name="mtk_plugin_cpt[customFields][' + index + '][Parent]" placeholder="parent_field" value=""/>';
+          var inputElement = '<div class="customFields_div" id="customFields_container_' + index + '">';
+          inputElement += '<input type="text" class="regular-text customFields_input customFields_ID_input" name="mtk_plugin_cpt[customFields][' + index + '][ID]" placeholder="author_name" value="">';
+          inputElement += '<input type="text" class="regular-text customFields_input customFields_Name_input" name="mtk_plugin_cpt[customFields][' + index + '][Name]" placeholder="author_name" value="">';
+
           /* add the select */
           /* We create an array with all the select values */
           var inputArray = new Array;
@@ -105,8 +118,8 @@ window.addEventListener ( "load" , function ()
           inputArray[22] = 'url';
           inputArray[23] = 'week';
           /* Create the select */
-          inputElement += '<select class=regular-text customFields_input" name="mtk_plugin_cpt[customFields][' + index + '][Type]">';
-          inputElement += '<option value="">Choose here</option>';
+          inputElement += '<select class="regular-text customFields_input" name="mtk_plugin_cpt[customFields][' + index + '][Type]">';
+          inputElement += '<option value="">Input Type</option>';
           /* Add the options in the array */
           for (var i = 0; i < inputArray.length; i++ )
           {
@@ -114,18 +127,25 @@ window.addEventListener ( "load" , function ()
           }
           inputElement += '</select>';
 
+          /* add the parent selec  */
+          inputElement += '<select id="Parent_' + index + '" class="regular-text customFields_input customFields_Parent_select" name="mtk_plugin_cpt[customFields][' + index + '][Parent]" >';
+          inputElement += '<option value="">Choose Parent</option>';
+          inputElement += '</select>';
+          /* add the add and remove buttons */
           inputElement += '<span class="dashicons dashicons-plus-alt add-substract-button customFields_addButton" id="add_' + index + '" ></span>';
           inputElement += '<span class="dashicons dashicons-dismiss add-substract-button customFields_removeButton" id="remove_' + index + '"></span>';
           inputElement += '</div>';
           /* Append the elements */
+          //console.log ( inputElement );
           $(".customFields_container").append( inputElement );
           /* Add event Listeners */
           addEventListeners ();
 
+
      }
      function removeField ( event )
      {
-          console.log ( index );
+          console.log ('index - ' + index );
           if ( index > 0 )
           {
                /* Get the parent */
@@ -133,7 +153,35 @@ window.addEventListener ( "load" , function ()
                var targetId = event.target.id.replace ( 'remove_' , '' );
                $('#customFields_container_' + targetId).remove();
                console.log ('.customFields_container_' + targetId);
+               addEventListeners ();
           }
+     }
+     function updateParentSelector ()
+     {
+          var customFields_ID_input = document.querySelectorAll (".customFields_ID_input");
+          var customFields_Name_input = document.querySelectorAll (".customFields_Name_input");
+          var optionsArray = new Array;
+          var optionText = '<option value="">Choose Parent</option>';
+          /* Get the combination that is needed for the select into an array */
+          for (var i = 0; i < customFields_ID_input.length; i++ )
+          {
+
+               optionText += '<option value="' + customFields_ID_input[i].value + '">' + customFields_Name_input[i].value + '</option>';
+          }
+          /* update the customFields_Parent_select*/
+          var customFields_Parent_select = document.querySelectorAll (".customFields_Parent_select");
+          for (var i = 0; i < customFields_Parent_select.length; i++ )
+          {
+               console.log ( 'id - ' + customFields_Parent_select[i].id );
+               var select_id = '#' + customFields_Parent_select[i].id;
+               $(select_id)
+                   .empty()
+                   .append(optionText);
+
+
+          }
+
+
 
      }
 });
