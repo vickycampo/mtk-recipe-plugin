@@ -542,9 +542,9 @@ class CustomPostTypeController extends BaseController
           {
                $data[$customFields['ID']] = sanitize_text_field( $_POST['mtk_'.$post_type.'_' .$customFields['ID']] );
           }
-          error_log('data Array: ');
-          error_log(print_r($data, true));
-          error_log('--------------------------------------------');
+          // error_log('data Array: ');
+          // error_log(print_r($data, true));
+          // error_log('--------------------------------------------');
           update_post_meta( $post_id, '_mtk_'.$post_type.'_key', $data );
      }
      /*  Customizes the fields of the list we see in the  list */

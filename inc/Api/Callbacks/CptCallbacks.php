@@ -23,8 +23,7 @@ class CptCallbacks
      }
      public function cptSanitize ( $input )
      {
-          error_log('input');
-          error_log(print_r($input, true));
+
           /* We get the options that are stored in the database */
           $output = get_option ( 'mtk_plugin_cpt' );
 
@@ -53,6 +52,9 @@ class CptCallbacks
                     $output[$input['post_type']] = $input;
                }
           }
+          /* Sabe the Custom Fields */
+          error_log('input');
+          error_log(print_r($input, true));
           // var_dump( $output );
           return ( $output );
      }
@@ -276,6 +278,7 @@ class CptCallbacks
 
                     foreach ($placeholder as $type => $text )
                     {
+                         $extra_information = '';
                          $fieldType = $type;
                          $fieldText = isset( $field[$type] ) ? $field[$type] : $text;
                          /* if the field type is type we have to display all the input types */
@@ -305,7 +308,7 @@ class CptCallbacks
                                    ?><select id="<?php echo ($fieldType);?>_<?php echo ($i);?>" class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_select" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>">
                                         <option value="">Choose parent field</option>
                                         <?php
-                                        foreach ($parent_options as $id => $value)
+                                        foreach ($parent_options as $id => $option)
                                         {
                                              /* We remove the title and etc... */
                                              if ( ( $id === 'title' ) && ( $id === 'categories' ) && ( $id === 'tags' ))
@@ -317,7 +320,7 @@ class CptCallbacks
                                                        $extra_information = 'selected';
                                                   }
                                                   ?>
-                                                  <option value="<?php echo ($id);?>" <?php echo ($extra_information);?> ><?php echo ($value);?></option>
+                                                  <option value="<?php echo ($id);?>" <?php echo ($extra_information);?> ><?php echo ($option);?></option>
                                                   <?php
                                              }
 
@@ -328,7 +331,22 @@ class CptCallbacks
                          }
                          else
                          {
-                              ?><input type="text" class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_input" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" placeholder="<?php echo ( $fieldText ); ?>" value= "<?php echo ($fieldText);?>" /><?php
+                              /*id is required */
+                              $extra_information = '';
+                              if ( $i == 'ID' )
+                              {
+                                   $extra_information = 'required';
+                              }
+                              /* choose the value for the input field */
+                              if ($placeholder[$fieldType] == $fieldText)
+                              {
+                                   $valueText = '';
+                              }
+                              else
+                              {
+                                   $valueText = 'value= "' . $fieldText . '"';
+                              }
+                              ?><input type="text" class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_input" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" placeholder="<?php echo ( $fieldText ); ?>" <?php echo ($valueText);?> <?php echo ($extra_information);?>  /><?php
                          }
 
                     }

@@ -45,7 +45,7 @@ window.addEventListener ( "load" , function ()
 
      }
      //   --------------------------------------------------
-     //        Add the event to the add and remove buttons
+     //        MANAGE THE CUSTOM FIELDS PART
      //   --------------------------------------------------
      var index = 0;
      var addFieldsButton = new Array();
@@ -184,11 +184,19 @@ window.addEventListener ( "load" , function ()
 
 
      }
+     //   --------------------------------------------------
+     //        SANITIZE THE CPT SETTING FORM
+     //   --------------------------------------------------
+     
 });
+//   --------------------------------------------------
+//        IMAGE FIELD OF THE WIDGET
+//   --------------------------------------------------
 /* Function to add the image to the widget field */
 /* Access the jquery */
 //only when the document is ready
-jQuery(document).ready(function ($) {
+jQuery(document).ready(function ($)
+{
      /* Event listener*/
      //when the document is clicked,
      //on an elements with this class js-image-upload
