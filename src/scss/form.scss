@@ -14,16 +14,20 @@
      {
           width:100%
      }
-     .field-msg
-     {
-          position: absolute;
-          left: 2px;
-          bottom: -14px;
-          font-size: 9px;
-          text-transform: uppercase;
-          font-weight: 600;
-          letter-spacing: 0.05em;
-     }
+     .field-msg {
+        display: none;
+        position: absolute;
+        left: 2px;
+        bottom: -14px;
+        font-size: 9px;
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+
+        &.show {
+            display: block;
+        }
+    }
      .error
      {
           color: rgb(144, 19, 19);

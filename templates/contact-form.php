@@ -14,17 +14,17 @@
 
 	<div class="field-container">
 		<input type="text" class="field-input" placeholder="Your Name" id="name" name="name" required>
-		<small class="field-msg error">Your Name is Required</small>
+		<small class="field-msg error" data-error="invalidName">Your Name is Required</small>
 	</div>
 
 	<div class="field-container">
 		<input type="email" class="field-input" placeholder="Your Email" id="email" name="email" required>
-		<small class="field-msg error">Your Email is Required</small>
+		<small class="field-msg error"  data-error="invalidEmail">Your Email is Required</small>
 	</div>
 
 	<div class="field-container">
 		<textarea name="message" id="message" class="form-field" placeholder="Your Message" required></textarea>
-		<small class="field-msg error">A Message is Required</small>
+		<small class="field-msg error"  data-error="invalidMessage">A Message is Required</small>
 	</div>
 
 	<div class="field-container">
