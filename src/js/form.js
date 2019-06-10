@@ -44,7 +44,23 @@ document.addEventListener('DOMContentLoaded' , function (e)
 
                //ajax http post request
                let url = testimonialForm.dataset.url;
-               console.log  (url)
+               /* We are going to use the fetch method of VanillaJS so we need to prepare the parameters.*/
+               let params = new URLSearchParams ( new FormData( testimonialForm ) );
+               /* We display something to show the user the form is being processed */
+               testimonialForm.querySelector('.js-form-submission').classList.add('show');
+               fetch ( url , {
+                    method: "POST",
+                    body: params,
+               } )  .then( results => res.json() )
+                    .catch( error => {
+                         resetMessages();
+                         testimonialForm.querySelector('.js-form-error').classList.add('show');
+                    } )
+                    .then ( response => {
+                         resetMessages();
+                         /* Deal with the response */
+                    })
+
           } );
      }
 );

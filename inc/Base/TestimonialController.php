@@ -52,6 +52,19 @@ class TestimonialController extends BaseController
           add_shortcode ( 'terstimonial-form' , array ( $this , 'terstimonial_form' ) );
           add_shortcode ( 'terstimonial-slideshow'  , array ( $this , 'terstimonial_slideshow' ));
 
+          /* Add the jQuery parameters */
+          /* Listen to the action that was specified in the hidden field in the form */
+          add_action ( 'wp_ajax_submit_testimonial' , array ( $this , 'submit_testimonial' ) );
+          add_action ( 'wp_ajax_nopriv_submit_testimonial' , array ( $this , 'submit_testimonial' ) );
+     }
+     public function submit_testimonial ()
+     {
+          echo ('I got your post request');
+          /* Sanitize the data */
+          
+          /* Store the data into testimonial CPT */
+          /* Send Response */
+          wp_die();
      }
      /* Function that Generate the testimonial form */
      public function terstimonial_form()

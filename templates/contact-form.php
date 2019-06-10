@@ -35,5 +35,6 @@
 		<small class="field-msg success js-form-success">Message Successfully submitted, thank you!</small>
 		<small class="field-msg error js-form-error">There was a problem with the Contact Form, please try again!</small>
 	</div>
-
+	<!-- To pass more parameters we need to add them to the form -->
+	<input type="hidden" name="action" value="submit_testimonial">
 </form>
