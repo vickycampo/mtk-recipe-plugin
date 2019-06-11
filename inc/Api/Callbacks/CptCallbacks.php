@@ -53,8 +53,8 @@ class CptCallbacks
                }
           }
           /* Sabe the Custom Fields */
-          error_log('input');
-          error_log(print_r($input, true));
+          // error_log('input');
+          // error_log(print_r($input, true));
           // var_dump( $output );
           return ( $output );
      }

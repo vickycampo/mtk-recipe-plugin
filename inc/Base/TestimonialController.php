@@ -54,17 +54,57 @@ class TestimonialController extends BaseController
 
           /* Add the jQuery parameters */
           /* Listen to the action that was specified in the hidden field in the form */
-          add_action ( 'wp_ajax_submit_testimonial' , array ( $this , 'submit_testimonial' ) );
-          add_action ( 'wp_ajax_nopriv_submit_testimonial' , array ( $this , 'submit_testimonial' ) );
+          add_action( 'wp_ajax_submit_testimonial', array( $this, 'submit_testimonial' ) );
+		add_action( 'wp_ajax_nopriv_submit_testimonial', array( $this, 'submit_testimonial' ) );
      }
      public function submit_testimonial ()
      {
-          echo ('I got your post request');
+          // error_log (__FUNCTION__ . ' - ' . __LINE__);
+          // error_log('Functino - ' . debug_backtrace()[1]['function'] );
+          // error_log ('----------------------------');
+
           /* Sanitize the data */
-          
+		$name = sanitize_text_field($_POST['name']);
+		$email = sanitize_email($_POST['email']);
+		$message = sanitize_textarea_field($_POST['message']);
+
           /* Store the data into testimonial CPT */
-          /* Send Response */
-          wp_die();
+          $data = array(
+			'name' => $name,
+			'email' => $email,
+			'approved' => 0,
+			'featured' => 0,
+		);
+          /* Array with data to create the new post */
+          $args = array(
+			'post_title' => 'Testimonial from ' . $name,
+			'post_content' => $message,
+			'post_author' => 1,
+			'post_status' => 'publish',
+			'post_type' => 'testimonial',
+			'meta_input' => array(
+				'_mtk_testimonial_key' => $data
+			)
+		);
+
+          /* We insert the post */
+          $postID = wp_insert_post($args);
+
+          /* if the return of the insert is anything different from cero we send a success message */
+          if ( $postID )
+          {
+               $return = array (
+                    'status' => 'success',
+                    'ID' => $postID,
+               );
+               wp_send_json( $return );
+               wp_die ();
+          }
+          $return = array (
+               'status' => 'error'
+          );
+          wp_send_json( $return );
+          wp_die ();
      }
      /* Function that Generate the testimonial form */
      public function terstimonial_form()
@@ -204,7 +244,7 @@ class TestimonialController extends BaseController
           /* Store this metabox */
           $data = array(
 			'name' => sanitize_text_field( $_POST['mtk_testimonial_author'] ),
-			'email' => sanitize_text_field( $_POST['mtk_testimonial_email'] ),
+			'email' => sanitize_email( $_POST['mtk_testimonial_email'] ),
 			'approved' => isset($_POST['mtk_testimonial_approved']) ? 1 : 0,
 			'featured' => isset($_POST['mtk_testimonial_featured']) ? 1 : 0,
 		);

@@ -84,7 +84,6 @@ window.addEventListener ( "load" , function ()
      {
           /* next index */
           index ++;
-          console.log ( index );
           /* We have to add an element like the previous*/
           var inputElement = '<div class="customFields_div" id="customFields_container_' + index + '">';
           inputElement += '<input type="text" class="regular-text customFields_input customFields_ID_input" name="mtk_plugin_cpt[customFields][' + index + '][ID]" placeholder="author_name" value="">';
@@ -136,7 +135,6 @@ window.addEventListener ( "load" , function ()
           inputElement += '<span class="dashicons dashicons-dismiss add-substract-button customFields_removeButton" id="remove_' + index + '"></span>';
           inputElement += '</div>';
           /* Append the elements */
-          //console.log ( inputElement );
           $(".customFields_container").append( inputElement );
           /* Add event Listeners */
           addEventListeners ();
@@ -145,14 +143,12 @@ window.addEventListener ( "load" , function ()
      }
      function removeField ( event )
      {
-          console.log ('index - ' + index );
           if ( index > 0 )
           {
                /* Get the parent */
 
                var targetId = event.target.id.replace ( 'remove_' , '' );
                $('#customFields_container_' + targetId).remove();
-               console.log ('.customFields_container_' + targetId);
                addEventListeners ();
           }
      }
@@ -172,7 +168,6 @@ window.addEventListener ( "load" , function ()
           var customFields_Parent_select = document.querySelectorAll (".customFields_Parent_select");
           for (var i = 0; i < customFields_Parent_select.length; i++ )
           {
-               console.log ( 'id - ' + customFields_Parent_select[i].id );
                var select_id = '#' + customFields_Parent_select[i].id;
                $(select_id)
                    .empty()
@@ -187,7 +182,7 @@ window.addEventListener ( "load" , function ()
      //   --------------------------------------------------
      //        SANITIZE THE CPT SETTING FORM
      //   --------------------------------------------------
-     
+
 });
 //   --------------------------------------------------
 //        IMAGE FIELD OF THE WIDGET
@@ -218,14 +213,12 @@ jQuery(document).ready(function ($)
           file_frame.on('select', function()
           {
 			var attachment = file_frame.state().get('selection').first().toJSON();
-               console.log((attachment.url));
 			$button.siblings('.image-upload').val(attachment.url);
 			var attachment = file_frame.state().get('selection').first().toJSON();
 			$button.siblings('.image-upload').val(attachment.url);
                /*  Enable the Widget save button */
                $('.widget-control-save' ,'.widget-control-actions' ).val('Save');
                $('.widget-control-save' , '.widget-control-actions').attr("disabled", false);
-               console.log ('here');
           });
 
           file_frame.open();

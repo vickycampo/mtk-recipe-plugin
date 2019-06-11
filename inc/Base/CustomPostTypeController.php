@@ -512,7 +512,9 @@ class CustomPostTypeController extends BaseController
           if ( ! ( isset ( $_POST['mtk_'.$post_type.'_author_nonce'] ) ) )
           {
                /* If the another post is saved, not the testimonial type then we just return the post id*/
-               error_log('504 Exit - If the another post is saved, not the testimonial type then we just return the post id');
+               // error_log (__FUNCTION__ . ' - ' . __LINE__);
+               // error_log(print_r(debug_backtrace(), true));
+               // error_log ('----------------------------');
                return ( $post_id );
           }
           /* then wer stoe our extra variables */

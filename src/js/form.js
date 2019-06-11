@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded' , function (e)
           /* (e) => is the equivalent of writing function (e) */
           testimonialForm.addEventListener( 'submit' , (e) => {
                e.preventDefault();
-               console.log( 'Prevent form to submit' );
 
                //Reset the form Messeges
                resetMessages ();
@@ -18,7 +17,6 @@ document.addEventListener('DOMContentLoaded' , function (e)
                     email: testimonialForm.querySelector('[name="email"]').value,
                     message: testimonialForm.querySelector('[name="message"]').value
                };
-               console.log(data);
 
                //Validate Data
                if ( ! (data.name) )
@@ -51,14 +49,22 @@ document.addEventListener('DOMContentLoaded' , function (e)
                fetch ( url , {
                     method: "POST",
                     body: params,
-               } )  .then( results => res.json() )
+               } )  .then( res => res.json() )
                     .catch( error => {
                          resetMessages();
                          testimonialForm.querySelector('.js-form-error').classList.add('show');
                     } )
                     .then ( response => {
                          resetMessages();
+                         // console.log (response);
                          /* Deal with the response */
+                         if ( response === 0  || response.status === 'error')
+                         {
+                              testimonialForm.querySelector('.js-form-error').classList.add('show');
+                              return;
+                         }
+                         testimonialForm.querySelector('.js-form-success').classList.add('show');
+				     testimonialForm.reset();
                     })
 
           } );
