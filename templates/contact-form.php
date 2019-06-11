@@ -37,4 +37,5 @@
 	</div>
 	<!-- To pass more parameters we need to add them to the form -->
 	<input type="hidden" name="action" value="submit_testimonial">
+	<input type="hidden" name="nonce" value="<?php echo (wp_create_nonce("testimonial-nonce"));?>">
 </form>
