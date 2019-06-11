@@ -49,8 +49,8 @@ class TestimonialController extends BaseController
           $this->setShortcodePage();
 
           /* Generate the Shorcode subpage */
-          add_shortcode ( 'terstimonial-form' , array ( $this , 'terstimonial_form' ) );
-          add_shortcode ( 'terstimonial-slideshow'  , array ( $this , 'terstimonial_slideshow' ));
+          add_shortcode ( 'testimonial-form' , array ( $this , 'testimonial_form' ) );
+          add_shortcode ( 'testimonial-slideshow'  , array ( $this , 'testimonial_slideshow' ));
 
           /* Add the jQuery parameters */
           /* Listen to the action that was specified in the hidden field in the form */
@@ -64,7 +64,7 @@ class TestimonialController extends BaseController
           // error_log ('----------------------------');
 
           /* double check if this is an actual ajax call */
-          if ( ! ( DOING_AJAX ) || ( check_ajax_referer ( 'testimonial-nonce' , 'nonce' ) ) )
+          if ( ! ( DOING_AJAX  ||  check_ajax_referer ( 'testimonial-nonce' , 'nonce' )  ) )
           {
                return ( $this->return_json('error') );
           }
@@ -112,7 +112,7 @@ class TestimonialController extends BaseController
           wp_die ();
      }
      /* Function that Generate the testimonial form */
-     public function terstimonial_form()
+     public function testimonial_form()
      {
           /* require one simple php file that contains the form */
           /* Read but don't execute */
@@ -126,9 +126,18 @@ class TestimonialController extends BaseController
           return ( ob_get_clean () );
      }
      /* Function that Generate the testimonial slideshow */
-     public function terstimonial_slideshow()
+     public function testimonial_slideshow()
      {
-
+          /* require one simple php file that contains the form */
+          /* Read but don't execute */
+          ob_start ();
+          /* Load the styles*/
+          echo ( "<link rel=\"stylesheet\" href=\"$this->plugin_url/assets/slider.css\" type=\"text/css\" media=\"all\" /> " );
+          /* Load the contact form */
+          require_once ( "$this->plugin_path/templates/slider.php");
+          /* only enqueues the javascript file if I am using the form */
+          echo ( "<script src=\"$this->plugin_url/assets/slider.js\"></script> " );
+          return ( ob_get_clean () );
      }
      /* Activates the Shurtcodes */
      public function setShortcodePage()
@@ -199,7 +208,7 @@ class TestimonialController extends BaseController
           <label class="meta-label" for="mtk_testimonial_author">Author Name</label>
           <input type="text" id="mtk_testimonial_author" name="mtk_testimonial_author" value="<?php echo ( esc_attr( $name ) ); ?>"
           <label class="meta-label" for="mtk_testimonial_author">Author Email</label>
-          <input type="text" id="mtk_testimonial_author" name="mtk_testimonial_email" value="<?php echo ( esc_attr( $name ) ); ?>"
+          <input type="text" id="mtk_testimonial_author" name="mtk_testimonial_email" value="<?php echo ( esc_attr( $email ) ); ?>"
           <div class="meta-container">
 			<label class="meta-label w-50 text-left" for="mtk_testimonial_approved">Approved</label>
 			<div class="text-right w-50 inline">

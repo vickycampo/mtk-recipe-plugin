@@ -31,14 +31,16 @@ var reload       = browserSync.reload;
 var projectURL   = 'https://test.dev';
 
 var styleSRC     = './src/scss/mystyle.scss';
-var styleFront   = './src/scss/form.scss';
+var styleForm    = './src/scss/form.scss';
+var styleSlider  = './src/scss/slider.scss';
 var styleURL     = './assets/';
 var mapURL       = './';
 
 var jsSRC        = './src/js/';
 var jsAdmin	  = 'myscript.js';
-var jsFront	  = 'form.js';
-var jsFiles	  = [jsAdmin , jsFront];
+var jsForm	  = 'form.js';
+var jsSlider	  = 'slider.js';
+var jsFiles	  = [jsAdmin , jsForm, jsSlider];
 var jsURL        = './assets/';
 
 var styleWatch   = './src/scss/**/*.scss';
@@ -59,7 +61,7 @@ gulp.task( 'browser-sync', function() {
 });
 
 gulp.task( 'styles', function() {
-	gulp.src( [styleSRC , styleFront] )
+	gulp.src( [styleSRC , styleForm, styleSlider] )
 		.pipe( sourcemaps.init() )
 		.pipe( sass({
 			errLogToConsole: true,

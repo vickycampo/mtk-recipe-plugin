@@ -3,8 +3,8 @@
 
 
      <p>Terstimonial Form shortcode</p>
-     <p><coce>[terstimonial-form]</coce></p>
+     <p><code>[testimonial-form]</code></p>
 
      <p>Terstimonial SlideShow shortcode</p>
-     <p><coce>[terstimonial-slideshow]</coce></p>
+     <p><code>[testimonial-slideshow]</code></p>
 </div>
