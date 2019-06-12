@@ -33,6 +33,7 @@ var projectURL   = 'https://test.dev';
 var styleSRC     = './src/scss/mystyle.scss';
 var styleForm    = './src/scss/form.scss';
 var styleSlider  = './src/scss/slider.scss';
+var styleAuth    = './src/scss/auth.scss';
 var styleURL     = './assets/';
 var mapURL       = './';
 
@@ -40,7 +41,8 @@ var jsSRC        = './src/js/';
 var jsAdmin	  = 'myscript.js';
 var jsForm	  = 'form.js';
 var jsSlider	  = 'slider.js';
-var jsFiles	  = [jsAdmin , jsForm, jsSlider];
+var jsAuth	  = 'auth.js';
+var jsFiles	  = [jsAdmin , jsForm, jsSlider, jsAuth];
 var jsURL        = './assets/';
 
 var styleWatch   = './src/scss/**/*.scss';
@@ -61,7 +63,7 @@ gulp.task( 'browser-sync', function() {
 });
 
 gulp.task( 'styles', function() {
-	gulp.src( [styleSRC , styleForm, styleSlider] )
+	gulp.src( [styleSRC , styleForm, styleSlider, styleAuth] )
 		.pipe( sourcemaps.init() )
 		.pipe( sass({
 			errLogToConsole: true,
