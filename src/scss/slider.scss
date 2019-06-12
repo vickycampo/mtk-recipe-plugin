@@ -1,17 +1,21 @@
 .mtk-slider--wrapper {
 	margin: 0 auto;
 	max-width: calc(75% - 150px);
+
 }
 
 .mtk-slider--container {
 	position: relative;
 	width: 100%;
+	overflow: hidden;
 	.mtk-slider--view {
+		
 		display: block;
 		width: 100%;
 		margin: 0 auto;
-		overflow: hidden;
+
 		ul {
+
 			white-space: nowrap;
 			text-align: center;
 			list-style: none;
@@ -19,6 +23,7 @@
 			padding: 0;
 			transition: transform 0.25s ease-out;
 			.mtk-slider--view__slides {
+
 				white-space: normal;
 				display: inline-block;
 				width: 100%;
@@ -44,11 +49,11 @@
 			opacity: 0.5;
 			&.mtk-slider--arrows__left {
 				left: 0;
-				transform: translateX(-100%) translateY(-50%);
+				transform: translateX(0) translateY(-50%);
 			}
 			&.mtk-slider--arrows__right {
 				right: 0;
-				transform: translateX(100%) translateY(-50%);
+				transform: translateX(0) translateY(-50%);
 			}
 			&:hover {
 				opacity: 1;

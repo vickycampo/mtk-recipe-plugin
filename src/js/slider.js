@@ -14,7 +14,7 @@ const slideMe = ( sliderViewItems , isActiveItem ) => {
      /* Add the class */
      sliderViewItems.classList.add('is-active');
      //css transfrom the active slide position
-     console.log (sliderViewItems.offsetLeft);
+     console.log (sliderViewItems);
      sliderView.setAttribute( 'style' , 'transform:translateX(-'+ sliderViewItems.offsetLeft +'px)' );
 }
 
