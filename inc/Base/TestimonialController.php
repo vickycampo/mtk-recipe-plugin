@@ -168,7 +168,8 @@ class TestimonialController extends BaseController
 			'menu_icon' => 'dashicons-testimonial',
 			'exclude_from_search' => true,
 			'publicly_queryable' => false,
-			'supports' => array( 'title', 'editor' )
+			'supports' => array( 'title', 'editor' ),
+               'show_in_rest' => true
 		);
 		register_post_type ( 'testimonial', $args );
 	}
@@ -216,9 +217,7 @@ class TestimonialController extends BaseController
 					<label for="mtk_testimonial_approved"><div></div></label>
 				</div>
 			</div>
-		</div>
-          <div class="meta-container">
-			<label class="meta-label w-50 text-left" for="mtk_testimonial_featured">Featured</label>
+               <label class="meta-label w-50 text-left" for="mtk_testimonial_featured">Featured</label>
 			<div class="text-right w-50 inline">
 				<div class="ui-toggle inline"><input type="checkbox" id="mtk_testimonial_featured" name="mtk_testimonial_featured" value="1" <?php echo $featured ? 'checked' : ''; ?>>
 					<label for="mtk_testimonial_featured"><div></div></label>
