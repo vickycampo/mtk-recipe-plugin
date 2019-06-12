@@ -251,8 +251,6 @@ class CptCallbacks
           /* Custom Fields */
                foreach ($customFields as $i => $field)
                {
-                    error_log('input');
-                    error_log(print_r($field, true));
                     $parent_options[$field['ID']] = $field['Name'];
                }
 

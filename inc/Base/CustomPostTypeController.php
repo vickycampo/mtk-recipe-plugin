@@ -524,19 +524,16 @@ class CustomPostTypeController extends BaseController
           if ( ! ( wp_verify_nonce ( $nonce , 'mtk_'.$post_type.'_author' ) ) )
           {
                /* if is not valid we stop the execution of the script */
-               error_log('513 Exit - if is not valid we stop the execution of the script');
                return ( $post_id );
           }
           /* We check if Wordpress is doing an autosave we interrupt the script */
           if ( defined ('DOING_AUTOSAVE') && DOING_AUTOSAVE)
           {
-               error_log('532 Exit - We check if Wordpress is doing an autosave we interrupt the script');
                return ( $post_id );
           }
           /* Check it the user has the ability to edit the post */
           if ( ! ( current_user_can ( 'edit_post' , $post_id ) ) )
           {
-               error_log('538 Exit - Check it the user has the ability to edit the post');
                return ( $post_id );
           }
           /* Store this metabox */

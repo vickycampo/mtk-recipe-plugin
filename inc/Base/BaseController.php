@@ -29,7 +29,7 @@ class BaseController
                'media_widget' => 'Activate Media Widgets',
                'gallery_manager' => 'Activate Gallery Manager',
                'testimonial_manager' => 'Activate Testimonial Manager',
-               'templates_manager' => 'Activate Template Manager',
+               'templates_manager' => 'Activate Custom Template',
                'login_manager' => 'Activate Login Manager',
                'membership_manager' => 'Activate Membership Manager',
                'chat_manager' => 'Activate Chat Manager',
@@ -39,7 +39,12 @@ class BaseController
      /* Checks if the Manager is active or not */
      public function activated ( string $key )
      {
+
           $option = get_option ( 'mtk_plugin' );
+          // error_log('$key: ');
+          // error_log( $key );
+          // error_log(print_r($option, true));
+          // error_log('--------------------------------------------');
           return ( isset ( $option[ $key ] ) ? $option[ $key ] : false );
      }
 }

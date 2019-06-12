@@ -29,6 +29,7 @@ final class Init //final - cannot be extended
                Base\MediaWidgetController::class,
                Base\GalleryController::class,
                Base\TestimonialController::class,
+               Base\TemplateController::class,
                Base\LoginController::class,
                Base\MembershipController::class,
                Base\ChatController::class
@@ -40,6 +41,7 @@ final class Init //final - cannot be extended
 		foreach ( self::get_services() as $class )
           {
 			$service = self::instantiate( $class );
+               
 			if ( method_exists( $service , 'register' ) )
                {
 				$service->register();
