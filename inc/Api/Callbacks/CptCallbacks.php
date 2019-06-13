@@ -27,30 +27,8 @@ class CptCallbacks
           /* Input type */
                $this->inputArray[] = 'Section';
                $this->inputArray[] = 'SubSection';
-               $this->inputArray[] = 'button';
-               $this->inputArray[] = 'checkbox';
-               $this->inputArray[] = 'button';
-               $this->inputArray[] = 'checkbox';
-               $this->inputArray[] = 'color';
-               $this->inputArray[] = 'date';
-               $this->inputArray[] = 'datetime-local';
-               $this->inputArray[] = 'email';
-               $this->inputArray[] = 'file';
-               $this->inputArray[] = 'hidden';
-               $this->inputArray[] = 'image';
-               $this->inputArray[] = 'month';
-               $this->inputArray[] = 'number';
-               $this->inputArray[] = 'password';
-               $this->inputArray[] = 'radio';
-               $this->inputArray[] = 'range';
-               $this->inputArray[] = 'reset';
-               $this->inputArray[] = 'search';
-               $this->inputArray[] = 'submit';
-               $this->inputArray[] = 'tel';
-               $this->inputArray[] = 'text';
-               $this->inputArray[] = 'time';
-               $this->inputArray[] = 'url';
-               $this->inputArray[] = 'week';
+               $this->inputArray[] = 'Item';
+               $this->inputArray[] = 'Subitem';
      }
      public function cptSanitize ( $input )
      {
@@ -85,7 +63,7 @@ class CptCallbacks
           }
           /* Sabe the Custom Fields */
           // error_log('input');
-          // error_log(print_r($input, true));
+          error_log(print_r($input, true));
           // var_dump( $output );
           return ( $output );
      }
@@ -256,10 +234,16 @@ class CptCallbacks
 
 
           /* Custom Fields */
+               //error_log ( print_r ( $customFields , true) );
                foreach ($customFields as $i => $field)
                {
-                    $parent_options[$field['ID']] = $field['Name'];
+                    if ($field['Type'] == 'Section')
+                    {
+                         $parent_options[$field['ID']] = $field['Name'];
+                    }
+
                }
+               //error_log ( print_r ( $parent_options , true) );
 
 
           /*1. add a field to start with */
@@ -319,23 +303,31 @@ class CptCallbacks
                                    ?><select id="<?php echo ($fieldType);?>_<?php echo ($i);?>" class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_select" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>">
                                         <option value="">Choose parent field</option>
                                         <?php
-                                        foreach ($parent_options as $id => $option)
+                                        if ( isset ($parent_options) )
                                         {
-                                             /* We remove the title and etc... */
-                                             if ( ( $id === 'title' ) && ( $id === 'categories' ) && ( $id === 'tags' ))
+                                             foreach ($parent_options as $id => $option)
                                              {
-                                                  $extra_information = '';
-                                                  /* we check if is selected */
-                                                  if ($fieldText == $id)
+                                                  //error_log ( print_r ( $option , true) );
+                                                  /* We remove the title and etc... */
+                                                  if ( ( $id === 'title' ) && ( $id === 'categories' ) && ( $id === 'tags' ))
                                                   {
-                                                       $extra_information = 'selected';
                                                   }
-                                                  ?>
-                                                  <option value="<?php echo ($id);?>" <?php echo ($extra_information);?> ><?php echo ($option);?></option>
-                                                  <?php
-                                             }
+                                                  else {
 
+                                                       $extra_information = '';
+                                                       /* we check if is selected */
+                                                       if ($fieldText == $id)
+                                                       {
+                                                            $extra_information = 'selected';
+                                                       }
+                                                       ?>
+                                                       <option value="<?php echo ($id);?>" <?php echo ($extra_information);?> ><?php echo ($option);?></option>
+                                                       <?php
+                                                  }
+
+                                             }
                                         }
+
                                         ?></select><?php
                               }
 

@@ -39,8 +39,9 @@ window.addEventListener ( "load" , function ()
                var j=0;
                for ( var i in options)
                {
-                    if ( options[i].value != '')
+                    if ( ( options[i].value ) && ( options[i].value != '') )
                     {
+                         //console.log (options[i]);
                          inputArrayValues[j] = options[i].value;
                          j++;
                     }
@@ -237,7 +238,7 @@ window.addEventListener ( "load" , function ()
      }
      function updateParentSelector ( e )
      {
-          console.log ( e );
+          //console.log ( e );
           var customFields_ID_input = document.querySelectorAll (".customFields_ID_input");
           var customFields_Name_input = document.querySelectorAll (".customFields_Name_input");
           var customFields_Type_select = document.querySelectorAll (".customFields_Type_select");
@@ -247,7 +248,7 @@ window.addEventListener ( "load" , function ()
           /* Get the combination that is needed for the select into an array */
           for (var i = 0; i < customFields_ID_input.length; i++ )
           {
-               console.log (customFields_Type_select[i].value);
+               //console.log (customFields_Type_select[i].value);
                if ( (customFields_Type_select[i].value === 'Section') || (customFields_Type_select[i].value === 'SubSection') )
                {
                     optionText += '<option value="' + customFields_ID_input[i].value + '">' + customFields_Name_input[i].value + '</option>';
@@ -258,10 +259,15 @@ window.addEventListener ( "load" , function ()
           var customFields_Parent_select = document.querySelectorAll (".customFields_Parent_select");
           for (var i = 0; i < customFields_Parent_select.length; i++ )
           {
+               //console.log (customFields_Parent_select[i].value);
+               var previousValue = customFields_Parent_select[i].value;
                var select_id = '#' + customFields_Parent_select[i].id;
+
                $(select_id)
                    .empty()
                    .append(optionText);
+
+               $(select_id).val(previousValue);
 
 
           }

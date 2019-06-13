@@ -413,10 +413,95 @@ class RecipeCPTController extends BaseController
                $input['public'] = 1;
                $input['has_archive'] = 1;
 
-               $input['customFields']['0']['ID'] = 'process';
-               $input['customFields']['0']['Name'] = 'Recipe Name';
-               $input['customFields']['0']['Type'] = 'text';
-               $input['customFields']['0']['Parent'] = '';
+               $i = 0;
+               $input['customFields'][$i]['ID'] = 'general';
+               $input['customFields'][$i]['Name'] = 'General';
+               $input['customFields'][$i]['Type'] = 'Section';
+               $input['customFields'][$i]['Parent'] = 'general';
+
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_title';
+               $input['customFields'][$i]['Name'] = 'Title';
+               $input['customFields'][$i]['Type'] = 'Item';
+               $input['customFields'][$i]['Parent'] = 'general';
+
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_image';
+               $input['customFields'][$i]['Name'] = 'Image';
+               $input['customFields'][$i]['Type'] = 'Item';
+               $input['customFields'][$i]['Parent'] = 'general';
+
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_description';
+               $input['customFields'][$i]['Name'] = 'Description';
+               $input['customFields'][$i]['Type'] = 'Item';
+               $input['customFields'][$i]['Parent'] = 'general';
+
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_servings';
+               $input['customFields'][$i]['Name'] = 'Servings';
+               $input['customFields'][$i]['Type'] = 'Item';
+               $input['customFields'][$i]['Parent'] = 'general';
+
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_prep_time';
+               $input['customFields'][$i]['Name'] = 'Prep Time';
+               $input['customFields'][$i]['Type'] = 'Item';
+               $input['customFields'][$i]['Parent'] = 'general';
+
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_cook_time';
+               $input['customFields'][$i]['Name'] = 'Cook Time';
+               $input['customFields'][$i]['Type'] = 'Item';
+               $input['customFields'][$i]['Parent'] = 'general';
+
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_passive_time';
+               $input['customFields'][$i]['Name'] = 'Passive Time';
+               $input['customFields'][$i]['Type'] = 'Item';
+               $input['customFields'][$i]['Parent'] = 'general';
+
+               $i++;
+               $input['customFields'][$i]['ID'] = 'group';
+               $input['customFields'][$i]['Name'] = 'Group';
+               $input['customFields'][$i]['Type'] = 'Section';
+               $input['customFields'][$i]['Parent'] = 'group';
+
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_ingredients';
+               $input['customFields'][$i]['Name'] = 'Ingredients';
+               $input['customFields'][$i]['Type'] = 'SubSection';
+               $input['customFields'][$i]['Parent'] = 'group';
+
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_instructions';
+               $input['customFields'][$i]['Name'] = 'Instructions';
+               $input['customFields'][$i]['Type'] = 'SubSection';
+               $input['customFields'][$i]['Parent'] = 'group';
+
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_extras';
+               $input['customFields'][$i]['Name'] = 'Extra Information';
+               $input['customFields'][$i]['Type'] = 'Section';
+               $input['customFields'][$i]['Parent'] = 'recipe_extras';
+
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_notes';
+               $input['customFields'][$i]['Name'] = 'Recipe notes';
+               $input['customFields'][$i]['Type'] = 'Item';
+               $input['customFields'][$i]['Parent'] = 'recipe_extras';
+
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_video';
+               $input['customFields'][$i]['Name'] = 'Recipe Video';
+               $input['customFields'][$i]['Type'] = 'Item';
+               $input['customFields'][$i]['Parent'] = 'recipe_extras';
+
+
+
+
+
+
                $output = $this->cpt_callbacks->cptSanitize ( $input );
                error_log('output');
                error_log(print_r($output, true));
