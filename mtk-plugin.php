@@ -4,13 +4,13 @@
 */
 /*
 Plugin Name: My Tiny Kitchen - Recipe Plugin
-Plugin URI: www.virginiacampo.com/mtk-recipe-plugin
+Plugin URI: www.virginiacampo.com/mtk-plugin
 Description: Plugin to manage the recipes
 Version: 1.0.0
 Author: Virginia Campo
 Author URI: www.virginiacampo.com
 License: GPLv2 or later
-Text Domain: mtk-recipe-plugin
+Text Domain: mtk-plugin
 */
 
 /*Notes: modify the location of the plugins in the default-constans.php
