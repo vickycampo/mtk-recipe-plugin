@@ -18,6 +18,7 @@ document.addEventListener ( 'DOMContentLoaded' , function (e) {
           e.preventDefault ();
           // reset the messages
           resetMessages ();
+
           //collect ll the data of our form
           let data = {
                name: authForm.querySelector('[name="username"]').value,
@@ -31,11 +32,13 @@ document.addEventListener ( 'DOMContentLoaded' , function (e) {
                status.classList.add ( "error" );
                return;
           }
+
           //ajax http post request
           let url = authForm.dataset.url;
           let params = new URLSearchParams ( new FormData ( authForm ) );
           authForm.querySelector('[name="submit"]').value = 'Logging in ...';
           authForm.querySelector('[name="submit"]').disabled = true;
+
           fetch ( url , {
                method: 'POST',
                body: params
@@ -45,6 +48,8 @@ document.addEventListener ( 'DOMContentLoaded' , function (e) {
           })
           .then(response => {
                resetMessages();
+               console.log ('51');
+               console.log (response);
                if ( (response === 0) || ( ! response.status ) )
                {
                     status.innerHTML = response.message;
