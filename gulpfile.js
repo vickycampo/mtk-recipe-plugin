@@ -34,6 +34,8 @@ var styleSRC     = './src/scss/mystyle.scss';
 var styleForm    = './src/scss/form.scss';
 var styleSlider  = './src/scss/slider.scss';
 var styleAuth    = './src/scss/auth.scss';
+var styleDashiconsPicker    = './src/scss/dashicons-picker.scss';
+
 var styleURL     = './assets/';
 var mapURL       = './';
 
@@ -42,7 +44,8 @@ var jsAdmin	  = 'myscript.js';
 var jsForm	  = 'form.js';
 var jsSlider	  = 'slider.js';
 var jsAuth	  = 'auth.js';
-var jsFiles	  = [jsAdmin , jsForm, jsSlider, jsAuth];
+var jsDashiconsPicker	  = 'dashicons-picker.js';
+var jsFiles	  = [jsAdmin , jsForm, jsSlider, jsAuth, jsDashiconsPicker];
 var jsURL        = './assets/';
 
 var styleWatch   = './src/scss/**/*.scss';
@@ -63,7 +66,7 @@ gulp.task( 'browser-sync', function() {
 });
 
 gulp.task( 'styles', function() {
-	gulp.src( [styleSRC , styleForm, styleSlider, styleAuth] )
+	gulp.src( [styleSRC , styleForm, styleSlider, styleAuth, styleDashiconsPicker] )
 		.pipe( sourcemaps.init() )
 		.pipe( sass({
 			errLogToConsole: true,
