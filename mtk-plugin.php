@@ -3,7 +3,7 @@
 * @package mkt-recipe-plugin
 */
 /*
-Plugin Name: My Tiny Kitchen - Recipe Plugin
+Plugin Name: My Tiny Kitchen - Plugin
 Plugin URI: www.virginiacampo.com/mtk-plugin
 Description: Plugin to manage the recipes
 Version: 1.0.0

@@ -10,17 +10,110 @@
 */
 /* Function to control the multiple tabs */
 /* Import the files for code-prettify */
-import 'code-prettify';
+console.log ('uncomment 13');
+//import 'code-prettify';
 /* The function that handles the tabs */
 window.addEventListener ( "load" , function ()
 {
      /* Load the code prettify function */
-     PR.prettyPrint();
+     console.log ('uncomment 19');
+     //PR.prettyPrint();
+
      //   -----------------------------------------
      //        Add the event to the tab buttons
      //   -----------------------------------------
      //Store tabs variables
      var tabs = document.querySelectorAll ("ul.nav-tabs > li");
+     var optionsArray = new Array;
+     /* We create an array with all the values from a previous field */
+     optionsArray = createInputArray();
+
+     function createInputArray()
+     {
+          /* we look for a previous created select */
+          var options = document.querySelector('.customFields_Type_select').options;
+          if ( options )
+          {
+               /* Convert to an array  */
+               var inputArrayValues = new Array;
+               var j=0;
+               for ( var i in options)
+               {
+                    if ( options[i].value != '')
+                    {
+                         inputArrayValues[j] = options[i].value;
+                         j++;
+                    }
+
+
+               }
+
+               return (inputArrayValues);
+          }
+          else
+          {
+               /* if we can't find one we use the default values */
+               /* add the select */
+               /* We create an array with all the select values */
+               /* We get the values from a predefined select */
+
+               var inputArrayValues = new Array;
+               var i = 0;
+
+               inputArrayValues[i] = 'button';
+               i++;
+               inputArrayValues[i] = 'checkbox';
+               i++;
+               inputArrayValues[i] = 'button';
+               i++;
+               inputArrayValues[i] = 'checkbox';
+               i++;
+               inputArrayValues[i] = 'color';
+               i++;
+               inputArrayValues[i] = 'date';
+               i++;
+               inputArrayValues[i] = 'datetime-local';
+               i++;
+               inputArrayValues[i] = 'email';
+               i++;
+               inputArrayValues[i] = 'file';
+               i++;
+               inputArrayValues[i] = 'hidden';
+               i++;
+               inputArrayValues[i] = 'image';
+               i++;
+               inputArrayValues[i] = 'month';
+               i++;
+               inputArrayValues[i] = 'number';
+               i++;
+               inputArrayValues[i] = 'password';
+               i++;
+               inputArrayValues[i] = 'radio';
+               i++;
+               inputArrayValues[i] = 'range';
+               i++;
+               inputArrayValues[i] = 'reset';
+               i++;
+               inputArrayValues[i] = 'search';
+               i++;
+               inputArrayValues[i] = 'submit';
+               i++;
+               inputArrayValues[i] = 'tel';
+               i++;
+               inputArrayValues[i] = 'text';
+               i++;
+               inputArrayValues[i] = 'time';
+               i++;
+               inputArrayValues[i] = 'url';
+               i++;
+               inputArrayValues[i] = 'week';
+               i++;
+               return (inputArrayValues);
+          }
+
+
+
+     }
      for (var i = 0; i < tabs.length; i++ )
      {
           tabs[i].addEventListener( "click" , switchTab );
@@ -59,6 +152,7 @@ window.addEventListener ( "load" , function ()
           var removeFieldsButton = document.querySelectorAll (".customFields_removeButton");
           var customFields_ID_input = document.querySelectorAll (".customFields_ID_input");
           var customFields_Name_input = document.querySelectorAll (".customFields_Name_input");
+          var customFields_Type_select = document.querySelectorAll (".customFields_Type_select");
 
           index = addFieldsButton.length-1;
           for (var i = 0; i < addFieldsButton.length; i++ )
@@ -72,11 +166,10 @@ window.addEventListener ( "load" , function ()
           for (var i = 0; i < customFields_ID_input.length; i++ )
           {
                customFields_ID_input[i].addEventListener( "change" , updateParentSelector );
-          }
-          for (var i = 0; i < customFields_Name_input.length; i++ )
-          {
                customFields_Name_input[i].addEventListener( "change" , updateParentSelector );
+               customFields_Type_select[i].addEventListener( "change" , updateParentSelector );
           }
+
 
      }
 
@@ -89,42 +182,22 @@ window.addEventListener ( "load" , function ()
           inputElement += '<input type="text" class="regular-text customFields_input customFields_ID_input" name="mtk_plugin_cpt[customFields][' + index + '][ID]" placeholder="author_name" value="">';
           inputElement += '<input type="text" class="regular-text customFields_input customFields_Name_input" name="mtk_plugin_cpt[customFields][' + index + '][Name]" placeholder="author_name" value="">';
 
-          /* add the select */
-          /* We create an array with all the select values */
-          var inputArray = new Array;
-          inputArray[0] = 'button';
-          inputArray[1] = 'checkbox';
-          inputArray[2] = 'button';
-          inputArray[3] = 'checkbox';
-          inputArray[4] = 'color';
-          inputArray[5] = 'date';
-          inputArray[6] = 'datetime-local';
-          inputArray[7] = 'email';
-          inputArray[8] = 'file';
-          inputArray[9] = 'hidden';
-          inputArray[10] = 'image';
-          inputArray[11] = 'month';
-          inputArray[12] = 'number';
-          inputArray[13] = 'password';
-          inputArray[14] = 'radio';
-          inputArray[15] = 'range';
-          inputArray[16] = 'reset';
-          inputArray[17] = 'search';
-          inputArray[18] = 'submit';
-          inputArray[19] = 'tel';
-          inputArray[20] = 'text';
-          inputArray[21] = 'time';
-          inputArray[22] = 'url';
-          inputArray[23] = 'week';
+
           /* Create the select */
-          inputElement += '<select class="regular-text customFields_input" name="mtk_plugin_cpt[customFields][' + index + '][Type]">';
+          inputElement += '<select class="regular-text customFields_input customFields_Type_select" name="mtk_plugin_cpt[customFields][' + index + '][Type]">';
           inputElement += '<option value="">Input Type</option>';
           /* Add the options in the array */
-          for (var i = 0; i < inputArray.length; i++ )
+          if ( Array.isArray(optionsArray) )
           {
-               inputElement += '<option value="' + inputArray[i] + '" >' + inputArray[i]  + '</option>';
+               for (var i = 0; i < optionsArray.length; i++ )
+               {
+                    inputElement += '<option value="' + optionsArray[i] + '" >' + optionsArray[i]  + '</option>';
+               }
+
           }
+
           inputElement += '</select>';
+
 
           /* add the parent selec  */
           inputElement += '<select id="Parent_' + index + '" class="regular-text customFields_input customFields_Parent_select" name="mtk_plugin_cpt[customFields][' + index + '][Parent]" >';
@@ -136,8 +209,18 @@ window.addEventListener ( "load" , function ()
           inputElement += '</div>';
           /* Append the elements */
           $(".customFields_container").append( inputElement );
+
+          /* Adda elements to the select object */
+          if ( ! Array.isArray(optionsArray) )
+          {
+               console.log ('[name="mtk_plugin_cpt[customFields][' + index + '][Type]"]');
+               var target = document.querySelector('[name="mtk_plugin_cpt[customFields][' + index + '][Type]"]');
+               console.log (target);
+               target.append(optionsArray);
+          }
           /* Add event Listeners */
           addEventListeners ();
+          updateParentSelector();
 
 
      }
@@ -152,17 +235,24 @@ window.addEventListener ( "load" , function ()
                addEventListeners ();
           }
      }
-     function updateParentSelector ()
+     function updateParentSelector ( e )
      {
+          console.log ( e );
           var customFields_ID_input = document.querySelectorAll (".customFields_ID_input");
           var customFields_Name_input = document.querySelectorAll (".customFields_Name_input");
+          var customFields_Type_select = document.querySelectorAll (".customFields_Type_select");
+
           var optionsArray = new Array;
           var optionText = '<option value="">Choose Parent</option>';
           /* Get the combination that is needed for the select into an array */
           for (var i = 0; i < customFields_ID_input.length; i++ )
           {
+               console.log (customFields_Type_select[i].value);
+               if ( (customFields_Type_select[i].value === 'Section') || (customFields_Type_select[i].value === 'SubSection') )
+               {
+                    optionText += '<option value="' + customFields_ID_input[i].value + '">' + customFields_Name_input[i].value + '</option>';
+               }
 
-               optionText += '<option value="' + customFields_ID_input[i].value + '">' + customFields_Name_input[i].value + '</option>';
           }
           /* update the customFields_Parent_select*/
           var customFields_Parent_select = document.querySelectorAll (".customFields_Parent_select");

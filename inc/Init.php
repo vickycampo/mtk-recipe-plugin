@@ -24,15 +24,12 @@ final class Init //final - cannot be extended
                Pages\Dashboard::class,
                Base\Enqueue::class,
                Base\SettingsLinks::class,
-               Base\CustomPostTypeController::class,
+               Base\RecipeCPTController::class,
                Base\CustomTaxonomyController::class,
                Base\MediaWidgetController::class,
-               Base\GalleryController::class,
                Base\TestimonialController::class,
                Base\TemplateController::class,
-               Base\AuthController::class,
-               Base\MembershipController::class,
-               Base\ChatController::class
+               Base\AuthController::class
           ];
      }
      /*** Initialize the class, and call the register method if it exists ***/

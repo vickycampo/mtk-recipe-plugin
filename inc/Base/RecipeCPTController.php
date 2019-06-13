@@ -4,7 +4,7 @@
 @package mkt-recipe-plugin
 
      ===================================
-          CUSTOMPOSTTYPECONTROLLER.PHP
+          RecipeCPTController.PHP
      ===================================
 *
 *
@@ -18,7 +18,7 @@ use Inc\Api\Callbacks\AdminCallbacks;
 /**
  * Enqueue - Enqueue the scripts and style files
  */
-class CustomPostTypeController extends BaseController
+class RecipeCPTController extends BaseController
 {
      public $settings;
      public $callbacks;
@@ -32,7 +32,7 @@ class CustomPostTypeController extends BaseController
      public function register ()
      {
           /* Check if it is active */
-          if ( ! ( $this->activated( 'cpt_manager' ) ) ) return;
+          if ( ! ( $this->activated( 'recipe_cpt_manager' ) ) ) return;
 
 
           /* Initialize the class that will actually generate the menu pages and subpages */
@@ -52,11 +52,15 @@ class CustomPostTypeController extends BaseController
           $this->settings->addSubPages( $this->subpages )->register();
           /* Store a custom post type in our array */
           $this->storeCustomPostTypes();
+          /* Register a default Recipe post type*/
+          $this->register_default_cpt ();
           /* If the user has defined post types then we register the type */
           if ( ! empty ( $this->custom_post_types ))
           {
                add_action ( 'init' , array ( $this , 'registerCustomPostTypes') );
           }
+
+
 
      }
      public function setSubpages()
@@ -75,7 +79,6 @@ class CustomPostTypeController extends BaseController
      /* Create the settings */
      public function setSettings()
 	{
-
 		$args = array(
 			array(
 				'option_group' => 'mtk_plugin_cpt_settings',
@@ -397,6 +400,34 @@ class CustomPostTypeController extends BaseController
 
 
 	}
+     public function register_default_cpt ()
+     {
+          if ( ! ( isset ( $this->custom_post_types['default_recipe'] ) ) )
+          {
+
+               /* We don't have a default post type yet so we need to register it */
+               $input['post_type'] = 'default_recipe';
+               $input['singular_name'] = 'Recipe';
+               $input['plural_name'] = 'Recipes';
+               $input['menu_icon'] = 'dashicons-carrot';
+               $input['public'] = 1;
+               $input['has_archive'] = 1;
+
+               $input['customFields']['0']['ID'] = 'process';
+               $input['customFields']['0']['Name'] = 'Recipe Name';
+               $input['customFields']['0']['Type'] = 'text';
+               $input['customFields']['0']['Parent'] = '';
+               $output = $this->cpt_callbacks->cptSanitize ( $input );
+               error_log('output');
+               error_log(print_r($output, true));
+               /* update option */
+               $option = 'mtk_plugin_cpt';
+               update_option( $option, $output);
+               /* Update the array */
+               $this->storeCustomPostTypes();
+
+          }
+     }
 
      /* We are going to manage the custom columns of the cpt */
      /* Set columns */

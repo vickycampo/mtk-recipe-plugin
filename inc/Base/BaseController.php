@@ -24,15 +24,12 @@ class BaseController
 
           /* Array with all the managers that we will add to the Dashboard page */
           $this->managers = array (
-               'cpt_manager' => 'Activate CPT manager',
-               'taxonomy_manager' => 'Activate Taxonomy manager',
-               'media_widget' => 'Activate Media Widgets',
-               'gallery_manager' => 'Activate Gallery Manager',
-               'testimonial_manager' => 'Activate Testimonial Manager',
-               'templates_manager' => 'Activate Custom Template',
-               'login_manager' => 'Activate Login Manager',
-               'membership_manager' => 'Activate Membership Manager',
-               'chat_manager' => 'Activate Chat Manager',
+               'recipe_cpt_manager' => 'Use a Recipe Custom Post Type', //cpt
+               'taxonomy_manager' => 'Create your own Taxonomy', //taxonomy
+               'media_widget' => 'Add a widget', //media widget
+               'recipe_slider_manager' => 'Create a Recipe Slider', //testimonials
+               'templates_manager' => 'Use your Custom Template', //templates_manager
+               'login_manager' => 'Activate Login Manager' //login
 
           );
      }

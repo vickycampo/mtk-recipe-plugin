@@ -16,10 +16,41 @@ use \Inc\Base\BaseController;
 */
 class CptCallbacks
 {
-
+     public $inputArray;
      public function cptSectionManager ()
      {
           echo ("Manage your custom post Types");
+     }
+     public function createInputArray ()
+     {
+          /* We create the array with the information we need to fill the selects */
+          /* Input type */
+               $this->inputArray[] = 'Section';
+               $this->inputArray[] = 'SubSection';
+               $this->inputArray[] = 'button';
+               $this->inputArray[] = 'checkbox';
+               $this->inputArray[] = 'button';
+               $this->inputArray[] = 'checkbox';
+               $this->inputArray[] = 'color';
+               $this->inputArray[] = 'date';
+               $this->inputArray[] = 'datetime-local';
+               $this->inputArray[] = 'email';
+               $this->inputArray[] = 'file';
+               $this->inputArray[] = 'hidden';
+               $this->inputArray[] = 'image';
+               $this->inputArray[] = 'month';
+               $this->inputArray[] = 'number';
+               $this->inputArray[] = 'password';
+               $this->inputArray[] = 'radio';
+               $this->inputArray[] = 'range';
+               $this->inputArray[] = 'reset';
+               $this->inputArray[] = 'search';
+               $this->inputArray[] = 'submit';
+               $this->inputArray[] = 'tel';
+               $this->inputArray[] = 'text';
+               $this->inputArray[] = 'time';
+               $this->inputArray[] = 'url';
+               $this->inputArray[] = 'week';
      }
      public function cptSanitize ( $input )
      {
@@ -222,32 +253,8 @@ class CptCallbacks
           {
                $customFields[0] = $placeholder;
           }
-          /* We create the array with the information we need to fill the selects */
-          /* Input type */
-               $inputArray[0] = 'button';
-               $inputArray[1] = 'checkbox';
-               $inputArray[2] = 'button';
-               $inputArray[3] = 'checkbox';
-               $inputArray[4] = 'color';
-               $inputArray[5] = 'date';
-               $inputArray[6] = 'datetime-local';
-               $inputArray[7] = 'email';
-               $inputArray[8] = 'file';
-               $inputArray[9] = 'hidden';
-               $inputArray[10] = 'image';
-               $inputArray[11] = 'month';
-               $inputArray[12] = 'number';
-               $inputArray[13] = 'password';
-               $inputArray[14] = 'radio';
-               $inputArray[15] = 'range';
-               $inputArray[16] = 'reset';
-               $inputArray[17] = 'search';
-               $inputArray[18] = 'submit';
-               $inputArray[19] = 'tel';
-               $inputArray[20] = 'text';
-               $inputArray[21] = 'time';
-               $inputArray[22] = 'url';
-               $inputArray[23] = 'week';
+
+
           /* Custom Fields */
                foreach ($customFields as $i => $field)
                {
@@ -284,7 +291,13 @@ class CptCallbacks
                          {
                               ?><select class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_select" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>">
                                    <option value="">Choose input type</option>
-                                   <?php foreach ($inputArray as $j => $inputType)
+                                   <?php
+                                   /* Generate the input array if it is empty */
+                                   if ( ! $this->inputArray )
+                                   {
+                                        $this->createInputArray ();
+                                   }
+                                   foreach ($this->inputArray as $j => $inputType)
                                    {
                                         $extra_information = '';
                                         /* we check if is selected */
