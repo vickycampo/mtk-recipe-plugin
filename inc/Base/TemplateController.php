@@ -67,9 +67,9 @@ class TemplateController extends BaseController
 
           $template_name = get_post_meta( $post->ID , '_wp_page_template' , true);
           if ( $template_name == '') return ($template);
-          
+
           /* if this template name is part of our templates load it */
-          if ( ! ( $this->templates[$template_name] ) )
+          if ( ! ( isset ($this->templates[$template_name]) ) )
           {
                return ( $template );
           }

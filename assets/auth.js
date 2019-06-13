@@ -1,2 +1,74 @@
-!function a(s,u,i){function c(t,e){if(!u[t]){if(!s[t]){var n="function"==typeof require&&require;if(!e&&n)return n(t,!0);if(d)return d(t,!0);var r=new Error("Cannot find module '"+t+"'");throw r.code="MODULE_NOT_FOUND",r}var o=u[t]={exports:{}};s[t][0].call(o.exports,function(e){return c(s[t][1][e]||e)},o,o.exports,a,s,u,i)}return u[t].exports}for(var d="function"==typeof require&&require,e=0;e<i.length;e++)c(i[e]);return c}({1:[function(e,t,n){"use strict";document.addEventListener("DOMContentLoaded",function(e){var t=document.getElementById("mtk-show-auth-form"),n=document.getElementById("mtk-auth-container"),r=document.getElementById("mtk-auth-close"),a=document.getElementById("mtk-auth-form"),s=document.querySelector('[data-message="status"]');function u(){s.innerHTML="",s.classList.remove("success","error"),a.querySelector('[name="submit"]').value="Login",a.querySelector('[name="submit"]').disabled=!1}t.addEventListener("click",function(){n.classList.add("show"),t.parentElement.classList.add("hide")}),r.addEventListener("click",function(){n.classList.remove("show"),t.parentElement.classList.remove("hide")}),a.addEventListener("submit",function(e){e.preventDefault(),u();var t=a.querySelector('[name="username"]').value,n=a.querySelector('[name="password"]').value;a.querySelector('[name="mtk_auth"]').value;if(!t||!n)return s.innerHTML="Missing data",void s.classList.add("error");var r=a.dataset.url,o=new URLSearchParams(new FormData(a));a.querySelector('[name="submit"]').value="Logging in ...",a.querySelector('[name="submit"]').disabled=!0,fetch(r,{method:"POST",body:o}).then(function(e){return e.jason()}).catch(function(e){u()}).then(function(e){if(u(),console.log("51"),console.log(e),0===e||!e.status)return s.innerHTML=e.message,void s.classList.add("error");s.innerHTML=e.message,s.classList.add("success"),a.reset(),window.location.reload()})})})},{}]},{},[1]);
-//# sourceMappingURL=auth.js.map
+document.addEventListener('DOMContentLoaded', function (e)
+{
+     const showAuthBtn = document.getElementById('mtk-show-auth-form'),
+     authContainer = document.getElementById('mtk-auth-container'),
+     close = document.getElementById('mtk-auth-close'),
+     authForm = document.getElementById('mtk-auth-form'),
+     status = authForm.querySelector('[data-message="status"]');
+
+     showAuthBtn.addEventListener('click', () => {
+          authContainer.classList.add('show');
+          showAuthBtn.parentElement.classList.add('hide');
+     });
+
+     close.addEventListener('click', () => {
+          authContainer.classList.remove('show');
+          showAuthBtn.parentElement.classList.remove('hide');
+     });
+
+     authForm.addEventListener('submit', e => {
+          e.preventDefault();
+
+          resetMessages();
+
+          let data =
+          {
+               name: authForm.querySelector('[name="username"]').value,
+               password: authForm.querySelector('[name="password"]').value,
+               nonce: authForm.querySelector('[name="mtk_auth"]').value
+          }
+
+          if (!data.name || !data.password) {
+               status.innerHTML = "Missing Data";
+               status.classList.add('error');
+               return;
+          }
+
+          let url = authForm.dataset.url;
+          let params = new URLSearchParams(new FormData(authForm));
+
+          authForm.querySelector('[name="submit"]').value = "Logging in...";
+          authForm.querySelector('[name="submit"]').disabled = true;
+
+          fetch(url, {
+               method: "POST",
+               body: params
+          }).then(res => res.json())
+          .catch(error => {
+               resetMessages();
+          })
+          .then(response => {
+               resetMessages();
+
+               if (response === 0 || !response.status) {
+                    status.innerHTML = response.message;
+                    status.classList.add('error');
+                    return;
+               }
+
+               status.innerHTML = response.message;
+               status.classList.add('success');
+
+               authForm.reset();
+               window.location.reload();
+          })
+     })
+
+     function resetMessages() {
+          status.innerHTML = '';
+          status.classList.remove('success', 'error');
+
+          authForm.querySelector('[name="submit"]').value = "Login";
+          authForm.querySelector('[name="submit"]').disabled = false;
+     }
+});

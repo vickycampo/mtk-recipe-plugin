@@ -58,16 +58,20 @@ use Inc\Api\Callbacks\AdminCallbacks;
 
           $user_signon = wp_signon ( $info , true );
 
+          // wp_logout();
           if ( is_wp_error ( $user_signon ) )
           {
+               //error_log('60 - ' . print_r($user_signon, true));
                $status = false;
                $message = 'Wrong username or password.';
                $this->return_json ( $status , $message );
+               return;
           }
 
           $status = true;
           $message = 'Login succesful, redirecting...';
           $this->return_json ( $status , $message );
+          return;
      }
      public function return_json ( $status , $message )
      {
@@ -75,7 +79,7 @@ use Inc\Api\Callbacks\AdminCallbacks;
                'status' => $status,
                'message' => $message
           );
-          error_log (print_r ($return) ,  true);
+          //error_log('80 - ' . print_r($return, true));
           wp_send_json( $return );
           wp_die ();
      }
