@@ -334,7 +334,7 @@ class CptCallbacks
                               }
 
                          }
-                         else if ( $fieldType === 'Show_in_columns' )
+                         else if ( ( $fieldType === 'Show_in_columns' ) || ( $fieldType === 'add_remove_buttons' ) )
                          {
                               /* checked? */
                               $checked =  $fieldText ? 'checked': '';

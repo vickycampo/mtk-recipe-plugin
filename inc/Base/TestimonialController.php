@@ -196,6 +196,7 @@ class TestimonialController extends BaseController
           wp_nonce_field( 'mtk_testimonial_author' , 'mtk_testimonial_author_nonce' );
           /* Get the data */
           $data  = get_post_meta ( $post->ID , '_mtk_testimonial_key' , true );
+          
           /* Create the variables where we are going to sort the information */
           /* Author Name */
           $name = isset($data['name']) ? $data['name'] : '';

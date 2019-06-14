@@ -232,7 +232,8 @@ class RecipeCPTController extends BaseController
                               'Name' => 'Author Name',
                               'Type' => 'text',
                               'Parent' =>'parent_field',
-                              'Show_in_columns' => false
+                              'Show_in_columns' => false,
+                              'add_remove_buttons' => false
                          ),
 					'array' => 'post_type'
                     )
@@ -598,8 +599,6 @@ class RecipeCPTController extends BaseController
 
 
                $output = $this->cpt_callbacks->cptSanitize ( $input );
-               error_log('output');
-               error_log(print_r($output, true));
                /* update option */
                $option = 'mtk_plugin_cpt';
                update_option( $option, $output);
@@ -647,36 +646,66 @@ class RecipeCPTController extends BaseController
      /* order custom columns array */
      public function orderCustomcolumns ( $customFields )
      {
-
-          foreach ($customFields as $i => $value)
+          $ordered = [];
+          while ( count ( $customFields  ) > 0)
           {
-
-               // [ID] => general
-               // [Name] => General
-               // [Type] => Section
-               // [Parent] => general
-               // [Show_in_columns] => true
-
-               //get the sections
-               if ($value['Type'] == 'Section')
+               foreach ($customFields as $i => $fields)
                {
-                    $ordered['Section'][$i] = $value;
-               }
-               else if ($value['Type'] == 'SubSection')
-               {
-                    $ordered['SubSection'][$value['Parent']][$i] = $value;
-               }
-               else if ($value['Type'] == 'Item')
-               {
-                    $ordered['Item'][$value['Parent']][$i] = $value;
+
+                    /* Section */
+                    if ($fields['Parent'] == $fields['ID'])
+                    {
+                         $ordered[$fields['ID']]['field-info'] = $fields;
+
+                         unset ($customFields[$i]);
+                    }
+                    /* We check if we have the parent in the parent array */
+                    else if ( isset ( $ordered[ $fields['Parent'] ] ) )
+                    {
+
+                         $ordered[ $fields['Parent'] ] [$fields['ID'] ] ['field-info'] =  $fields;
+                         /* array to find the parent afterwards */
+                         $firstIndex[$fields['ID']] = $fields['Parent'];
+                         unset ($customFields[$i]);
+                    }
+                    /* We didn't find the parent so we find the grandparent  */
+                    else if ( isset ( $firstIndex[$fields['Parent'] ] ) )
+                    {
+                         $second = $fields['Parent'];
+                         $first = $firstIndex [ $fields['Parent'] ] ;
+                         $id = $fields['ID'];
+
+                         $ordered[ $first ] [ $second ] [ $id ] ['field-info'] =  $fields;
+                         $secondIndex[$id] = $second;
+
+                         unset ($customFields[$i]);
+                    }
+                    /* We didn't find the grandparent so we look for the greatgrandad */
+                    else if ( isset ( $secondIndex[ $fields['Parent'] ] ) )
+                    {
+                         $id = $fields['ID'];
+                         $third = $fields['Parent'];
+                         $second = $secondIndex[ $fields['Parent'] ];
+                         $first = $firstIndex [ $second ] ;
+                         $ordered[ $first ] [ $second ] [ $third ] [ $id ] ['field-info'] =  $fields;
+                         $thirdIndex[$id] = $third;
+                         unset ($customFields[$i]);
+                    }
+                    else if ( isset ( $thirdIndex[ $fields['Parent'] ] ) )
+                    {
+                         $id = $fields['ID'];
+                         $fourth = $fields['Parent'];
+                         $third = $thirdIndex[ $fields['Parent'] ];
+                         $second = $secondIndex[ $third ];
+                         $first = $firstIndex[$second];
+                         $ordered[ $first ] [ $second ] [ $third ] [ $fourth ] [ $id ] ['field-info'] =  $fields;
+                         unset ($customFields[$i]);
+                    }
 
                }
-               else if ($value['Type'] == 'SubItem')
-               {
-                    $ordered['SubItem'][$value['Parent']][$i] = $value;
-               }
-
           }
+
+
 
           return ($ordered);
 
@@ -691,16 +720,21 @@ class RecipeCPTController extends BaseController
                /* empty array, nothing to add */
                return ;
           }
+
           /* We create the meta boxes based on the section name */
-
-
-          /* We use the section */
-          foreach ($this->ordered[$post_type]['Section'] as $i => $value)
+          foreach ( $this->ordered[$post_type] as $id => $fields )
           {
-
+               // [field-info] => Array
+               // (
+               //      [ID] => group
+               //      [Name] => Group
+               //      [Type] => Section
+               //      [Parent] => group
+               //      [Show_in_columns] =>
+               // )
                /* Author Name */
-               $id = $value['ID'];
-               $title = $value['Name'];
+               $id = $fields['field-info']['ID'];
+               $title = $fields['field-info']['Name'];
                $callback = array ( $this , 'render_features_box');
                $screen = $post_type;
                $context = 'normal';
@@ -708,167 +742,130 @@ class RecipeCPTController extends BaseController
                $callback_args = '';
 
                add_meta_box ( $id, $title, $callback, $screen, $context, $priority, $callback_args );
-               /* Author email */
-               /* approved [checkbox] */
-               /* featured [checkbox] */
+
+
           }
+
 
      }
      /* Creates the actual meta box that is previously added */
      public function render_features_box ( $post , $args)
      {
+
           /* Get the post type */
           $post_type = $post->post_type;
-
-
-          /* We look for the first array of items  */
-          if ( isset ( $this->ordered[$post_type]['SubSection'][$args['id']] ) )
-          {
-               $kids = $this->ordered[$post_type]['SubSection'][$args['id']];
-
-          }
-          else if ( isset ( $this->ordered[$post_type]['Item'][$args['id']] ) )
-          {
-               $kids = $this->ordered[$post_type]['Item'][$args['id']];
-
-
-          }
-          else if ( isset ( $this->ordered[$post_type]['SubItem'][$args['id']] ) )
-          {
-               $kids = $this->ordered[$post_type]['SubItem'][$args['id']];
-
-          }
-
-          /* We look for the second array of items  */
-          foreach ( $kids as $i => $value )
-          {
-               if ( isset ( $this->ordered[$post_type]['SubSection'][$value['ID']] ) )
-               {
-                    $grandkids[$i] = $this->ordered[$post_type]['SubSection'][$value['ID']];
-
-               }
-               else if ( isset ( $this->ordered[$post_type]['Item'][$value['ID']] ) )
-               {
-                    $grandkids[$i] = $this->ordered[$post_type]['Item'][$value['ID']];
-
-               }
-               else if ( isset ( $this->ordered[$post_type]['SubItem'][$value['ID']] ) )
-               {
-                    $grandkids[$i] = $this->ordered[$post_type]['SubItem'][$value['ID']];
-
-               }
-          }
-          if ( isset ( $grandkids ) )
-          {
-               foreach ( $grandkids as $i => $valueArray )
-               {
-                    foreach ($valueArray as $j => $value)
-                    {
-                         if ( isset ( $this->ordered[$post_type]['SubSection'][$value['ID']] ) )
-                         {
-                              $GreatGrandkids[$i][$j] = $this->ordered[$post_type]['SubSection'][$value['ID']];
-
-                         }
-                         else if ( isset ( $this->ordered[$post_type]['Item'][$value['ID']] ) )
-                         {
-                              $GreatGrandkids[$i][$j] = $this->ordered[$post_type]['Item'][$value['ID']];
-
-                         }
-                         else if ( isset ( $this->ordered[$post_type]['SubItem'][$value['ID']] ) )
-                         {
-                              $GreatGrandkids[$i][$j] = $this->ordered[$post_type]['SubItem'][$value['ID']];
-
-                         }
-                    }
-
-               }
-          }
-          if ( isset ( $GreatGrandkids ) )
-          {
-               foreach ( $GreatGrandkids as $i => $valueArrayArray )
-               {
-                    foreach ($valueArrayArray as $j => $valueArray)
-                    {
-                         foreach ($valueArray as $k => $value)
-                         {
-                              if ( isset ( $this->ordered[$post_type]['SubSection'][$value['ID']] ) )
-                              {
-                                   $SecondGreatGrandkids[$i][$j][$k] = $this->ordered[$post_type]['SubSection'][$value['ID']];
-
-                              }
-                              else if ( isset ( $this->ordered[$post_type]['Item'][$value['ID']] ) )
-                              {
-                                   $SecondGreatGrandkids[$i][$j][$k] = $this->ordered[$post_type]['Item'][$value['ID']];
-
-                              }
-                              else if ( isset ( $this->ordered[$post_type]['SubItem'][$value['ID']] ) )
-                              {
-                                   $SecondGreatGrandkids[$i][$j][$k] = $this->ordered[$post_type]['SubItem'][$value['ID']];
-
-                              }
-                         }
-                    }
-
-               }
-          }
-          /* We setup up the fields */
+          $id = $args['id'];
           /*  validate that the contents of the form request */
-          wp_nonce_field( 'mtk_' . $post_type . '_' . $args['id'] , 'mtk_' . $post_type . '_'.$args['id'].'_nonce' );
+          wp_nonce_field( 'mtk_' . $post_type . '_author' , 'mtk_' . $post_type . '_author_nonce' );
           /* Get the data */
-          $data  = get_post_meta ( $post->ID , '_mtk_' . $post_type . '_key_' . $args['id'] , true );
-          echo ('_mtk_' . $post_type . '_key_' . $args['id']);
+          $data  = get_post_meta ( $post->ID , '_mtk_' . $post_type . '_key' , true );
+          /* what fields are we going tu use */
 
-          /* kids fields */
-          if ( isset ( $kids ) )
+          $fields = $this->ordered[$post_type][$id];
+          /* First Level */
+          foreach ($fields as $key => $value)
           {
-               foreach ($kids as $key => $value)
+               /* Ignore the first Field Info, we have already used id for the box*/
+               if ($key != 'field-info')
                {
-                    echo ('<br>827 - kids - <pre>');
-                    print_r ($value);
-                    echo ('</pre>');
-                    if ($value['Type'] == 'SubSection')
+                    if ( count ( $value ) == 1 )
                     {
-                         echo ('SubSection - Adding Items <br>');
-                         /*Add item */
-                         if ( isset ( $grandkids[$key] ) )
+
+                         /* if the count is 1 means that this is the last of the level  */
+                         if ( isset ( $value['field-info'] ) )
                          {
-                              foreach ($grandkids[$key] as $subkey => $subvalue)
+
+                              /* the type is Section*/
+                              if ( $value['field-info']['Type'] == 'Section' )
                               {
-                                   echo ('<br>838 - grandkids - <pre>');
-                                   print_r ($subvalue);
-                                   echo ('</pre>');
+                                   $this->SetSectionsFields ( $post_type , $value , $id , $data);
                               }
-                         }
-                    }
-                    else if ($value['Type'] == 'Item')
-                    {
-                         echo ('846 - Items - Adding SubItems <br>');
-                         /*Add SubItem */
-                         if ( isset ( $grandkids[$key] ) )
-                         {
-                              foreach ($grandkids[$key] as $subkey => $subvalue)
+                              /* the type is SubSection*/
+                              else if ( $value['field-info']['Type'] == 'SubSection' )
                               {
-                                   echo ('<br>852 - grandkids - <pre>');
-                                   print_r ($subvalue);
-                                   echo ('</pre>');
+                                   $this->SetSubSectionFields ( $post_type , $value , $id , $data);
+                              }
+                              else if ( $value['field-info']['Type'] == 'Item' )
+                              {
+                                   $this->SetItemFields ( $post_type , $value , $id , $data);
+                              }
+                              else if ( $value['field-info']['Type'] == 'SubItem' )
+                              {
+                                   $this->SetSubItemFields ( $post_type , $value , $id , $data);
                               }
 
                          }
+
                     }
-                    else if ($value['Type'] == 'SubItem')
+                    else
                     {
-                         echo ('add a SubItem<br>');
                     }
                }
           }
+     }
+     /* We create the fields depending on the field type */
+     public function SetSectionsFields ( $post_type , $value , $id , $data)
+     {
+          // error_log (__FUNCTION__ . ' - ' . __LINE__);
+          // error_log ( print_r ( $values , true ) );
+          // error_log ('----------------------------');
+     }
+     public function SetSubSectionFields ( $post_type , $value , $id , $data)
+     {
+          // error_log (__FUNCTION__ . ' - ' . __LINE__);
+          // error_log ( print_r ( $values , true ) );
+          // error_log ('----------------------------');
+     }
+     public function SetItemFields ( $post_type , $value , $id , $data)
+     {
 
+          /* we see if we have SubItems */
+          if ( count ( $value ) == 1 )
+          {
+               if ( isset ( $value['field-info'] ) )
+               {
+                    // [ID] => recipe_image
+                    // [Name] => Image
+                    // [Type] => Item
+                    // [Parent] => general
+                    // [Show_in_columns] =>
+                    /* Add the gerarchy */
+                    $fieldName = 'mtk_' . $post_type . '_featured';
+                    if ( is_array ( $id ) )
+                    {
+                         foreach ($id as $key => $value)
+                         {
+                              $fieldName .= '['.$value.']';
+                         }
+                    }
+                    else
+                    {
+                         $fieldName .= '['.$id.']';
+                    }
+                    error_log (__FUNCTION__ . ' - ' . __LINE__);
+                    error_log ( print_r ( $fieldName , true ) );
+                    error_log ('----------------------------');
+                    /* add the id of this field */
+                    $fieldName .= '['.$value['field-info']['ID'].']';
+                    echo (__FUNCTION__ . ' - ' . __LINE__);
 
+               }
+          }
+          else
+          {
+
+          }
+     }
+     public function SetSubItemFields ( $post_type , $value , $id , $data)
+     {
+          // error_log (__FUNCTION__ . ' - ' . __LINE__);
+          // error_log ( print_r ( $values , true ) );
+          // error_log ('----------------------------');
 
      }
      /* Saves the data we have added to the Meta box */
      public function save_meta_box( $post_id, $post, $update )
      {
-          // error_log('$_POST');
           if (isset ( $_POST['post_type'] ))
           {
                $post_type = $_POST['post_type'];
@@ -881,9 +878,7 @@ class RecipeCPTController extends BaseController
           if ( ! ( isset ( $_POST['mtk_'.$post_type.'_author_nonce'] ) ) )
           {
                /* If the another post is saved, not the testimonial type then we just return the post id*/
-               // error_log (__FUNCTION__ . ' - ' . __LINE__);
-               // error_log(print_r(debug_backtrace(), true));
-               // error_log ('----------------------------');
+
                return ( $post_id );
           }
           /* then wer stoe our extra variables */
@@ -924,10 +919,6 @@ class RecipeCPTController extends BaseController
           /* We are going to rearrange the information */
           foreach ($this->customFields[$post_type] as $i => $fieldInfo)
           {
-               // error_log('columns Array: ');
-               // error_log(print_r($columns, true));
-               // error_log('--------------------------------');
-
                $columns[$fieldInfo['ID']] = $fieldInfo['Name'];
           }
           return ( $columns );
