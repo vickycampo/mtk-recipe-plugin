@@ -204,6 +204,10 @@ window.addEventListener ( "load" , function ()
           inputElement += '<select id="Parent_' + index + '" class="regular-text customFields_input customFields_Parent_select" name="mtk_plugin_cpt[customFields][' + index + '][Parent]" >';
           inputElement += '<option value="">Choose Parent</option>';
           inputElement += '</select>';
+
+          /* Column show checkbox */
+          inputElement += '<input type="checkbox" id="Show_in_columns_' + index + '" class="regular-text customFields_input customFields_Show_in_columns_select" name="mtk_plugin_cpt[customFields][' + index + '][Show_in_columns]" value="true">;
+
           /* add the add and remove buttons */
           inputElement += '<span class="dashicons dashicons-plus-alt add-substract-button customFields_addButton" id="add_' + index + '" ></span>';
           inputElement += '<span class="dashicons dashicons-dismiss add-substract-button customFields_removeButton" id="remove_' + index + '"></span>';
@@ -249,7 +253,7 @@ window.addEventListener ( "load" , function ()
           for (var i = 0; i < customFields_ID_input.length; i++ )
           {
                //console.log (customFields_Type_select[i].value);
-               if ( (customFields_Type_select[i].value === 'Section') || (customFields_Type_select[i].value === 'SubSection') )
+               if ( (customFields_Type_select[i].value === 'Section') || (customFields_Type_select[i].value === 'SubSection') || (customFields_Type_select[i].value === 'Item') )
                {
                     optionText += '<option value="' + customFields_ID_input[i].value + '">' + customFields_Name_input[i].value + '</option>';
                }

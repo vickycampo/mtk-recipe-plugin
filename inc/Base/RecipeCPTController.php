@@ -26,6 +26,7 @@ class RecipeCPTController extends BaseController
      public $subpages = array();
      public $custom_post_types = array();
      public $customFields = array ();
+     public $ordered;
      public $current_post_type;
 
 
@@ -58,6 +59,12 @@ class RecipeCPTController extends BaseController
           if ( ! empty ( $this->custom_post_types ))
           {
                add_action ( 'init' , array ( $this , 'registerCustomPostTypes') );
+          }
+
+          /* Manage CPT columns */
+          if ( isset ( $this->customFields ) )
+          {
+               $this->manage_cpt_columns (  );
           }
 
 
@@ -225,7 +232,9 @@ class RecipeCPTController extends BaseController
                               'ID' => 'author_name',
                               'Name' => 'Author Name',
                               'Type' => 'text',
-                              'Parent' =>'parent_field' ),
+                              'Parent' =>'parent_field',
+                              'Show_in_columns' => false
+                         ),
 					'array' => 'post_type'
                     )
                ),
@@ -391,12 +400,7 @@ class RecipeCPTController extends BaseController
                     $this->getColumns ( $option['post_type'] , $option['customFields'] );
                }
           }
-          /* Manage CPT columns */
-          if ( isset ( $this->customFields ) )
-          {
 
-               $this->manage_cpt_columns (  );
-          }
 
 
 	}
@@ -404,7 +408,6 @@ class RecipeCPTController extends BaseController
      {
           if ( ! ( isset ( $this->custom_post_types['default_recipe'] ) ) )
           {
-
                /* We don't have a default post type yet so we need to register it */
                $input['post_type'] = 'default_recipe';
                $input['singular_name'] = 'Recipe';
@@ -413,89 +416,182 @@ class RecipeCPTController extends BaseController
                $input['public'] = 1;
                $input['has_archive'] = 1;
 
+               /* General Section */
                $i = 0;
                $input['customFields'][$i]['ID'] = 'general';
-               $input['customFields'][$i]['Name'] = 'General';
+               $input['customFields'][$i]['Name'] = 'Recipe';
                $input['customFields'][$i]['Type'] = 'Section';
                $input['customFields'][$i]['Parent'] = 'general';
+               $input['customFields'][$i]['Show_in_columns'] = false;
 
-               $i++;
-               $input['customFields'][$i]['ID'] = 'recipe_title';
-               $input['customFields'][$i]['Name'] = 'Title';
-               $input['customFields'][$i]['Type'] = 'Item';
-               $input['customFields'][$i]['Parent'] = 'general';
 
-               $i++;
-               $input['customFields'][$i]['ID'] = 'recipe_image';
-               $input['customFields'][$i]['Name'] = 'Image';
-               $input['customFields'][$i]['Type'] = 'Item';
-               $input['customFields'][$i]['Parent'] = 'general';
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_title';
+                    $input['customFields'][$i]['Name'] = 'Title';
+                    $input['customFields'][$i]['Type'] = 'Item';
+                    $input['customFields'][$i]['Parent'] = 'general';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
 
-               $i++;
-               $input['customFields'][$i]['ID'] = 'recipe_description';
-               $input['customFields'][$i]['Name'] = 'Description';
-               $input['customFields'][$i]['Type'] = 'Item';
-               $input['customFields'][$i]['Parent'] = 'general';
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_image';
+                    $input['customFields'][$i]['Name'] = 'Image';
+                    $input['customFields'][$i]['Type'] = 'Item';
+                    $input['customFields'][$i]['Parent'] = 'general';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
 
-               $i++;
-               $input['customFields'][$i]['ID'] = 'recipe_servings';
-               $input['customFields'][$i]['Name'] = 'Servings';
-               $input['customFields'][$i]['Type'] = 'Item';
-               $input['customFields'][$i]['Parent'] = 'general';
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_description';
+                    $input['customFields'][$i]['Name'] = 'Description';
+                    $input['customFields'][$i]['Type'] = 'Item';
+                    $input['customFields'][$i]['Parent'] = 'general';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
 
-               $i++;
-               $input['customFields'][$i]['ID'] = 'recipe_prep_time';
-               $input['customFields'][$i]['Name'] = 'Prep Time';
-               $input['customFields'][$i]['Type'] = 'Item';
-               $input['customFields'][$i]['Parent'] = 'general';
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_servings';
+                    $input['customFields'][$i]['Name'] = 'Servings';
+                    $input['customFields'][$i]['Type'] = 'Item';
+                    $input['customFields'][$i]['Parent'] = 'general';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
 
-               $i++;
-               $input['customFields'][$i]['ID'] = 'recipe_cook_time';
-               $input['customFields'][$i]['Name'] = 'Cook Time';
-               $input['customFields'][$i]['Type'] = 'Item';
-               $input['customFields'][$i]['Parent'] = 'general';
+                    /* Cooking Time */
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_times';
+                    $input['customFields'][$i]['Name'] = 'Prep Time';
+                    $input['customFields'][$i]['Type'] = 'Item';
+                    $input['customFields'][$i]['Parent'] = 'general';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
 
-               $i++;
-               $input['customFields'][$i]['ID'] = 'recipe_passive_time';
-               $input['customFields'][$i]['Name'] = 'Passive Time';
-               $input['customFields'][$i]['Type'] = 'Item';
-               $input['customFields'][$i]['Parent'] = 'general';
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_prep_time';
+                    $input['customFields'][$i]['Name'] = 'Prep Time';
+                    $input['customFields'][$i]['Type'] = 'Item';
+                    $input['customFields'][$i]['Parent'] = 'recipe_times';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
 
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_cook_time';
+                    $input['customFields'][$i]['Name'] = 'Cook Time';
+                    $input['customFields'][$i]['Type'] = 'Item';
+                    $input['customFields'][$i]['Parent'] = 'recipe_times';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
+
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_passive_time';
+                    $input['customFields'][$i]['Name'] = 'Passive Time';
+                    $input['customFields'][$i]['Type'] = 'Item';
+                    $input['customFields'][$i]['Parent'] = 'recipe_times';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
+
+               /* Group Section */
                $i++;
                $input['customFields'][$i]['ID'] = 'group';
                $input['customFields'][$i]['Name'] = 'Group';
                $input['customFields'][$i]['Type'] = 'Section';
                $input['customFields'][$i]['Parent'] = 'group';
+               $input['customFields'][$i]['Show_in_columns'] = false;
 
-               $i++;
-               $input['customFields'][$i]['ID'] = 'recipe_ingredients';
-               $input['customFields'][$i]['Name'] = 'Ingredients';
-               $input['customFields'][$i]['Type'] = 'SubSection';
-               $input['customFields'][$i]['Parent'] = 'group';
+                    /* Ingredients Section */
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_ingredients';
+                    $input['customFields'][$i]['Name'] = 'Ingredients';
+                    $input['customFields'][$i]['Type'] = 'SubSection';
+                    $input['customFields'][$i]['Parent'] = 'group';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
 
-               $i++;
-               $input['customFields'][$i]['ID'] = 'recipe_instructions';
-               $input['customFields'][$i]['Name'] = 'Instructions';
-               $input['customFields'][$i]['Type'] = 'SubSection';
-               $input['customFields'][$i]['Parent'] = 'group';
+                         /* Single Ingredient Section */
+                         $i++;
+                         $input['customFields'][$i]['ID'] = 'recipe_ingredient_item';
+                         $input['customFields'][$i]['Name'] = 'Ingredient';
+                         $input['customFields'][$i]['Type'] = 'Item';
+                         $input['customFields'][$i]['Parent'] = 'recipe_ingredients';
+                         $input['customFields'][$i]['Show_in_columns'] = false;
 
+                              $i++;
+                              $input['customFields'][$i]['ID'] = 'recipe_ingredient_quantity';
+                              $input['customFields'][$i]['Name'] = 'Quantity';
+                              $input['customFields'][$i]['Type'] = 'SubItem';
+                              $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
+                              $input['customFields'][$i]['Show_in_columns'] = false;
+
+                              $i++;
+                              $input['customFields'][$i]['ID'] = 'recipe_ingredient_unit';
+                              $input['customFields'][$i]['Name'] = 'Unit';
+                              $input['customFields'][$i]['Type'] = 'SubItem';
+                              $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
+                              $input['customFields'][$i]['Show_in_columns'] = false;
+
+                              $i++;
+                              $input['customFields'][$i]['ID'] = 'recipe_ingredient_name';
+                              $input['customFields'][$i]['Name'] = 'Ingredient Name';
+                              $input['customFields'][$i]['Type'] = 'SubItem';
+                              $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
+                              $input['customFields'][$i]['Show_in_columns'] = false;
+
+                              $i++;
+                              $input['customFields'][$i]['ID'] = 'recipe_ingredient_notes';
+                              $input['customFields'][$i]['Name'] = 'Notes';
+                              $input['customFields'][$i]['Type'] = 'SubItem';
+                              $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
+                              $input['customFields'][$i]['Show_in_columns'] = false;
+
+                    /* Instructions Section */
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_instructions';
+                    $input['customFields'][$i]['Name'] = 'Instructions';
+                    $input['customFields'][$i]['Type'] = 'SubSection';
+                    $input['customFields'][$i]['Parent'] = 'group';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
+
+                    /* Step Section */
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_Instruction';
+                    $input['customFields'][$i]['Name'] = 'Notes';
+                    $input['customFields'][$i]['Type'] = 'Item';
+                    $input['customFields'][$i]['Parent'] = 'recipe_instructions';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
+
+                         $i++;
+                         $input['customFields'][$i]['ID'] = 'recipe_step_number';
+                         $input['customFields'][$i]['Name'] = 'Step Number';
+                         $input['customFields'][$i]['Type'] = 'SubItem';
+                         $input['customFields'][$i]['Parent'] = 'recipe_instructions';
+                         $input['customFields'][$i]['Show_in_columns'] = false;
+
+                         $i++;
+                         $input['customFields'][$i]['ID'] = 'recipe_step_instruction';
+                         $input['customFields'][$i]['Name'] = 'Instruction';
+                         $input['customFields'][$i]['Type'] = 'SubItem';
+                         $input['customFields'][$i]['Parent'] = 'recipe_instructions';
+                         $input['customFields'][$i]['Show_in_columns'] = false;
+
+                         $i++;
+                         $input['customFields'][$i]['ID'] = 'recipe_step_image';
+                         $input['customFields'][$i]['Name'] = 'Image';
+                         $input['customFields'][$i]['Type'] = 'SubItem';
+                         $input['customFields'][$i]['Parent'] = 'recipe_instructions';
+                         $input['customFields'][$i]['Show_in_columns'] = false;
+
+               /* Extras Section */
                $i++;
                $input['customFields'][$i]['ID'] = 'recipe_extras';
                $input['customFields'][$i]['Name'] = 'Extra Information';
                $input['customFields'][$i]['Type'] = 'Section';
                $input['customFields'][$i]['Parent'] = 'recipe_extras';
+               $input['customFields'][$i]['Show_in_columns'] = false;
 
-               $i++;
-               $input['customFields'][$i]['ID'] = 'recipe_notes';
-               $input['customFields'][$i]['Name'] = 'Recipe notes';
-               $input['customFields'][$i]['Type'] = 'Item';
-               $input['customFields'][$i]['Parent'] = 'recipe_extras';
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_notes';
+                    $input['customFields'][$i]['Name'] = 'Recipe notes';
+                    $input['customFields'][$i]['Type'] = 'SubItem';
+                    $input['customFields'][$i]['Parent'] = 'recipe_extras';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
 
-               $i++;
-               $input['customFields'][$i]['ID'] = 'recipe_video';
-               $input['customFields'][$i]['Name'] = 'Recipe Video';
-               $input['customFields'][$i]['Type'] = 'Item';
-               $input['customFields'][$i]['Parent'] = 'recipe_extras';
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_video';
+                    $input['customFields'][$i]['Name'] = 'Recipe Video';
+                    $input['customFields'][$i]['Type'] = 'SubItem';
+                    $input['customFields'][$i]['Parent'] = 'recipe_extras';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
 
 
 
@@ -525,6 +621,7 @@ class RecipeCPTController extends BaseController
      {
 
 
+
           /* Add metabox */
           add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
           /* Save new fields of the meta boxes */
@@ -532,7 +629,12 @@ class RecipeCPTController extends BaseController
 
           foreach ( $this->customFields as $post_type => $customFields )
           {
+               error_log ('estamos trabajando en las custom fields / columns');
+               error_log ('1. ordenamos los datos que tenemos en el array ');
+
+               $this->ordered[$post_type] = $this->orderCustomcolumns ( $customFields );
                $this->current_post_type = $post_type;
+
                /* Edit the custom columns of the custom post type */
                add_action ( 'manage_' . $post_type . '_posts_columns' , array ( $this , 'set_custom_column' ) );
                /* We are going to hook the custom columns with the information */
@@ -543,75 +645,225 @@ class RecipeCPTController extends BaseController
 
 
      }
+     /* order custom columns array */
+     public function orderCustomcolumns ( $customFields )
+     {
+
+          foreach ($customFields as $i => $value)
+          {
+
+               // [ID] => general
+               // [Name] => General
+               // [Type] => Section
+               // [Parent] => general
+               // [Show_in_columns] => true
+
+               //get the sections
+               if ($value['Type'] == 'Section')
+               {
+                    $ordered['Section'][$i] = $value;
+               }
+               else if ($value['Type'] == 'SubSection')
+               {
+                    $ordered['SubSection'][$value['Parent']][$i] = $value;
+               }
+               else if ($value['Type'] == 'Item')
+               {
+                    $ordered['Item'][$value['Parent']][$i] = $value;
+
+               }
+               else if ($value['Type'] == 'SubItem')
+               {
+                    $ordered['SubItem'][$value['Parent']][$i] = $value;
+               }
+
+          }
+
+          return ($ordered);
+
+
+     }
      /* Adds the meta boxes */
      public function add_meta_boxes( $post_type )
      {
-          /* Get the post type information to set in the meta box */
-          //var_dump ( $post_type );
-          if ( ! isset ( $this->custom_post_types[$post_type] ) )
+          /* Check if we have columns */
+          if ( ! isset ( $this->ordered[$post_type] ) )
           {
+               /* empty array, nothing to add */
                return ;
           }
-          $singular_name = $this->custom_post_types[$post_type]['singular_name'];
-          /* Author Name */
-          $id = $post_type . '_options';
-          $title = $singular_name . ' Options';
-          $callback = array ( $this , 'render_features_box');
-          $screen = $post_type;
-          $context = 'side';
-          $priority = 'high';
-          $callback_args = '';
+          /* We create the meta boxes based on the section name */
 
-          add_meta_box ( $id, $title, $callback, $screen, $context, $priority, $callback_args );
-          /* Author email */
-          /* approved [checkbox] */
-          /* featured [checkbox] */
+
+          /* We use the section */
+          foreach ($this->ordered[$post_type]['Section'] as $i => $value)
+          {
+
+               /* Author Name */
+               $id = $value['ID'];
+               $title = $value['Name'];
+               $callback = array ( $this , 'render_features_box');
+               $screen = $post_type;
+               $context = 'normal';
+               $priority = 'default';
+               $callback_args = '';
+
+               add_meta_box ( $id, $title, $callback, $screen, $context, $priority, $callback_args );
+               /* Author email */
+               /* approved [checkbox] */
+               /* featured [checkbox] */
+          }
+
      }
      /* Creates the actual meta box that is previously added */
-     public function render_features_box ( $post )
+     public function render_features_box ( $post , $args)
      {
-
-          echo ('434 adding the post type');
+          /* Get the post type */
           $post_type = $post->post_type;
-          /*  validate that the contents of the form request */
-          wp_nonce_field( 'mtk_' . $post_type . '_author' , 'mtk_' . $post_type . '_author_nonce' );
 
-          /* Get the data */
-          $data  = get_post_meta ( $post->ID , '_mtk_' . $post_type . '_key' , true );
-          // error_log('render_features_box - data Array: ');
-          // error_log(print_r($data, true));
-          // error_log('--------------------------------------------');
-          /* Create the variables where we are going to sort the information */
-          if ( isset ( $this->customFields[$post_type] ) )
+
+          /* We look for the first array of items  */
+          if ( isset ( $this->ordered[$post_type]['SubSection'][$args['id']] ) )
           {
-               $cf = $this->customFields[$post_type];
-               foreach ( $cf as $i => $fieldInfo )
+               $kids = $this->ordered[$post_type]['SubSection'][$args['id']];
+
+          }
+          else if ( isset ( $this->ordered[$post_type]['Item'][$args['id']] ) )
+          {
+               $kids = $this->ordered[$post_type]['Item'][$args['id']];
+
+
+          }
+          else if ( isset ( $this->ordered[$post_type]['SubItem'][$args['id']] ) )
+          {
+               $kids = $this->ordered[$post_type]['SubItem'][$args['id']];
+
+          }
+
+          /* We look for the second array of items  */
+          foreach ( $kids as $i => $value )
+          {
+               if ( isset ( $this->ordered[$post_type]['SubSection'][$value['ID']] ) )
                {
-                    /* We don't add the fields in the meta box that are only modification of the current fields */
-                    if (( $fieldInfo['ID'] == 'title' ) || ( $fieldInfo['ID'] == 'categories' )  || ( $fieldInfo['ID'] == 'tags' ) )
-                    {
-                         /* Since we are using the title */
-                    }
-                    else
-                    {
-                         $ID = $fieldInfo['ID'];
-                         $Name = $fieldInfo['Name'];
-                         $Type = $fieldInfo['Type'];
-                         $Parent = $fieldInfo['Parent'];
+                    $grandkids[$i] = $this->ordered[$post_type]['SubSection'][$value['ID']];
 
-                         $value = isset($data[$ID]) ? $data[$ID] : '';
-                         $field_name = 'mtk_' . $post_type . '_' .$ID;
-                         ?>
-                         <div class="meta-container">
-                              <label class="meta-label" for="<?php echo ( $field_name );?>"><?php echo ( $Name );?></label>
-                              <input type="<?php echo ( $Type );?>" id="<?php echo ( $field_name );?>" name="<?php echo ( $field_name );?>" value="<?php echo ( esc_attr( $value ) ); ?>">
-               		</div>
-                         <?php
-                    }
+               }
+               else if ( isset ( $this->ordered[$post_type]['Item'][$value['ID']] ) )
+               {
+                    $grandkids[$i] = $this->ordered[$post_type]['Item'][$value['ID']];
 
+               }
+               else if ( isset ( $this->ordered[$post_type]['SubItem'][$value['ID']] ) )
+               {
+                    $grandkids[$i] = $this->ordered[$post_type]['SubItem'][$value['ID']];
 
                }
           }
+          if ( isset ( $grandkids ) )
+          {
+               foreach ( $grandkids as $i => $valueArray )
+               {
+                    foreach ($valueArray as $j => $value)
+                    {
+                         if ( isset ( $this->ordered[$post_type]['SubSection'][$value['ID']] ) )
+                         {
+                              $GreatGrandkids[$i][$j] = $this->ordered[$post_type]['SubSection'][$value['ID']];
+
+                         }
+                         else if ( isset ( $this->ordered[$post_type]['Item'][$value['ID']] ) )
+                         {
+                              $GreatGrandkids[$i][$j] = $this->ordered[$post_type]['Item'][$value['ID']];
+
+                         }
+                         else if ( isset ( $this->ordered[$post_type]['SubItem'][$value['ID']] ) )
+                         {
+                              $GreatGrandkids[$i][$j] = $this->ordered[$post_type]['SubItem'][$value['ID']];
+
+                         }
+                    }
+
+               }
+          }
+          if ( isset ( $GreatGrandkids ) )
+          {
+               foreach ( $GreatGrandkids as $i => $valueArrayArray )
+               {
+                    foreach ($valueArrayArray as $j => $valueArray)
+                    {
+                         foreach ($valueArray as $k => $value)
+                         {
+                              if ( isset ( $this->ordered[$post_type]['SubSection'][$value['ID']] ) )
+                              {
+                                   $SecondGreatGrandkids[$i][$j][$k] = $this->ordered[$post_type]['SubSection'][$value['ID']];
+
+                              }
+                              else if ( isset ( $this->ordered[$post_type]['Item'][$value['ID']] ) )
+                              {
+                                   $SecondGreatGrandkids[$i][$j][$k] = $this->ordered[$post_type]['Item'][$value['ID']];
+
+                              }
+                              else if ( isset ( $this->ordered[$post_type]['SubItem'][$value['ID']] ) )
+                              {
+                                   $SecondGreatGrandkids[$i][$j][$k] = $this->ordered[$post_type]['SubItem'][$value['ID']];
+
+                              }
+                         }
+                    }
+
+               }
+          }
+          /* We setup up the fields */
+          /*  validate that the contents of the form request */
+          wp_nonce_field( 'mtk_' . $post_type . '_' . $args['id'] , 'mtk_' . $post_type . '_'.$args['id'].'_nonce' );
+          /* Get the data */
+          $data  = get_post_meta ( $post->ID , '_mtk_' . $post_type . '_key_' . $args['id'] , true );
+          echo ('_mtk_' . $post_type . '_key_' . $args['id']);
+
+          /* kids fields */
+          if ( isset ( $kids ) )
+          {
+               foreach ($kids as $key => $value)
+               {
+                    echo ('<br>827 - kids - <pre>');
+                    print_r ($value);
+                    echo ('</pre>');
+                    if ($value['Type'] == 'SubSection')
+                    {
+                         echo ('SubSection - Adding Items <br>');
+                         /*Add item */
+                         if ( isset ( $grandkids[$key] ) )
+                         {
+                              foreach ($grandkids[$key] as $subkey => $subvalue)
+                              {
+                                   echo ('<br>838 - grandkids - <pre>');
+                                   print_r ($subvalue);
+                                   echo ('</pre>');
+                              }
+                         }
+                    }
+                    else if ($value['Type'] == 'Item')
+                    {
+                         echo ('846 - Items - Adding SubItems <br>');
+                         /*Add SubItem */
+                         if ( isset ( $grandkids[$key] ) )
+                         {
+                              foreach ($grandkids[$key] as $subkey => $subvalue)
+                              {
+                                   echo ('<br>852 - grandkids - <pre>');
+                                   print_r ($subvalue);
+                                   echo ('</pre>');
+                              }
+
+                         }
+                    }
+                    else if ($value['Type'] == 'SubItem')
+                    {
+                         echo ('add a SubItem<br>');
+                    }
+               }
+          }
+
+
 
      }
      /* Saves the data we have added to the Meta box */

@@ -28,7 +28,7 @@ class CptCallbacks
                $this->inputArray[] = 'Section';
                $this->inputArray[] = 'SubSection';
                $this->inputArray[] = 'Item';
-               $this->inputArray[] = 'Subitem';
+               $this->inputArray[] = 'SubItem';
      }
      public function cptSanitize ( $input )
      {
@@ -63,7 +63,7 @@ class CptCallbacks
           }
           /* Sabe the Custom Fields */
           // error_log('input');
-          error_log(print_r($input, true));
+          //error_log(print_r($input, true));
           // var_dump( $output );
           return ( $output );
      }
@@ -237,7 +237,7 @@ class CptCallbacks
                //error_log ( print_r ( $customFields , true) );
                foreach ($customFields as $i => $field)
                {
-                    if ($field['Type'] == 'Section')
+                    if ( ( $field['Type'] == 'Section' ) || ( $field['Type'] == 'SubSection' )  || ( $field['Type'] == 'Item' ) )
                     {
                          $parent_options[$field['ID']] = $field['Name'];
                     }
@@ -331,6 +331,14 @@ class CptCallbacks
                                         ?></select><?php
                               }
 
+                         }
+                         else if ( $fieldType === 'Show_in_columns' )
+                         {
+                              /* checked? */
+                              $checked =  $fieldText ? 'checked': '';
+                              ?>
+                              <input type="checkbox" id="<?php echo ($fieldType);?>_<?php echo ($i);?>" class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_select" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" value="true" <?php echo ($checked);?> >
+                              <?php
                          }
                          else
                          {
