@@ -206,7 +206,11 @@ window.addEventListener ( "load" , function ()
           inputElement += '</select>';
 
           /* Column show checkbox */
-          inputElement += '<input type="checkbox" id="Show_in_columns_' + index + '" class="regular-text customFields_input customFields_Show_in_columns_select" name="mtk_plugin_cpt[customFields][' + index + '][Show_in_columns]" value="true">;
+          inputElement += '<input type="checkbox" id="Show_in_columns_';
+          inputElement += index;
+          inputElement += '" class="regular-text customFields_input customFields_Show_in_columns_select" name="mtk_plugin_cpt[customFields][';
+          inputElement += index;
+          inputElement += '][Show_in_columns]" value="true">';
 
           /* add the add and remove buttons */
           inputElement += '<span class="dashicons dashicons-plus-alt add-substract-button customFields_addButton" id="add_' + index + '" ></span>';

@@ -142,7 +142,6 @@ class RecipeCPTController extends BaseController
                          'label_for' => 'singular_name',
                          'placeholder' => 'eg. Product',
 					'array' => 'post_type'
-
                     )
                ),
                // Plural name

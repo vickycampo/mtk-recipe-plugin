@@ -253,9 +253,11 @@ class CptCallbacks
           /* We add a note that if we use the same ids as the existing ones we can override them */
           ?>
           <div class="<?php echo ($name);?>_container">
-               <small>
-                    You can override any previous fields by using the same identifiers: title / categories / tags
-               </small>
+               <span class="customFields_input">Field ID</span>
+               <span class="customFields_input">Field Name</span>
+               <span class="customFields_input">Type</span>
+               <span class="customFields_input">Parent Field</span>
+               <span class="customFields_input">Show in columns</span>
 
                <?php
                foreach ($customFields as $i => $field)
