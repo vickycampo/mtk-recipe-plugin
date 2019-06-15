@@ -63,6 +63,7 @@ $('.customFields_container').ready(function()
      var optionsArray = new Array;
      /* We create an array with all the values from a previous field */
      optionsArray = createInputArray();
+     Fields = createFieldList ();
      //   --------------------------------------------------
      //        FIX THE TITLES WITH BASED ON THE FIELDS WIDTH
      //   --------------------------------------------------
@@ -106,91 +107,140 @@ $('.customFields_container').ready(function()
           }
      }
      //   --------------------------------------------------
+     //        CREATES THE LIST OF THE FIELDS WE ARE GOING TO ADD
+     //   --------------------------------------------------
+     function createFieldList ()
+     {
+          var FieldsLIst = new Array ();
+          FieldsLIst['ID'] = new Array ();
+          FieldsLIst['ID']['placeholder'] = 'author_name';
+          FieldsLIst['ID']['type'] = 'text';
+
+          FieldsLIst['Name'] = new Array ();
+          FieldsLIst['Name']['placeholder'] = 'Author Name';
+          FieldsLIst['Name']['type'] = 'text';
+
+          FieldsLIst['Type'] = new Array ();
+          FieldsLIst['Type']['placeholder'] = '';
+          FieldsLIst['Type']['type'] = 'select';
+
+          FieldsLIst['Parent'] = new Array ();
+          FieldsLIst['Parent']['placeholder'] = 'parent_field';
+          FieldsLIst['Parent']['type'] = 'select';
+
+          FieldsLIst['Show_in_columns'] = new Array ();
+          FieldsLIst['Show_in_columns']['placeholder'] = false;
+          FieldsLIst['Show_in_columns']['type'] = 'checkbox';
+
+          FieldsLIst['add_remove_buttons'] = new Array ();
+          FieldsLIst['add_remove_buttons']['placeholder'] = false;
+          FieldsLIst['add_remove_buttons']['type'] = 'checkbox';
+
+          FieldsLIst['add'] = new Array ();
+          FieldsLIst['add']['class'] = 'dashicons dashicons-plus-alt add-substract-button customFields_addButton';
+          FieldsLIst['add']['type'] = 'button';
+
+          FieldsLIst['remove'] = new Array ();
+          FieldsLIst['remove']['placeholder'] = false;
+          FieldsLIst['remove']['class'] = 'dashicons dashicons-dismiss add-substract-button customFields_removeButton';
+          FieldsLIst['remove']['type'] = 'button';
+
+
+
+
+          return (FieldsLIst);
+     }
+
+     //   --------------------------------------------------
      //        CREATES THE LIST FOR THE TYPE SELECT
      //   --------------------------------------------------
      function createInputArray()
      {
           /* we look for a previous created select */
-          var options = document.querySelector('.customFields_Type_select').options;
-          if ( options )
+          if ( document.querySelector('.customFields_Type_select') )
           {
-               /* Convert to an array  */
-               var inputArrayValues = new Array;
-               var j=0;
-               for ( var i in options)
+               var options = document.querySelector('.customFields_Type_select').options;
+               if ( options )
                {
-                    if ( ( options[i].value ) && ( options[i].value != '') )
+                    /* Convert to an array  */
+                    var inputArrayValues = new Array;
+                    var j=0;
+                    for ( var i in options)
                     {
-                         //console.log (options[i]);
-                         inputArrayValues[j] = options[i].value;
-                         j++;
+                         if ( ( options[i].value ) && ( options[i].value != '') )
+                         {
+                              //console.log (options[i]);
+                              inputArrayValues[j] = options[i].value;
+                              j++;
+                         }
+
+
                     }
 
-
+                    return (inputArrayValues);
                }
+               else
+               {
+                    /* if we can't find one we use the default values */
+                    /* add the select */
+                    /* We create an array with all the select values */
+                    /* We get the values from a predefined select */
 
-               return (inputArrayValues);
+                    var inputArrayValues = new Array;
+                    var i = 0;
+
+                    inputArrayValues[i] = 'button';
+                    i++;
+                    inputArrayValues[i] = 'checkbox';
+                    i++;
+                    inputArrayValues[i] = 'button';
+                    i++;
+                    inputArrayValues[i] = 'checkbox';
+                    i++;
+                    inputArrayValues[i] = 'color';
+                    i++;
+                    inputArrayValues[i] = 'date';
+                    i++;
+                    inputArrayValues[i] = 'datetime-local';
+                    i++;
+                    inputArrayValues[i] = 'email';
+                    i++;
+                    inputArrayValues[i] = 'file';
+                    i++;
+                    inputArrayValues[i] = 'hidden';
+                    i++;
+                    inputArrayValues[i] = 'image';
+                    i++;
+                    inputArrayValues[i] = 'month';
+                    i++;
+                    inputArrayValues[i] = 'number';
+                    i++;
+                    inputArrayValues[i] = 'password';
+                    i++;
+                    inputArrayValues[i] = 'radio';
+                    i++;
+                    inputArrayValues[i] = 'range';
+                    i++;
+                    inputArrayValues[i] = 'reset';
+                    i++;
+                    inputArrayValues[i] = 'search';
+                    i++;
+                    inputArrayValues[i] = 'submit';
+                    i++;
+                    inputArrayValues[i] = 'tel';
+                    i++;
+                    inputArrayValues[i] = 'text';
+                    i++;
+                    inputArrayValues[i] = 'time';
+                    i++;
+                    inputArrayValues[i] = 'url';
+                    i++;
+                    inputArrayValues[i] = 'week';
+                    i++;
+                    return (inputArrayValues);
+               }
           }
-          else
-          {
-               /* if we can't find one we use the default values */
-               /* add the select */
-               /* We create an array with all the select values */
-               /* We get the values from a predefined select */
 
-               var inputArrayValues = new Array;
-               var i = 0;
-
-               inputArrayValues[i] = 'button';
-               i++;
-               inputArrayValues[i] = 'checkbox';
-               i++;
-               inputArrayValues[i] = 'button';
-               i++;
-               inputArrayValues[i] = 'checkbox';
-               i++;
-               inputArrayValues[i] = 'color';
-               i++;
-               inputArrayValues[i] = 'date';
-               i++;
-               inputArrayValues[i] = 'datetime-local';
-               i++;
-               inputArrayValues[i] = 'email';
-               i++;
-               inputArrayValues[i] = 'file';
-               i++;
-               inputArrayValues[i] = 'hidden';
-               i++;
-               inputArrayValues[i] = 'image';
-               i++;
-               inputArrayValues[i] = 'month';
-               i++;
-               inputArrayValues[i] = 'number';
-               i++;
-               inputArrayValues[i] = 'password';
-               i++;
-               inputArrayValues[i] = 'radio';
-               i++;
-               inputArrayValues[i] = 'range';
-               i++;
-               inputArrayValues[i] = 'reset';
-               i++;
-               inputArrayValues[i] = 'search';
-               i++;
-               inputArrayValues[i] = 'submit';
-               i++;
-               inputArrayValues[i] = 'tel';
-               i++;
-               inputArrayValues[i] = 'text';
-               i++;
-               inputArrayValues[i] = 'time';
-               i++;
-               inputArrayValues[i] = 'url';
-               i++;
-               inputArrayValues[i] = 'week';
-               i++;
-               return (inputArrayValues);
-          }
      }
 
      addEventListeners ();
@@ -231,12 +281,57 @@ $('.customFields_container').ready(function()
      {
           /* next index */
           index ++;
-          console.log ('On line 189 - create a function that creates the input element ');
-          console.log ('div element');
-          console.log ('input - text');
-          console.log ('input - select');
+          /* create the div*/
+          var id = 'customFields_container_' + index;
+          var className = 'customFields_div';
+          var containerDiv = CreateDiv (id , className);
 
-          /* We have to add an element like the previous*/
+
+          for (var i in Fields)
+          {
+
+               if ( Fields['type'] != 'button' )
+               {
+                    var id = i + '_' + index;
+                    var className = 'regular-text customFields_input customFields_' + i + '_input';
+                    var name = 'mtk_plugin_cpt[customFields][' + index + '][' + i + ']';
+                    var placeholder = Fields[i]['placeholder'];
+
+                    if (Fields['type'] == 'text')
+                    {
+                         Fields['input-field'] = CreateInputTextType (id, name, className, placeholder);
+                    }
+                    else if (Fields['type'] == 'select')
+                    {
+                         if ( i === 'Type')
+                         {
+                              var optionsValues = optionsArray;
+                         }
+                         else if ( i === 'Parent')
+                         {
+                              var optionsValues = new Array;
+                         }
+                         Fields['input-field'] = CreateInputTextType (id, name , className, placeholder , optionsValues );
+                    }
+                    else if (Fields['type'] == 'checkbox')
+                    {
+                         Fields['input-field'] = CreateInputTextType (id, name , className, placeholder);
+                    }
+               }
+               else
+               {
+
+                    var id = i + '_' + index;
+                    var className = Fields[i]['class'];
+               }
+
+          }
+
+
+
+
+
+
           var inputElement = '<div class="customFields_div" id="customFields_container_' + index + '">';
           inputElement += '<input type="text" class="regular-text customFields_input customFields_ID_input" name="mtk_plugin_cpt[customFields][' + index + '][ID]" placeholder="author_name" value="">';
           inputElement += '<input type="text" class="regular-text customFields_input customFields_Name_input" name="mtk_plugin_cpt[customFields][' + index + '][Name]" placeholder="author_name" value="">';
@@ -273,19 +368,31 @@ $('.customFields_container').ready(function()
           /* Append the elements */
           $(".customFields_container").append( inputElement );
 
-          /* Adda elements to the select object */
-          if ( ! Array.isArray(optionsArray) )
-          {
-               console.log ('[name="mtk_plugin_cpt[customFields][' + index + '][Type]"]');
-               var target = document.querySelector('[name="mtk_plugin_cpt[customFields][' + index + '][Type]"]');
-               console.log (target);
-               target.append(optionsArray);
-          }
           /* Add event Listeners */
           addEventListeners ();
           updateParentSelector();
 
 
+     }
+     //   --------------------------------------------------
+     //        CREATE INPUT FIELDS
+     //   --------------------------------------------------
+
+     function CreateDiv (id , className)
+     {
+          console.log ('297 - creating a div');
+     }
+     function CreateInputTextType (id, name , className, placeholder)
+     {
+          console.log ('357 - CreateInputTextType');
+     }
+     function CreateInputSelectType (id, name , className, placeholder , optionsValues )
+     {
+          console.log ('361 - CreateInputSelectType');
+     }
+     function CreateInputCheckBoxType (id, name , className, placeholder)
+     {
+          console.log ('365 - CreateInputCheckBoxType');
      }
      //   --------------------------------------------------
      //        REMOVES SET OF FIELDS

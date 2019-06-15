@@ -135,6 +135,19 @@ $('.customFields_container').ready(function()
           FieldsLIst['add_remove_buttons'] = new Array ();
           FieldsLIst['add_remove_buttons']['placeholder'] = false;
           FieldsLIst['add_remove_buttons']['type'] = 'checkbox';
+
+          FieldsLIst['add'] = new Array ();
+          FieldsLIst['add']['class'] = 'dashicons dashicons-plus-alt add-substract-button customFields_addButton';
+          FieldsLIst['add']['type'] = 'button';
+
+          FieldsLIst['remove'] = new Array ();
+          FieldsLIst['remove']['placeholder'] = false;
+          FieldsLIst['remove']['class'] = 'dashicons dashicons-dismiss add-substract-button customFields_removeButton';
+          FieldsLIst['remove']['type'] = 'button';
+
+
+
+
           return (FieldsLIst);
      }
 
@@ -274,27 +287,44 @@ $('.customFields_container').ready(function()
           var containerDiv = CreateDiv (id , className);
 
 
-          for (var i in Fields) {
-               console.log (Fields[i]);
+          for (var i in Fields)
+          {
 
-               var id = 'customFields_container_' + index;
-               var className = 'regular-text customFields_input customFields_' + i + '_input';
-               var name = 'mtk_plugin_cpt[customFields][' + index + '][' + i + ']';
-               var placeholder = Fields[i]['placeholder'];
-               var containerDiv = CreateDiv (id , className);
+               if ( Fields['type'] != 'button' )
+               {
+                    var id = i + '_' + index;
+                    var className = 'regular-text customFields_input customFields_' + i + '_input';
+                    var name = 'mtk_plugin_cpt[customFields][' + index + '][' + i + ']';
+                    var placeholder = Fields[i]['placeholder'];
 
-               if (Fields['type'] == 'text')
-               {
-                    Fields['input-field'] = CreateInputTextType (id, name, className, placeholder);
+                    if (Fields['type'] == 'text')
+                    {
+                         Fields['input-field'] = CreateInputTextType (id, name, className, placeholder);
+                    }
+                    else if (Fields['type'] == 'select')
+                    {
+                         if ( i === 'Type')
+                         {
+                              var optionsValues = optionsArray;
+                         }
+                         else if ( i === 'Parent')
+                         {
+                              var optionsValues = new Array;
+                         }
+                         Fields['input-field'] = CreateInputTextType (id, name , className, placeholder , optionsValues );
+                    }
+                    else if (Fields['type'] == 'checkbox')
+                    {
+                         Fields['input-field'] = CreateInputTextType (id, name , className, placeholder);
+                    }
                }
-               else if (Fields['type'] == 'select')
+               else
                {
-                    Fields['input-field'] = CreateInputTextType (id, name , className, placeholder , optionsArray );
+
+                    var id = i + '_' + index;
+                    var className = Fields[i]['class'];
                }
-               else if (Fields['type'] == 'checkbox')
-               {
-                    Fields['input-field'] = CreateInputTextType (id, name , className, placeholder);
-               }
+
           }
 
 
@@ -356,7 +386,7 @@ $('.customFields_container').ready(function()
      {
           console.log ('357 - CreateInputTextType');
      }
-     function CreateInputSelectType (id, name , className, placeholder , optionsArray )
+     function CreateInputSelectType (id, name , className, placeholder , optionsValues )
      {
           console.log ('361 - CreateInputSelectType');
      }
