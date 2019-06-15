@@ -18,6 +18,7 @@ console.log ('uncomment 13');
 //   --------------------------------------------------
 window.addEventListener ( "load" , function ()
 {
+
      /* Load the code prettify function */
      console.log ('uncomment 19');
      //PR.prettyPrint();
@@ -60,6 +61,7 @@ window.addEventListener ( "load" , function ()
 //   --------------------------------------------------
 $('.customFields_container').ready(function()
 {
+     var index;
      var optionsArray = new Array;
      /* We create an array with all the values from a previous field */
      optionsArray = createInputArray();
@@ -94,18 +96,25 @@ $('.customFields_container').ready(function()
                $(spanId).width( $(inputId).outerWidth() + 'px' );
           }
      }
-     /*Fix the span widths */
-     for (var i = 0; i < customFields_input.length; i++ )
-     {
 
-          inputId =  "#" + customFields_input[i].id;
-          if ($(inputId)[0].tagName == 'SPAN')
+     /*Fix the span widths */
+     function fixSpan ()
+     {
+          var customFields_input = document.querySelectorAll('.customFields_input');
+          for (var i = 0; i < customFields_input.length; i++ )
           {
-               $(inputId).css("display","inline-block");
-               $(inputId).css("text-align","center");
-               $(inputId).width( '75px' );
+
+               inputId =  "#" + customFields_input[i].id;
+               if ($(inputId)[0].tagName == 'SPAN')
+               {
+                    console.log ('fixSpan - ' + i);
+                    $(inputId).css("display","inline-block");
+                    $(inputId).css("text-align","center");
+                    $(inputId).width( '75px' );
+               }
           }
      }
+
      //   --------------------------------------------------
      //        CREATES THE LIST OF THE FIELDS WE ARE GOING TO ADD
      //   --------------------------------------------------
@@ -129,11 +138,11 @@ $('.customFields_container').ready(function()
           FieldsLIst['Parent']['type'] = 'select';
 
           FieldsLIst['Show_in_columns'] = new Array ();
-          FieldsLIst['Show_in_columns']['placeholder'] = false;
+          FieldsLIst['Show_in_columns']['placeholder'] = true;
           FieldsLIst['Show_in_columns']['type'] = 'checkbox';
 
           FieldsLIst['add_remove_buttons'] = new Array ();
-          FieldsLIst['add_remove_buttons']['placeholder'] = false;
+          FieldsLIst['add_remove_buttons']['placeholder'] = true;
           FieldsLIst['add_remove_buttons']['type'] = 'checkbox';
 
           FieldsLIst['add'] = new Array ();
@@ -141,7 +150,6 @@ $('.customFields_container').ready(function()
           FieldsLIst['add']['type'] = 'button';
 
           FieldsLIst['remove'] = new Array ();
-          FieldsLIst['remove']['placeholder'] = false;
           FieldsLIst['remove']['class'] = 'dashicons dashicons-dismiss add-substract-button customFields_removeButton';
           FieldsLIst['remove']['type'] = 'button';
 
@@ -244,6 +252,7 @@ $('.customFields_container').ready(function()
      }
 
      addEventListeners ();
+     fixSpan ();
      //   --------------------------------------------------
      //        ADDS ALL THE EVENT LISTENERS TO ALL THE FIELDS
      //   --------------------------------------------------
@@ -259,21 +268,26 @@ $('.customFields_container').ready(function()
           var customFields_Type_select = document.querySelectorAll (".customFields_Type_select");
 
           /* The last Index */
-          index = addFieldsButton.length-1;
 
-
+          index = customFields_ID_input.length-1;
           for (var i = 0; i < addFieldsButton.length; i++ )
           {
                /* add the event Listener to the add/remove button */
                addFieldsButton[i].addEventListener( "click" , addField );
                removeFieldsButton[i].addEventListener( "click" , removeField );
 
+               /* Get the number of the list index */
+               index = removeFieldsButton[i].id.replace ( 'remove_' , '' );
+               //console.log ('index - ' + index);
                /* add the event to the other fields */
                customFields_ID_input[i].addEventListener( "change" , updateParentSelector );
                customFields_Name_input[i].addEventListener( "change" , updateParentSelector );
                customFields_Type_select[i].addEventListener( "change" , updateParentSelector );
+
+
           }
      }
+
      //   --------------------------------------------------
      //        ADDS A NEW SET OF FIELDS
      //   --------------------------------------------------
@@ -284,25 +298,26 @@ $('.customFields_container').ready(function()
           /* create the div*/
           var id = 'customFields_container_' + index;
           var className = 'customFields_div';
-          var containerDiv = CreateDiv (id , className);
+          var target = document.querySelector(".customFields_container");
+          var containerDiv = CreateDiv (id , className, target);
 
 
           for (var i in Fields)
           {
-
-               if ( Fields['type'] != 'button' )
+               if ( Fields[i]['type'] != 'button' )
                {
                     var id = i + '_' + index;
                     var className = 'regular-text customFields_input customFields_' + i + '_input';
                     var name = 'mtk_plugin_cpt[customFields][' + index + '][' + i + ']';
                     var placeholder = Fields[i]['placeholder'];
 
-                    if (Fields['type'] == 'text')
+                    if (Fields[i]['type'] == 'text')
                     {
-                         Fields['input-field'] = CreateInputTextType (id, name, className, placeholder);
+                         CreateInputTextType (id, name, className, placeholder, containerDiv);
                     }
-                    else if (Fields['type'] == 'select')
+                    else if (Fields[i]['type'] == 'select')
                     {
+                         var className = 'regular-text customFields_input customFields_' + i + '_select';
                          if ( i === 'Type')
                          {
                               var optionsValues = optionsArray;
@@ -311,11 +326,12 @@ $('.customFields_container').ready(function()
                          {
                               var optionsValues = new Array;
                          }
-                         Fields['input-field'] = CreateInputTextType (id, name , className, placeholder , optionsValues );
+                         CreateInputSelectType (id, name , className , optionsValues, containerDiv);
                     }
-                    else if (Fields['type'] == 'checkbox')
+                    else if (Fields[i]['type'] == 'checkbox')
                     {
-                         Fields['input-field'] = CreateInputTextType (id, name , className, placeholder);
+
+                         CreateInputCheckBoxType (id, name , className, placeholder, containerDiv);
                     }
                }
                else
@@ -323,54 +339,16 @@ $('.customFields_container').ready(function()
 
                     var id = i + '_' + index;
                     var className = Fields[i]['class'];
+                    CrateInputButtonType (id, className, containerDiv);
                }
 
           }
-
-
-
-
-
-
-          var inputElement = '<div class="customFields_div" id="customFields_container_' + index + '">';
-          inputElement += '<input type="text" class="regular-text customFields_input customFields_ID_input" name="mtk_plugin_cpt[customFields][' + index + '][ID]" placeholder="author_name" value="">';
-          inputElement += '<input type="text" class="regular-text customFields_input customFields_Name_input" name="mtk_plugin_cpt[customFields][' + index + '][Name]" placeholder="author_name" value="">';
-
-
-          /* Create the select */
-          inputElement += '<select class="regular-text customFields_input customFields_Type_select" name="mtk_plugin_cpt[customFields][' + index + '][Type]">';
-          inputElement += '<option value="">Input Type</option>';
-          /* Add the options in the array */
-          if ( Array.isArray(optionsArray) )
-          {
-               for (var i = 0; i < optionsArray.length; i++ )
-               {
-                    inputElement += '<option value="' + optionsArray[i] + '" >' + optionsArray[i]  + '</option>';
-               }
-
-          }
-
-          inputElement += '</select>';
-
-
-          /* add the parent selec  */
-          inputElement += '<select id="Parent_' + index + '" class="regular-text customFields_input customFields_Parent_select" name="mtk_plugin_cpt[customFields][' + index + '][Parent]" >';
-          inputElement += '<option value="">Choose Parent</option>';
-          inputElement += '</select>';
-
-          /* Column show checkbox */
-          inputElement += '<input type="checkbox" id="Show_in_columns_' + index + '" class="regular-text customFields_input customFields_Show_in_columns_select" name="mtk_plugin_cpt[customFields][' + index + '][Show_in_columns]" value="true">';
-
-          /* add the add and remove buttons */
-          inputElement += '<span class="dashicons dashicons-plus-alt add-substract-button customFields_addButton" id="add_' + index + '" ></span>';
-          inputElement += '<span class="dashicons dashicons-dismiss add-substract-button customFields_removeButton" id="remove_' + index + '"></span>';
-          inputElement += '</div>';
-          /* Append the elements */
-          $(".customFields_container").append( inputElement );
-
           /* Add event Listeners */
           addEventListeners ();
           updateParentSelector();
+          return;
+
+
 
 
      }
@@ -378,34 +356,158 @@ $('.customFields_container').ready(function()
      //        CREATE INPUT FIELDS
      //   --------------------------------------------------
 
-     function CreateDiv (id , className)
+     function CreateDiv (id , className, target)
      {
-          console.log ('297 - creating a div');
+          var d = document.createElement('div');
+          d.id = id;
+          d.classList.add(className);
+          target.append( d );
+          return (d);
+
+
      }
-     function CreateInputTextType (id, name , className, placeholder)
+     function CreateInputTextType (id, name , className, placeholder, target)
      {
-          console.log ('357 - CreateInputTextType');
+          var i = document.createElement('input');
+          i.type='text';
+          i.id = id;
+          i.name = name;
+          i.placeholder = placeholder;
+
+          /* To add the class we need to separete in spaces and then add one by one */
+          if (className.indexOf (" ") < 0)
+          {
+               i.classList.add(className);
+          }
+          else
+          {
+               classList = className.split(" ");
+               for (var j in classList)
+               {
+                    i.classList.add(classList[j]);
+               }
+          }
+          targetId = "#" + target.id;
+          $(targetId).append( i );
      }
-     function CreateInputSelectType (id, name , className, placeholder , optionsValues )
+     function CreateInputSelectType (id, name , className, optionsValues, target)
      {
-          console.log ('361 - CreateInputSelectType');
+          var selectList = document.createElement("select");
+          selectList.id = id;
+          selectList.name = name;
+          target.appendChild(selectList);
+
+          /* To add the class we need to separete in spaces and then add one by one */
+          if (className.indexOf (" ") < 0)
+          {
+               selectList.classList.add(className);
+          }
+          else
+          {
+               classList = className.split(" ");
+               for (var j in classList)
+               {
+
+                    selectList.classList.add(classList[j]);
+               }
+          }
+          targetId = "#" + target.id;
+          $(targetId).append( selectList );
+
+          /* Create and append the options */
+          if ( Array.isArray(optionsValues) )
+          {
+               for (var i = 0; i < optionsValues.length; i++)
+               {
+                    var option = document.createElement("option");
+                    option.value = optionsValues[i];
+                    option.text = optionsValues[i];
+                    selectList.appendChild(option);
+               }
+          }
+
+
      }
-     function CreateInputCheckBoxType (id, name , className, placeholder)
+     function CreateInputCheckBoxType (id, name , className, placeholder, target)
      {
-          console.log ('365 - CreateInputCheckBoxType');
+          //console.log (target);
+          /* For the check box we need to create a span element */
+          var span = document.createElement('span');
+          span.id = id;
+
+          /* To add the class we need to separete in spaces and then add one by one */
+          if (className.indexOf (" ") < 0)
+          {
+               span.classList.add(className);
+          }
+          else
+          {
+               classList = className.split(" ");
+               for (var j in classList)
+               {
+                    span.classList.add(classList[j]);
+               }
+          }
+          /* add the styles to the span */
+          spanID = "#" + span.id;
+          //console.log (spanID);
+          /* add the check box */
+          targetId = "#" + target.id;
+          $(targetId).append( span );
+
+          $(spanID).css("display","inline-block");
+          $(spanID).css("text-align","center");
+          $(spanID).width( '75px' );
+
+          /* Now we create the check box */
+          var xbox = document.createElement('input');
+          xbox.type='checkbox';
+          xbox.name = name;
+          xbox.value = placeholder;
+
+          spanID = "#" + span.id;
+          $(spanID).append( xbox );
+
+
+     }
+     function CrateInputButtonType (id, className, target)
+     {
+          //console.log (target);
+          /* For the check box we need to create a span element */
+          var span = document.createElement('span');
+          span.id = id;
+          /* To add the class we need to separete in spaces and then add one by one */
+          if (className.indexOf (" ") < 0)
+          {
+               span.classList.add(className);
+          }
+          else
+          {
+               classList = className.split(" ");
+               for (var j in classList)
+               {
+                    span.classList.add(classList[j]);
+               }
+          }
+          /* add the check box */
+          targetId = "#" + target.id;
+          $(targetId).append( span );
      }
      //   --------------------------------------------------
      //        REMOVES SET OF FIELDS
      //   --------------------------------------------------
      function removeField ( event )
      {
-          if ( index > 0 )
+          var customFields_div = document.querySelectorAll('.customFields_div');
+          // console.log (customFields_div.length);
+          if ( customFields_div.length > 1 )
           {
                /* Get the parent */
 
                var targetId = event.target.id.replace ( 'remove_' , '' );
+               // console.log (index + ' - ' + targetId);
                $('#customFields_container_' + targetId).remove();
-               addEventListeners ();
+
           }
      }
      //   --------------------------------------------------
@@ -413,7 +515,6 @@ $('.customFields_container').ready(function()
      //   --------------------------------------------------
      function updateParentSelector ( e )
      {
-          //console.log ( e );
           var customFields_ID_input = document.querySelectorAll (".customFields_ID_input");
           var customFields_Name_input = document.querySelectorAll (".customFields_Name_input");
           var customFields_Type_select = document.querySelectorAll (".customFields_Type_select");
@@ -421,9 +522,10 @@ $('.customFields_container').ready(function()
           var optionsArray = new Array;
           var optionText = '<option value="">Choose Parent</option>';
           /* Get the combination that is needed for the select into an array */
+          //console.log (customFields_Type_select);
           for (var i = 0; i < customFields_ID_input.length; i++ )
           {
-               //console.log (customFields_Type_select[i].value);
+
                if ( (customFields_Type_select[i].value === 'Section') || (customFields_Type_select[i].value === 'SubSection') || (customFields_Type_select[i].value === 'Item') )
                {
                     optionText += '<option value="' + customFields_ID_input[i].value + '">' + customFields_Name_input[i].value + '</option>';
@@ -434,7 +536,6 @@ $('.customFields_container').ready(function()
           var customFields_Parent_select = document.querySelectorAll (".customFields_Parent_select");
           for (var i = 0; i < customFields_Parent_select.length; i++ )
           {
-               //console.log (customFields_Parent_select[i].value);
                var previousValue = customFields_Parent_select[i].value;
                var select_id = '#' + customFields_Parent_select[i].id;
 

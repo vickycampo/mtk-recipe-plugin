@@ -341,7 +341,7 @@ class CptCallbacks
                               /* checked? */
                               $checked =  $fieldText ? 'checked': '';
                               ?>
-                              <span id="<?php echo ($fieldType);?>_<?php echo ($i);?>"  class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_select" >
+                              <span id="<?php echo ($fieldType);?>_<?php echo ($i);?>"  class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_input" >
                                    <input type="checkbox" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" value="true" <?php echo ($checked);?> >
                                    </span>
                               <?php
