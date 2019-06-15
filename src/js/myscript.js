@@ -12,7 +12,10 @@
 /* Import the files for code-prettify */
 console.log ('uncomment 13');
 //import 'code-prettify';
-/* The function that handles the tabs */
+
+//   --------------------------------------------------
+//        MANAGES THE TABS
+//   --------------------------------------------------
 window.addEventListener ( "load" , function ()
 {
      /* Load the code prettify function */
@@ -24,10 +27,87 @@ window.addEventListener ( "load" , function ()
      //   -----------------------------------------
      //Store tabs variables
      var tabs = document.querySelectorAll ("ul.nav-tabs > li");
+
+     for (var i = 0; i < tabs.length; i++ )
+     {
+          tabs[i].addEventListener( "click" , switchTab );
+     }
+     function switchTab ( event )
+     {
+          //Prevent from modifying the url
+          event.preventDefault();
+
+          //Remove all active classes
+          document.querySelector("ul.nav-tabs > li.active").classList.remove("active");
+          document.querySelector(".tab-pane.active").classList.remove("active");
+
+          //Assing the clicked tab to a variable
+          var clickedTab = event.currentTarget;
+          var anchor = event.target;
+          var activePaneId = anchor.getAttribute("href");
+
+          //Assign the active class
+          clickedTab.classList.add("active");
+          document.querySelector(activePaneId).classList.add("active");
+
+     }
+
+
+
+});
+//   --------------------------------------------------
+//        MANAGE THE CUSTOM POST TYPE FIELDS
+//   --------------------------------------------------
+$('.customFields_container').ready(function()
+{
      var optionsArray = new Array;
      /* We create an array with all the values from a previous field */
      optionsArray = createInputArray();
+     //   --------------------------------------------------
+     //        FIX THE TITLES WITH BASED ON THE FIELDS WIDTH
+     //   --------------------------------------------------
+     var customFields_titles = document.querySelectorAll('.customFields_title');
+     /* the div that contains the first row of fields */
+     var customFields_input = document.querySelectorAll('.customFields_input');
 
+     for (var i = 0; i < customFields_titles.length; i++ )
+     {
+          inputId =  "#" + customFields_input[i].id;
+          spanId = "#" + customFields_titles[i].id;
+          if ($(inputId)[0].tagName != 'SPAN')
+          {
+               $(spanId).css("display","inline-block");
+               $(spanId).css("text-align","center");
+               $(spanId).css("word-wrap","break-word");
+               $(spanId).width( $(inputId).outerWidth() + 'px' );
+          }
+          else
+          {
+               $(inputId).css("display","inline-block");
+               $(inputId).css("text-align","center");
+               $(inputId).width( '75px' );
+
+               $(spanId).css("display","inline-block");
+               $(spanId).css("text-align","center");
+               $(spanId).css("word-wrap","break-word");
+               $(spanId).width( $(inputId).outerWidth() + 'px' );
+          }
+     }
+     /*Fix the span widths */
+     for (var i = 0; i < customFields_input.length; i++ )
+     {
+
+          inputId =  "#" + customFields_input[i].id;
+          if ($(inputId)[0].tagName == 'SPAN')
+          {
+               $(inputId).css("display","inline-block");
+               $(inputId).css("text-align","center");
+               $(inputId).width( '75px' );
+          }
+     }
+     //   --------------------------------------------------
+     //        CREATES THE LIST FOR THE TYPE SELECT
+     //   --------------------------------------------------
      function createInputArray()
      {
           /* we look for a previous created select */
@@ -111,73 +191,51 @@ window.addEventListener ( "load" , function ()
                i++;
                return (inputArrayValues);
           }
-
-
-
      }
-     for (var i = 0; i < tabs.length; i++ )
-     {
-          tabs[i].addEventListener( "click" , switchTab );
-     }
-     function switchTab ( event )
-     {
-          //Prevent from modifying the url
-          event.preventDefault();
-
-          //Remove all active classes
-          document.querySelector("ul.nav-tabs > li.active").classList.remove("active");
-          document.querySelector(".tab-pane.active").classList.remove("active");
-
-          //Assing the clicked tab to a variable
-          var clickedTab = event.currentTarget;
-          var anchor = event.target;
-          var activePaneId = anchor.getAttribute("href");
-
-          //Assign the active class
-          clickedTab.classList.add("active");
-          document.querySelector(activePaneId).classList.add("active");
-
-     }
-     //   --------------------------------------------------
-     //        MANAGE THE CUSTOM FIELDS PART
-     //   --------------------------------------------------
-     var index = 0;
-     var addFieldsButton = new Array();
-     var removeFieldsButton = new Array();
 
      addEventListeners ();
+     //   --------------------------------------------------
+     //        ADDS ALL THE EVENT LISTENERS TO ALL THE FIELDS
+     //   --------------------------------------------------
      function addEventListeners ()
      {
-          /* add event listener to the add and remove buttons */
+          /* get the add/remove buttons  */
           var addFieldsButton = document.querySelectorAll (".customFields_addButton");
           var removeFieldsButton = document.querySelectorAll (".customFields_removeButton");
+
+          /* get the other fields */
           var customFields_ID_input = document.querySelectorAll (".customFields_ID_input");
           var customFields_Name_input = document.querySelectorAll (".customFields_Name_input");
           var customFields_Type_select = document.querySelectorAll (".customFields_Type_select");
 
+          /* The last Index */
           index = addFieldsButton.length-1;
+
+
           for (var i = 0; i < addFieldsButton.length; i++ )
           {
+               /* add the event Listener to the add/remove button */
                addFieldsButton[i].addEventListener( "click" , addField );
-          }
-          for (var i = 0; i < removeFieldsButton.length; i++ )
-          {
                removeFieldsButton[i].addEventListener( "click" , removeField );
-          }
-          for (var i = 0; i < customFields_ID_input.length; i++ )
-          {
+
+               /* add the event to the other fields */
                customFields_ID_input[i].addEventListener( "change" , updateParentSelector );
                customFields_Name_input[i].addEventListener( "change" , updateParentSelector );
                customFields_Type_select[i].addEventListener( "change" , updateParentSelector );
           }
-
-
      }
-
+     //   --------------------------------------------------
+     //        ADDS A NEW SET OF FIELDS
+     //   --------------------------------------------------
      function addField ( event )
      {
           /* next index */
           index ++;
+          console.log ('On line 189 - create a function that creates the input element ');
+          console.log ('div element');
+          console.log ('input - text');
+          console.log ('input - select');
+
           /* We have to add an element like the previous*/
           var inputElement = '<div class="customFields_div" id="customFields_container_' + index + '">';
           inputElement += '<input type="text" class="regular-text customFields_input customFields_ID_input" name="mtk_plugin_cpt[customFields][' + index + '][ID]" placeholder="author_name" value="">';
@@ -229,6 +287,9 @@ window.addEventListener ( "load" , function ()
 
 
      }
+     //   --------------------------------------------------
+     //        REMOVES SET OF FIELDS
+     //   --------------------------------------------------
      function removeField ( event )
      {
           if ( index > 0 )
@@ -240,6 +301,9 @@ window.addEventListener ( "load" , function ()
                addEventListeners ();
           }
      }
+     //   --------------------------------------------------
+     //        UPDATES THE PARENT SELECT BASED ON NEW VALUES
+     //   --------------------------------------------------
      function updateParentSelector ( e )
      {
           //console.log ( e );
@@ -279,10 +343,6 @@ window.addEventListener ( "load" , function ()
 
 
      }
-     //   --------------------------------------------------
-     //        SANITIZE THE CPT SETTING FORM
-     //   --------------------------------------------------
-
 });
 //   --------------------------------------------------
 //        IMAGE FIELD OF THE WIDGET

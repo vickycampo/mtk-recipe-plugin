@@ -253,12 +253,14 @@ class CptCallbacks
           /* We add a note that if we use the same ids as the existing ones we can override them */
           ?>
           <div class="<?php echo ($name);?>_container">
-               <span class="customFields_input">Field ID</span>
-               <span class="customFields_input">Field Name</span>
-               <span class="customFields_input">Type</span>
-               <span class="customFields_input">Parent Field</span>
-               <span class="customFields_input">Show in columns</span>
-
+               <div id="<?php echo ($name);?>_titles_div">
+                    <span id="<?php echo ($name);?>_span_01" class="<?php echo ($name);?>_title">Field ID</span>
+                    <span id="<?php echo ($name);?>_span_02" class="<?php echo ($name);?>_title">Field Name</span>
+                    <span id="<?php echo ($name);?>_span_03" class="<?php echo ($name);?>_title">Type</span>
+                    <span id="<?php echo ($name);?>_span_04" class="<?php echo ($name);?>_title">Parent Field</span>
+                    <span id="<?php echo ($name);?>_span_05" class="<?php echo ($name);?>_title">Show in columns</span>
+                    <span id="<?php echo ($name);?>_span_06" class="<?php echo ($name);?>_title">Add + / - Buttons</span>
+               </div>
                <?php
                foreach ($customFields as $i => $field)
                {
@@ -275,7 +277,7 @@ class CptCallbacks
                          /* if the field type is type we have to display all the input types */
                          if ( $fieldType === 'Type' )
                          {
-                              ?><select class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_select" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>">
+                              ?><select class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_select" id="<?php echo ($fieldType);?>_<?php echo ($i);?>" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>">
                                    <option value="">Choose input type</option>
                                    <?php
                                    /* Generate the input array if it is empty */
@@ -339,7 +341,9 @@ class CptCallbacks
                               /* checked? */
                               $checked =  $fieldText ? 'checked': '';
                               ?>
-                              <input type="checkbox" id="<?php echo ($fieldType);?>_<?php echo ($i);?>" class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_select" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" value="true" <?php echo ($checked);?> >
+                              <span id="<?php echo ($fieldType);?>_<?php echo ($i);?>"  class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_select" >
+                                   <input type="checkbox" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" value="true" <?php echo ($checked);?> >
+                                   </span>
                               <?php
                          }
                          else
@@ -359,7 +363,7 @@ class CptCallbacks
                               {
                                    $valueText = 'value= "' . $fieldText . '"';
                               }
-                              ?><input type="text" class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_input" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" placeholder="<?php echo ( $fieldText ); ?>" <?php echo ($valueText);?> <?php echo ($extra_information);?>  /><?php
+                              ?><input type="text" class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_input" id="<?php echo ($fieldType);?>_<?php echo ($i);?>" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" placeholder="<?php echo ( $fieldText ); ?>" <?php echo ($valueText);?> <?php echo ($extra_information);?>  /><?php
                          }
 
                     }
