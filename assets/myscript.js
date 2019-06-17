@@ -63,41 +63,87 @@ $('.customFields_container').ready(function()
 {
      var index;
      var optionsArray = new Array;
-     /* We create an array with all the values from a previous field */
+     var formErrors = false;
+     //   --------------------------------------------------
+     //        INITIALIZE PREVIOUS INFORMATION
+     //   --------------------------------------------------
+     /* When  we have just loaded the form we need to:*/
+     // Create an array with all the options for the type select
      optionsArray = createInputArray();
+     //Do a list with all the fields
      Fields = createFieldList ();
-     //   --------------------------------------------------
-     //        FIX THE TITLES WITH BASED ON THE FIELDS WIDTH
-     //   --------------------------------------------------
-     var customFields_titles = document.querySelectorAll('.customFields_title');
-     /* the div that contains the first row of fields */
-     var customFields_input = document.querySelectorAll('.customFields_input');
-
-     for (var i = 0; i < customFields_titles.length; i++ )
+     //fix the titles width
+     fixTitlesWidth ();
+     //Add eventlisteners
+     addEventListeners ();
+     //Add EventListener to the submit button
+     $("form").submit(function( event )
      {
-          inputId =  "#" + customFields_input[i].id;
-          spanId = "#" + customFields_titles[i].id;
-          if ($(inputId)[0].tagName != 'SPAN')
+          console.log (formErrors);
+          if ( formErrors )
           {
-               $(spanId).css("display","inline-block");
-               $(spanId).css("text-align","center");
-               $(spanId).css("word-wrap","break-word");
-               $(spanId).width( $(inputId).outerWidth() + 'px' );
+               event.preventDefault();
           }
           else
           {
-               $(inputId).css("display","inline-block");
-               $(inputId).css("text-align","center");
-               $(inputId).width( '75px' );
+               //we check if there is information in the last fielda line
+               var customFields_ID_input = document.querySelectorAll (".customFields_ID_input");
+               lastElement = customFields_ID_input[customFields_ID_input.length - 1];
 
-               $(spanId).css("display","inline-block");
-               $(spanId).css("text-align","center");
-               $(spanId).css("word-wrap","break-word");
-               $(spanId).width( $(inputId).outerWidth() + 'px' );
+               if ( lastElement.value == "" )
+               {
+                    console.log (lastElement.id);
+                    var targetId = lastElement.id.replace ( 'ID_' , '' );
+                    // console.log (index + ' - ' + targetId);
+                    $('#customFields_container_' + targetId).remove();
+
+               }
+          }
+
+
+          /* Check for errors */
+     });
+     //Fix the span width
+     fixSpan ();
+     //Fix the gerarchy
+     updateParentSelector();
+
+     //   --------------------------------------------------
+     //        FIX THE TITLES WIDTHS
+     //   --------------------------------------------------
+     function fixTitlesWidth ()
+     {
+          var customFields_titles = document.querySelectorAll('.customFields_title');
+          /* the div that contains the first row of fields */
+          var customFields_input = document.querySelectorAll('.customFields_input');
+
+          for (var i = 0; i < customFields_titles.length; i++ )
+          {
+               inputId =  "#" + customFields_input[i].id;
+               spanId = "#" + customFields_titles[i].id;
+               if ($(inputId)[0].tagName != 'SPAN')
+               {
+                    $(spanId).css("display","inline-block");
+                    $(spanId).css("text-align","center");
+                    $(spanId).css("word-wrap","break-word");
+                    $(spanId).width( $(inputId).outerWidth() + 'px' );
+               }
+               else
+               {
+                    $(inputId).css("display","inline-block");
+                    $(inputId).css("text-align","center");
+                    $(inputId).width( '75px' );
+
+                    $(spanId).css("display","inline-block");
+                    $(spanId).css("text-align","center");
+                    $(spanId).css("word-wrap","break-word");
+                    $(spanId).width( $(inputId).outerWidth() + 'px' );
+               }
           }
      }
-
-     /*Fix the span widths */
+     //   --------------------------------------------------
+     //        FIX THE SPAN WIDTHS
+     //   --------------------------------------------------
      function fixSpan ()
      {
           var customFields_input = document.querySelectorAll('.customFields_input');
@@ -107,7 +153,6 @@ $('.customFields_container').ready(function()
                inputId =  "#" + customFields_input[i].id;
                if ($(inputId)[0].tagName == 'SPAN')
                {
-                    console.log ('fixSpan - ' + i);
                     $(inputId).css("display","inline-block");
                     $(inputId).css("text-align","center");
                     $(inputId).width( '75px' );
@@ -173,6 +218,8 @@ $('.customFields_container').ready(function()
                     /* Convert to an array  */
                     var inputArrayValues = new Array;
                     var j=0;
+                    inputArrayValues[j] = 'Choose a type';
+                    j++;
                     for ( var i in options)
                     {
                          if ( ( options[i].value ) && ( options[i].value != '') )
@@ -187,72 +234,8 @@ $('.customFields_container').ready(function()
 
                     return (inputArrayValues);
                }
-               else
-               {
-                    /* if we can't find one we use the default values */
-                    /* add the select */
-                    /* We create an array with all the select values */
-                    /* We get the values from a predefined select */
-
-                    var inputArrayValues = new Array;
-                    var i = 0;
-
-                    inputArrayValues[i] = 'button';
-                    i++;
-                    inputArrayValues[i] = 'checkbox';
-                    i++;
-                    inputArrayValues[i] = 'button';
-                    i++;
-                    inputArrayValues[i] = 'checkbox';
-                    i++;
-                    inputArrayValues[i] = 'color';
-                    i++;
-                    inputArrayValues[i] = 'date';
-                    i++;
-                    inputArrayValues[i] = 'datetime-local';
-                    i++;
-                    inputArrayValues[i] = 'email';
-                    i++;
-                    inputArrayValues[i] = 'file';
-                    i++;
-                    inputArrayValues[i] = 'hidden';
-                    i++;
-                    inputArrayValues[i] = 'image';
-                    i++;
-                    inputArrayValues[i] = 'month';
-                    i++;
-                    inputArrayValues[i] = 'number';
-                    i++;
-                    inputArrayValues[i] = 'password';
-                    i++;
-                    inputArrayValues[i] = 'radio';
-                    i++;
-                    inputArrayValues[i] = 'range';
-                    i++;
-                    inputArrayValues[i] = 'reset';
-                    i++;
-                    inputArrayValues[i] = 'search';
-                    i++;
-                    inputArrayValues[i] = 'submit';
-                    i++;
-                    inputArrayValues[i] = 'tel';
-                    i++;
-                    inputArrayValues[i] = 'text';
-                    i++;
-                    inputArrayValues[i] = 'time';
-                    i++;
-                    inputArrayValues[i] = 'url';
-                    i++;
-                    inputArrayValues[i] = 'week';
-                    i++;
-                    return (inputArrayValues);
-               }
           }
-
      }
-
-     addEventListeners ();
-     fixSpan ();
      //   --------------------------------------------------
      //        ADDS ALL THE EVENT LISTENERS TO ALL THE FIELDS
      //   --------------------------------------------------
@@ -345,7 +328,6 @@ $('.customFields_container').ready(function()
           }
           /* Add event Listeners */
           addEventListeners ();
-          updateParentSelector();
           return;
 
 
@@ -355,7 +337,7 @@ $('.customFields_container').ready(function()
      //   --------------------------------------------------
      //        CREATE INPUT FIELDS
      //   --------------------------------------------------
-
+     /* Creates the div */
      function CreateDiv (id , className, target)
      {
           var d = document.createElement('div');
@@ -366,6 +348,7 @@ $('.customFields_container').ready(function()
 
 
      }
+     /* Creates the input - text type */
      function CreateInputTextType (id, name , className, placeholder, target)
      {
           var i = document.createElement('input');
@@ -390,6 +373,7 @@ $('.customFields_container').ready(function()
           targetId = "#" + target.id;
           $(targetId).append( i );
      }
+     /* Creates the input - Select type */
      function CreateInputSelectType (id, name , className, optionsValues, target)
      {
           var selectList = document.createElement("select");
@@ -428,6 +412,7 @@ $('.customFields_container').ready(function()
 
 
      }
+     /* Creates the check box */
      function CreateInputCheckBoxType (id, name , className, placeholder, target)
      {
           //console.log (target);
@@ -470,6 +455,7 @@ $('.customFields_container').ready(function()
 
 
      }
+     /* Creates the imput - Button */
      function CrateInputButtonType (id, className, target)
      {
           //console.log (target);
@@ -498,9 +484,14 @@ $('.customFields_container').ready(function()
      //   --------------------------------------------------
      function removeField ( event )
      {
+
           var customFields_div = document.querySelectorAll('.customFields_div');
           // console.log (customFields_div.length);
-          if ( customFields_div.length > 1 )
+          if ( jQuery.type( event ) === "string" )
+          {
+               $(event).remove();
+          }
+          else if ( customFields_div.length > 1 )
           {
                /* Get the parent */
 
@@ -513,40 +504,209 @@ $('.customFields_container').ready(function()
      //   --------------------------------------------------
      //        UPDATES THE PARENT SELECT BASED ON NEW VALUES
      //   --------------------------------------------------
-     function updateParentSelector ( e )
+     function updateParentSelector ( )
      {
           var customFields_ID_input = document.querySelectorAll (".customFields_ID_input");
           var customFields_Name_input = document.querySelectorAll (".customFields_Name_input");
           var customFields_Type_select = document.querySelectorAll (".customFields_Type_select");
-
-          var optionsArray = new Array;
-          var optionText = '<option value="">Choose Parent</option>';
-          /* Get the combination that is needed for the select into an array */
-          //console.log (customFields_Type_select);
-          for (var i = 0; i < customFields_ID_input.length; i++ )
-          {
-
-               if ( (customFields_Type_select[i].value === 'Section') || (customFields_Type_select[i].value === 'SubSection') || (customFields_Type_select[i].value === 'Item') )
-               {
-                    optionText += '<option value="' + customFields_ID_input[i].value + '">' + customFields_Name_input[i].value + '</option>';
-               }
-
-          }
-          /* update the customFields_Parent_select*/
           var customFields_Parent_select = document.querySelectorAll (".customFields_Parent_select");
-          for (var i = 0; i < customFields_Parent_select.length; i++ )
+          var fieldIds = new Array;
+          var fieldNames = new Array;
+          formErrors = false;
+
+          for (i = 0; i < customFields_ID_input.length ; i++)
           {
+               //console.log (i);
                var previousValue = customFields_Parent_select[i].value;
                var select_id = '#' + customFields_Parent_select[i].id;
 
+               /*We always start adding the choose ...*/
+               optionText = '<option value="">Choose Parent</option>';
+
+               /* We go through all the values availabe and choosse the ones that will respect the gerarchy */
+               /* we check which type this field is */
+
+               currentType = customFields_Type_select[i].value;
+
+               /* After we have highlighted the errors we add the fields to the parent select */
+               if (currentType == 'Section')
+               {
+                    /* if this element has chosen section the only parent it can have it is itself */
+                    id = customFields_ID_input[i].value;
+                    name = customFields_Name_input[i].value;
+                    value = previousValue;
+                    optionText += '<option value="' + id + '">' + name + '</option>';
+                    previousValue = id;
+               }
+               else if (currentType == 'SubSection')
+               {
+                    /* The parent has to be of the section category */
+                    /* We go thour all the types and look for the ones that are section */
+                    for (var j = 0; j < customFields_Type_select.length; j++)
+                    {
+                         if ( customFields_Type_select[j].value === 'Section' )
+                         {
+                              id = customFields_ID_input[j].value;
+                              name = customFields_Name_input[j].value;
+                              optionText += '<option value="' + id + '">' + name + '</option>';
+
+
+                         }
+                    }
+
+               }
+               else if (currentType == 'Item')
+               {
+                    /* The parent has to be of the section category */
+                    /* We go thour all the types and look for the ones that are section */
+                    for (var j = 0; j < customFields_Type_select.length; j++)
+                    {
+
+                         if (( customFields_Type_select[j].value === 'Section' ) || ( customFields_Type_select[j].value === 'SubSection' ))
+                         {
+
+                              id = customFields_ID_input[j].value;
+                              name = customFields_Name_input[j].value;
+                              optionText += '<option value="' + id + '">' + name + '</option>';
+
+                         }
+                    }
+
+               }
+               else if (currentType == 'SubItem')
+               {
+                    /* The parent has to be of the section category */
+                    /* We go thour all the types and look for the ones that are section */
+                    for (var j = 0; j < customFields_Type_select.length; j++)
+                    {
+                         if (( customFields_Type_select[j].value === 'Item' ))
+                         {
+                              id = customFields_ID_input[j].value;
+                              name = customFields_Name_input[j].value;
+                              optionText += '<option value="' + id + '">' + name + '</option>';
+
+
+
+                         }
+                    }
+
+               }
                $(select_id)
                    .empty()
                    .append(optionText);
 
                $(select_id).val(previousValue);
 
+               /* Check the content */
+               /*----------- Reset CSS --------------------*/
+               $('#' + customFields_ID_input[i].id).css("background-color", "white");
+               $('#' + customFields_Name_input[i].id).css("background-color", "white");
+               $('#' + customFields_Type_select[i].id).css("background-color", "white");
+               $('#' + customFields_Parent_select[i].id).css("background-color", "white");
 
+               /* since we are fixing the gerarchy we check field values */
+               /* No empty */
+
+               if ( i < customFields_ID_input.length - 1 )
+               {
+
+                    /* ---------- Check the id -----------------*/
+                    if (customFields_ID_input[i].value == '')
+                    {
+                         console.log ('#' + customFields_ID_input[i].id);
+                         formErrors = true;
+                         $('#' + customFields_ID_input[i].id).css("background-color", "red");
+                    }
+                    /* ---------- Check the name -----------------*/
+                    if ( (customFields_Name_input[i].value == '') || (customFields_Name_input[i].value == ' ') )
+                    {
+                         console.log ('#' + customFields_Name_input[i].id);
+                         formErrors = true;
+                         $('#' + customFields_Name_input[i].id).css("background-color", "yellow");
+                    }
+                    /* ---------- Check the type -----------------*/
+                    if (customFields_Type_select[i].value == '')
+                    {
+                         console.log ('#' + customFields_Type_select[i].id);
+                         formErrors = true;
+                         $('#' + customFields_Type_select[i].id).css("background-color", "red");
+                    }
+                    /* ---------- Check the parent -----------------*/
+                    if (customFields_Parent_select[i].value == '')
+                    {
+                         console.log ('#' + customFields_Parent_select[i].id);
+                         formErrors = true;
+                         $('#' + customFields_Parent_select[i].id).css("background-color", "red");
+                    }
+
+
+               }
+               /* When is the last added we just block the form but no need to high*/
+               else if ( ( i == customFields_ID_input.length - 1 ) && (customFields_Name_input[i].value != '') )
+               {
+                    /* ---------- Check the id -----------------*/
+                    if (customFields_ID_input[i].value != '')
+                    {
+                         /* ---------- Check the name -----------------*/
+                         if ( (customFields_Name_input[i].value == '') || (customFields_Name_input[i].value == ' ') )
+                         {
+                              console.log ('#' + customFields_Name_input[i].id);
+                              formErrors = true;
+                         }
+                         /* ---------- Check the type -----------------*/
+                         if (customFields_Type_select[i].value == '')
+                         {
+                              console.log ('#' + customFields_Type_select[i].id);
+                              formErrors = true;
+                         }
+                         /* ---------- Check the parent -----------------*/
+                         if (customFields_Parent_select[i].value == '')
+                         {
+                              console.log ('#' + customFields_Parent_select[i].id);
+                              formErrors = true;
+                         }
+                    }
+
+               }
+               /* ---------- Check the id -----------------*/
+               //Duplicates
+               if ( customFields_ID_input[i].value != '' )
+               {
+                    if(jQuery.inArray(customFields_ID_input[i].value , fieldIds) !== -1)
+                    {
+                         /* The id already exists */
+                         $('#' + customFields_ID_input[i].id).css("background-color", "red");
+                         formErrors = true;
+                    }
+                    //Empty spaces
+                    /* We check if ther is white spaces */
+                    else if ( customFields_ID_input[i].value.indexOf(" ") > -1 )
+                    {
+                         formErrors = true;
+                         $('#' + customFields_ID_input[i].id).css("background-color", "red");
+                    }
+               }
+               if ( customFields_Name_input[i].value != '' )
+               {
+                    /* ---------- Check the name -----------------*/
+                    //Duplicates
+                    if(jQuery.inArray(customFields_Name_input[i].value , fieldNames) !== -1)
+                    {
+                         /* The id already exists */
+                         $('#' + customFields_Name_input[i].id).css("background-color", "red");
+                         formErrors = true;
+                    }
+                    if( customFields_Name_input[i].value == ' ' )
+                    {
+                         /* The id already exists */
+                         $('#' + customFields_Name_input[i].id).css("background-color", "red");
+                         formErrors = true;
+                    }
+               }
+               fieldIds[i] = customFields_ID_input[i].value;
+               fieldNames[i] = customFields_Name_input[i].value;
           }
+
 
 
 

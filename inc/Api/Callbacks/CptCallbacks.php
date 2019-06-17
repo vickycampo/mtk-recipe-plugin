@@ -207,7 +207,7 @@ class CptCallbacks
           $name = $args['label_for'];
           $option_name = $args['option_name'];
           $value = '';
-          $extra_information = 'required';
+          $extra_information = '';
           $placeholder = $args['placeholder'];
 
           $field_name = $option_name . '[' . $name . ']';
@@ -340,11 +340,7 @@ class CptCallbacks
                          {
                               /* checked? */
                               $checked =  $fieldText ? 'checked': '';
-                              ?>
-                              <span id="<?php echo ($fieldType);?>_<?php echo ($i);?>"  class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_input" >
-                                   <input type="checkbox" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" value="true" <?php echo ($checked);?> >
-                                   </span>
-                              <?php
+                              ?><span id="<?php echo ($fieldType);?>_<?php echo ($i);?>"  class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_input" ><input type="checkbox" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" value="true" <?php echo ($checked);?> ></span><?php
                          }
                          else
                          {
@@ -352,7 +348,7 @@ class CptCallbacks
                               $extra_information = '';
                               if ( $i == 'ID' )
                               {
-                                   $extra_information = 'required';
+                                   $extra_information = '';
                               }
                               /* choose the value for the input field */
                               if ($placeholder[$fieldType] == $fieldText)
@@ -363,16 +359,12 @@ class CptCallbacks
                               {
                                    $valueText = 'value= "' . $fieldText . '"';
                               }
-                              ?><input type="text" class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_input" id="<?php echo ($fieldType);?>_<?php echo ($i);?>" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" placeholder="<?php echo ( $fieldText ); ?>" <?php echo ($valueText);?> <?php echo ($extra_information);?>  /><?php
+                              ?><input type="text" class="regular-text <?php echo ($name);?>_input <?php echo ($name);?>_<?php echo ($fieldType);?>_input" id="<?php echo ($fieldType);?>_<?php echo ($i);?>" name="<?php echo ( $option_name . '[' . $name . '][' . $i . '][' . $fieldType . ']' );?>" placeholder="<?php echo ( $args['placeholder'][$fieldType] ); ?>" <?php echo ($valueText);?> <?php echo ($extra_information);?>  /><?php
                          }
 
                     }
                     /* 2. add the remove button */
-                    ?>
-                    <span class="dashicons dashicons-plus-alt add-substract-button <?php echo ($name);?>_addButton" id="add_<?php echo ($i);?>" ></span>
-                    <span class="dashicons dashicons-dismiss add-substract-button <?php echo ($name);?>_removeButton" id="remove_<?php echo ($i);?>"></span>
-                    </div>
-                    <?php
+                    ?><span class="dashicons dashicons-plus-alt add-substract-button <?php echo ($name);?>_addButton" id="add_<?php echo ($i);?>" ></span><span class="dashicons dashicons-dismiss add-substract-button <?php echo ($name);?>_removeButton" id="remove_<?php echo ($i);?>"></span></div><?php
 
                }
                ?>

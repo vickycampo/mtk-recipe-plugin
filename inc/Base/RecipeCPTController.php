@@ -3,21 +3,22 @@
 
 @package mkt-recipe-plugin
 
-     ===================================
-          RecipeCPTController.PHP
-     ===================================
+===================================
+RecipeCPTController.PHP
+===================================
 *
 *
 */
 namespace Inc\Base;
 use Inc\Api\SettingsApi;
 use Inc\Base\BaseController;
+use Inc\Base\RecipeCPTFunctions;
 use Inc\Api\Callbacks\CptCallbacks;
 use Inc\Api\Callbacks\AdminCallbacks;
 
 /**
- * Enqueue - Enqueue the scripts and style files
- */
+* Enqueue - Enqueue the scripts and style files
+*/
 class RecipeCPTController extends BaseController
 {
      public $settings;
@@ -28,6 +29,7 @@ class RecipeCPTController extends BaseController
      public $customFields = array ();
      public $ordered;
      public $current_post_type;
+     public $r_cptFuntions;
 
 
      public function register ()
@@ -37,11 +39,13 @@ class RecipeCPTController extends BaseController
 
 
           /* Initialize the class that will actually generate the menu pages and subpages */
-		$this->settings = new SettingsApi();
+          $this->settings = new SettingsApi();
           /* Initialize the class that manages the */
-		$this->callbacks = new AdminCallbacks();
+          $this->callbacks = new AdminCallbacks();
           /* Initialize the class that manages the */
-		$this->cpt_callbacks = new CptCallbacks();
+          $this->cpt_callbacks = new CptCallbacks();
+          /* Initialize the class that manages the */
+          $this->r_cptFuntions = new RecipeCPTFunctions();
           /* Call the subpages method */
           $this->setSubpages();
 
@@ -60,7 +64,6 @@ class RecipeCPTController extends BaseController
           {
                add_action ( 'init' , array ( $this , 'registerCustomPostTypes') );
           }
-
           /* Manage CPT columns */
           if ( isset ( $this->customFields ) )
           {
@@ -71,48 +74,48 @@ class RecipeCPTController extends BaseController
 
      }
      public function setSubpages()
-	{
-		$this->subpages = array(
-			array(
-				'parent_slug' => 'mtk_plugin',
-				'page_title' => 'Custom Post Types',
-				'menu_title' => 'CPT Manager',
-				'capability' => 'manage_options',
-				'menu_slug' => 'mtk_cpt',
-				'callback' => array( $this->callbacks, 'adminCPT' )
-			)
-		);
-	}
+     {
+          $this->subpages = array(
+               array(
+                    'parent_slug' => 'mtk_plugin',
+                    'page_title' => 'Custom Post Types',
+                    'menu_title' => 'CPT Manager',
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'mtk_cpt',
+                    'callback' => array( $this->callbacks, 'adminCPT' )
+               )
+          );
+     }
      /* Create the settings */
      public function setSettings()
-	{
-		$args = array(
-			array(
-				'option_group' => 'mtk_plugin_cpt_settings',
-				'option_name' => 'mtk_plugin_cpt', //same name as the page slug
-				'callback' => array( $this->cpt_callbacks, 'cptSanitize' ),
-			)
-		);
+     {
+          $args = array(
+               array(
+                    'option_group' => 'mtk_plugin_cpt_settings',
+                    'option_name' => 'mtk_plugin_cpt', //same name as the page slug
+                    'callback' => array( $this->cpt_callbacks, 'cptSanitize' ),
+               )
+          );
 
-		$this->settings->setSettings( $args );
-	}
+          $this->settings->setSettings( $args );
+     }
      /* Create the Section */
-	public function setSections()
-	{
-		$args = array(
-			array(
-				'id' => 'mtk_cpt_index',
-				//'title' => 'Custom Post Type Manager',
+     public function setSections()
+     {
+          $args = array(
+               array(
+                    'id' => 'mtk_cpt_index',
+                    //'title' => 'Custom Post Type Manager',
                     'title' => '',
-				'callback' => array( $this->cpt_callbacks, 'cptSectionManager' ),
-				'page' => 'mtk_cpt' //The slug of the page where
-			)
-		);
-		$this->settings->setSections( $args );
-	}
-	/* Create the fields */
+                    'callback' => array( $this->cpt_callbacks, 'cptSectionManager' ),
+                    'page' => 'mtk_cpt' //The slug of the page where
+               )
+          );
+          $this->settings->setSections( $args );
+     }
+     /* Create the fields */
      public function setFields()
-	{
+     {
           /* Fields that we need */
           // Post type ide
           $args = array (
@@ -126,7 +129,7 @@ class RecipeCPTController extends BaseController
                          'option_name' => 'mtk_plugin_cpt',
                          'label_for' => 'post_type',
                          'placeholder' => 'eg. product',
-					'array' => 'post_type'
+                         'array' => 'post_type'
 
                     )
                ),
@@ -141,7 +144,7 @@ class RecipeCPTController extends BaseController
                          'option_name' => 'mtk_plugin_cpt',
                          'label_for' => 'singular_name',
                          'placeholder' => 'eg. Product',
-					'array' => 'post_type'
+                         'array' => 'post_type'
                     )
                ),
                // Plural name
@@ -155,7 +158,7 @@ class RecipeCPTController extends BaseController
                          'option_name' => 'mtk_plugin_cpt',
                          'label_for' => 'plural_name',
                          'placeholder' => 'eg. Products',
-					'array' => 'post_type'
+                         'array' => 'post_type'
 
                     )
                ),
@@ -171,7 +174,7 @@ class RecipeCPTController extends BaseController
                //           'option_name' => 'mtk_plugin_cpt',
                //           'label_for' => 'taxonomies', /* The label should always match the id, that is the way we are sending the information to the callback function */
                //           'class' => 'ui-toggle',
-			// 		'array' => 'mtk_plugin_cpt'
+               // 		'array' => 'mtk_plugin_cpt'
                //      )
                // ),
                // Add an icon
@@ -185,7 +188,7 @@ class RecipeCPTController extends BaseController
                          'option_name' => 'mtk_plugin_cpt',
                          'label_for' => 'menu_icon',
                          'placeholder' => 'eg. dashicons-admin-tools',
-					'array' => 'post_type'
+                         'array' => 'post_type'
 
                     )
                ),
@@ -200,7 +203,7 @@ class RecipeCPTController extends BaseController
                          'option_name' => 'mtk_plugin_cpt',
                          'label_for' => 'public', /* The label should always match the id, that is the way we are sending the information to the callback function */
                          'class' => 'ui-toggle',
-					'array' => 'post_type'
+                         'array' => 'post_type'
                     )
                ),
                // has_archive
@@ -214,7 +217,7 @@ class RecipeCPTController extends BaseController
                          'option_name' => 'mtk_plugin_cpt',
                          'label_for' => 'has_archive', /* The label should always match the id, that is the way we are sending the information to the callback function */
                          'class' => 'ui-toggle',
-					'array' => 'post_type'
+                         'array' => 'post_type'
                     )
                ),
                /* customFields */
@@ -235,402 +238,434 @@ class RecipeCPTController extends BaseController
                               'Show_in_columns' => false,
                               'add_remove_buttons' => false
                          ),
-					'array' => 'post_type'
+                         'array' => 'post_type'
                     )
                ),
           );
 
-		$this->settings->setFields( $args );
-	}
+          $this->settings->setFields( $args );
+     }
      public function registerCustomPostTypes()
-	{
-
-		foreach ($this->custom_post_types as $post_type) {
-			register_post_type( $post_type['post_type'],
-				array(
-					'labels' => array(
-						'name'                  => $post_type['name'],
-						'singular_name'         => $post_type['singular_name'],
-						'menu_name'             => $post_type['menu_name'],
-						'name_admin_bar'        => $post_type['name_admin_bar'],
-						'archives'              => $post_type['archives'],
-						'attributes'            => $post_type['attributes'],
-						'parent_item_colon'     => $post_type['parent_item_colon'],
-						'all_items'             => $post_type['all_items'],
-						'add_new_item'          => $post_type['add_new_item'],
-						'add_new'               => $post_type['add_new'],
-						'new_item'              => $post_type['new_item'],
-						'edit_item'             => $post_type['edit_item'],
-						'update_item'           => $post_type['update_item'],
-						'view_item'             => $post_type['view_item'],
-						'view_items'            => $post_type['view_items'],
-						'search_items'          => $post_type['search_items'],
-						'not_found'             => $post_type['not_found'],
-						'not_found_in_trash'    => $post_type['not_found_in_trash'],
-						'featured_image'        => $post_type['featured_image'],
-						'set_featured_image'    => $post_type['set_featured_image'],
-						'remove_featured_image' => $post_type['remove_featured_image'],
-						'use_featured_image'    => $post_type['use_featured_image'],
-						'insert_into_item'      => $post_type['insert_into_item'],
-						'uploaded_to_this_item' => $post_type['uploaded_to_this_item'],
-						'items_list'            => $post_type['items_list'],
-						'items_list_navigation' => $post_type['items_list_navigation'],
-						'filter_items_list'     => $post_type['filter_items_list']
-					),
-					'label'                     => $post_type['label'],
-					'description'               => $post_type['description'],
-					'supports'                  => $post_type['supports'],
-                         'show_in_rest'              => $post_type['show_in_rest'],
-					'taxonomies'                => $post_type['taxonomies'],
-					'hierarchical'              => $post_type['hierarchical'],
-					'public'                    => $post_type['public'],
-					'show_ui'                   => $post_type['show_ui'],
-					'show_in_menu'              => $post_type['show_in_menu'],
-					'menu_position'             => $post_type['menu_position'],
-                         'menu_icon'                 => $post_type['menu_icon'],
-					'show_in_admin_bar'         => $post_type['show_in_admin_bar'],
-					'show_in_nav_menus'         => $post_type['show_in_nav_menus'],
-					'can_export'                => $post_type['can_export'],
-					'has_archive'               => $post_type['has_archive'],
-					'exclude_from_search'       => $post_type['exclude_from_search'],
-					'publicly_queryable'        => $post_type['publicly_queryable'],
-					'capability_type'           => $post_type['capability_type']
-				)
-			);
-               /* After adding the post type we should add the filter to fix the title */
-
-
-               add_filter( 'enter_title_here', array( $this , 'mtk_change_title_text' ) );
-		}
-	}
-     public function mtk_change_title_text( $title )
      {
-          $screen = get_current_screen();
 
-          if  ( 'events' == $screen->post_type ) {
-               $title = 'Enter event name with date';
-          }
+          foreach ($this->custom_post_types as $post_type) {
+               register_post_type( $post_type['post_type'],
+               array(
+                    'labels' => array(
+                         'name'                  => $post_type['name'],
+                         'singular_name'         => $post_type['singular_name'],
+                         'menu_name'             => $post_type['menu_name'],
+                         'name_admin_bar'        => $post_type['name_admin_bar'],
+                         'archives'              => $post_type['archives'],
+                         'attributes'            => $post_type['attributes'],
+                         'parent_item_colon'     => $post_type['parent_item_colon'],
+                         'all_items'             => $post_type['all_items'],
+                         'add_new_item'          => $post_type['add_new_item'],
+                         'add_new'               => $post_type['add_new'],
+                         'new_item'              => $post_type['new_item'],
+                         'edit_item'             => $post_type['edit_item'],
+                         'update_item'           => $post_type['update_item'],
+                         'view_item'             => $post_type['view_item'],
+                         'view_items'            => $post_type['view_items'],
+                         'search_items'          => $post_type['search_items'],
+                         'not_found'             => $post_type['not_found'],
+                         'not_found_in_trash'    => $post_type['not_found_in_trash'],
+                         'featured_image'        => $post_type['featured_image'],
+                         'set_featured_image'    => $post_type['set_featured_image'],
+                         'remove_featured_image' => $post_type['remove_featured_image'],
+                         'use_featured_image'    => $post_type['use_featured_image'],
+                         'insert_into_item'      => $post_type['insert_into_item'],
+                         'uploaded_to_this_item' => $post_type['uploaded_to_this_item'],
+                         'items_list'            => $post_type['items_list'],
+                         'items_list_navigation' => $post_type['items_list_navigation'],
+                         'filter_items_list'     => $post_type['filter_items_list']
+                    ),
+                    'label'                     => $post_type['label'],
+                    'description'               => $post_type['description'],
+                    'supports'                  => $post_type['supports'],
+                    'show_in_rest'              => $post_type['show_in_rest'],
+                    'taxonomies'                => $post_type['taxonomies'],
+                    'hierarchical'              => $post_type['hierarchical'],
+                    'public'                    => $post_type['public'],
+                    'show_ui'                   => $post_type['show_ui'],
+                    'show_in_menu'              => $post_type['show_in_menu'],
+                    'menu_position'             => $post_type['menu_position'],
+                    'menu_icon'                 => $post_type['menu_icon'],
+                    'show_in_admin_bar'         => $post_type['show_in_admin_bar'],
+                    'show_in_nav_menus'         => $post_type['show_in_nav_menus'],
+                    'can_export'                => $post_type['can_export'],
+                    'has_archive'               => $post_type['has_archive'],
+                    'exclude_from_search'       => $post_type['exclude_from_search'],
+                    'publicly_queryable'        => $post_type['publicly_queryable'],
+                    'capability_type'           => $post_type['capability_type']
+               )
+          );
+          /* After adding the post type we should add the filter to fix the title */
 
-          return $title;
+
+          add_filter( 'enter_title_here', array( $this , 'mtk_change_title_text' ) );
      }
-     public function storeCustomPostTypes()
-	{
+}
+public function mtk_change_title_text( $title )
+{
+     $screen = get_current_screen();
 
-          if ( ! ( get_option ( 'mtk_plugin_cpt' ) ) )
-		{
-               update_option ( 'mtk_plugin_cpt' , array () );
-			return;
-		}
-          $options = get_option ('mtk_plugin_cpt');
+     if  ( 'events' == $screen->post_type ) {
+          $title = 'Enter event name with date';
+     }
 
-          foreach ( $options as $option)
+     return $title;
+}
+public function storeCustomPostTypes()
+{
+
+     if ( ! ( get_option ( 'mtk_plugin_cpt' ) ) )
+     {
+          update_option ( 'mtk_plugin_cpt' , array () );
+          return;
+     }
+     $options = get_option ('mtk_plugin_cpt');
+
+     foreach ( $options as $option)
+     {
+          /* we fix the taxonomies array */
+          if ( isset ($option['taxonomies']) )
           {
-               /* we fix the taxonomies array */
-               if ( isset ($option['taxonomies']) )
+               $taxonomies_array = $option['taxonomies'];
+               unset ( $option['taxonomies'] );
+               foreach ( $taxonomies_array as $key => $value )
                {
-                    $taxonomies_array = $option['taxonomies'];
-                    unset ( $option['taxonomies'] );
-                    foreach ( $taxonomies_array as $key => $value )
-                    {
-                          $option['taxonomies'][] = $key;
-                    }
-               }
-               else {
-                    $option['taxonomies'] = array( 'category' , 'post_tag' );
-               }
-               /* Fix icon */
-               if ( ! ( isset ( $option['menu_icon'] ) ) )
-               {
-                    $option['menu_icon'] = '';
-               }
-
-               $this->custom_post_types[$option['post_type']] = array(
-     			'post_type'             => $option['post_type'],
-     			'name'                  => $option['plural_name'],
-     			'singular_name'         => $option['singular_name'],
-     			'menu_name'             => $option['plural_name'],
-     			'name_admin_bar'        => $option['singular_name'],
-     			'archives'              => $option['singular_name'] . ' Archives',
-     			'attributes'            => $option['singular_name'] . ' Attributes',
-     			'parent_item_colon'     => 'Parent ' . $option['singular_name'],
-     			'all_items'             => 'All ' . $option['plural_name'],
-     			'add_new_item'          => 'Add New ' . $option['singular_name'],
-     			'add_new'               => 'Add New',
-     			'new_item'              => 'New' . $option['singular_name'],
-     			'edit_item'             => 'Edit ' . $option['singular_name'],
-     			'update_item'           => 'Update ' . $option['singular_name'],
-     			'view_item'             => 'View ' . $option['singular_name'],
-     			'view_items'            => 'View ' . $option['plural_name'],
-     			'search_items'          => 'View ' . $option['plural_name'],
-     			'not_found'             => 'No ' . $option['singular_name'] . ' Found',
-     			'not_found_in_trash'    => 'No ' . $option['singular_name'] . ' Found in Trash',
-     			'featured_image'        => 'Featured Image',
-     			'set_featured_image'    => 'Set Featured Image',
-     			'remove_featured_image' => 'Remove Featured Image',
-     			'use_featured_image'    => 'Use Featured Image',
-     			'insert_into_item'      => 'Insert into ' . $option['singular_name'],
-     			'uploaded_to_this_item' => 'Upload to this ' . $option['singular_name'],
-     			'items_list'            => $option['plural_name'] . ' List',
-     			'items_list_navigation' => $option['plural_name'] . ' List Navigation',
-     			'filter_items_list'     => 'Filter ' . $option['plural_name'] . ' list',
-     			'label'                 => $option['singular_name'],
-     			'description'           => $option['plural_name'] . ' Custom Post Type',
-     			'supports'              => array ( 'title' , 'editor' , 'thumbnail' ),
-                    'show_in_rest'          => true,
-     			'taxonomies'            => $option['taxonomies'],
-     			'hierarchical'          => false,
-     			'public'                => isset ( $option['public'] ) ?: false,
-     			'show_ui'               => true,
-     			'show_in_menu'          => true,
-     			'menu_position'         => 5,
-                    'menu_icon'             => $option['menu_icon'],
-     			'show_in_admin_bar'     => true,
-     			'show_in_nav_menus'     => true,
-     			'can_export'            => true,
-     			'has_archive'           => isset ( $option['has_archive'] ) ?: false,
-     			'exclude_from_search'   => false,
-     			'publicly_queryable'    => true,
-     			'capability_type'       => 'post'
-     		);
-               /* Add the information to the local variable */
-
-               if ( isset ( $option['customFields'] ) )
-               {
-                    /* Add the custom Fields to a variable that we are going to use in the rest of the functions */
-                    $this->getColumns ( $option['post_type'] , $option['customFields'] );
+                    $option['taxonomies'][] = $key;
                }
           }
-
-
-
-	}
-     public function register_default_cpt ()
-     {
-          if ( ! ( isset ( $this->custom_post_types['default_recipe'] ) ) )
+          else {
+               $option['taxonomies'] = array( 'category' , 'post_tag' );
+          }
+          /* Fix icon */
+          if ( ! ( isset ( $option['menu_icon'] ) ) )
           {
-               /* We don't have a default post type yet so we need to register it */
-               $input['post_type'] = 'default_recipe';
-               $input['singular_name'] = 'Recipe';
-               $input['plural_name'] = 'Recipes';
-               $input['menu_icon'] = 'dashicons-carrot';
-               $input['public'] = 1;
-               $input['has_archive'] = 1;
+               $option['menu_icon'] = '';
+          }
 
-               /* General Section */
-               $i = 0;
-               $input['customFields'][$i]['ID'] = 'general';
-               $input['customFields'][$i]['Name'] = 'Recipe';
-               $input['customFields'][$i]['Type'] = 'Section';
-               $input['customFields'][$i]['Parent'] = 'general';
-               $input['customFields'][$i]['Show_in_columns'] = false;
+          $this->custom_post_types[$option['post_type']] = array(
+               'post_type'             => $option['post_type'],
+               'name'                  => $option['plural_name'],
+               'singular_name'         => $option['singular_name'],
+               'menu_name'             => $option['plural_name'],
+               'name_admin_bar'        => $option['singular_name'],
+               'archives'              => $option['singular_name'] . ' Archives',
+               'attributes'            => $option['singular_name'] . ' Attributes',
+               'parent_item_colon'     => 'Parent ' . $option['singular_name'],
+               'all_items'             => 'All ' . $option['plural_name'],
+               'add_new_item'          => 'Add New ' . $option['singular_name'],
+               'add_new'               => 'Add New',
+               'new_item'              => 'New' . $option['singular_name'],
+               'edit_item'             => 'Edit ' . $option['singular_name'],
+               'update_item'           => 'Update ' . $option['singular_name'],
+               'view_item'             => 'View ' . $option['singular_name'],
+               'view_items'            => 'View ' . $option['plural_name'],
+               'search_items'          => 'View ' . $option['plural_name'],
+               'not_found'             => 'No ' . $option['singular_name'] . ' Found',
+               'not_found_in_trash'    => 'No ' . $option['singular_name'] . ' Found in Trash',
+               'featured_image'        => 'Featured Image',
+               'set_featured_image'    => 'Set Featured Image',
+               'remove_featured_image' => 'Remove Featured Image',
+               'use_featured_image'    => 'Use Featured Image',
+               'insert_into_item'      => 'Insert into ' . $option['singular_name'],
+               'uploaded_to_this_item' => 'Upload to this ' . $option['singular_name'],
+               'items_list'            => $option['plural_name'] . ' List',
+               'items_list_navigation' => $option['plural_name'] . ' List Navigation',
+               'filter_items_list'     => 'Filter ' . $option['plural_name'] . ' list',
+               'label'                 => $option['singular_name'],
+               'description'           => $option['plural_name'] . ' Custom Post Type',
+               'supports'              => array ( 'title' , 'editor' , 'thumbnail' ),
+               'show_in_rest'          => true,
+               'taxonomies'            => $option['taxonomies'],
+               'hierarchical'          => false,
+               'public'                => isset ( $option['public'] ) ?: false,
+               'show_ui'               => true,
+               'show_in_menu'          => true,
+               'menu_position'         => 5,
+               'menu_icon'             => $option['menu_icon'],
+               'show_in_admin_bar'     => true,
+               'show_in_nav_menus'     => true,
+               'can_export'            => true,
+               'has_archive'           => isset ( $option['has_archive'] ) ?: false,
+               'exclude_from_search'   => false,
+               'publicly_queryable'    => true,
+               'capability_type'       => 'post'
+          );
+          /* Add the information to the local variable */
 
-
-                    $i++;
-                    $input['customFields'][$i]['ID'] = 'recipe_title';
-                    $input['customFields'][$i]['Name'] = 'Title';
-                    $input['customFields'][$i]['Type'] = 'Item';
-                    $input['customFields'][$i]['Parent'] = 'general';
-                    $input['customFields'][$i]['Show_in_columns'] = false;
-
-                    $i++;
-                    $input['customFields'][$i]['ID'] = 'recipe_image';
-                    $input['customFields'][$i]['Name'] = 'Image';
-                    $input['customFields'][$i]['Type'] = 'Item';
-                    $input['customFields'][$i]['Parent'] = 'general';
-                    $input['customFields'][$i]['Show_in_columns'] = false;
-
-                    $i++;
-                    $input['customFields'][$i]['ID'] = 'recipe_description';
-                    $input['customFields'][$i]['Name'] = 'Description';
-                    $input['customFields'][$i]['Type'] = 'Item';
-                    $input['customFields'][$i]['Parent'] = 'general';
-                    $input['customFields'][$i]['Show_in_columns'] = false;
-
-                    $i++;
-                    $input['customFields'][$i]['ID'] = 'recipe_servings';
-                    $input['customFields'][$i]['Name'] = 'Servings';
-                    $input['customFields'][$i]['Type'] = 'Item';
-                    $input['customFields'][$i]['Parent'] = 'general';
-                    $input['customFields'][$i]['Show_in_columns'] = false;
-
-                    /* Cooking Time */
-                    $i++;
-                    $input['customFields'][$i]['ID'] = 'recipe_times';
-                    $input['customFields'][$i]['Name'] = 'Prep Time';
-                    $input['customFields'][$i]['Type'] = 'Item';
-                    $input['customFields'][$i]['Parent'] = 'general';
-                    $input['customFields'][$i]['Show_in_columns'] = false;
-
-                    $i++;
-                    $input['customFields'][$i]['ID'] = 'recipe_prep_time';
-                    $input['customFields'][$i]['Name'] = 'Prep Time';
-                    $input['customFields'][$i]['Type'] = 'Item';
-                    $input['customFields'][$i]['Parent'] = 'recipe_times';
-                    $input['customFields'][$i]['Show_in_columns'] = false;
-
-                    $i++;
-                    $input['customFields'][$i]['ID'] = 'recipe_cook_time';
-                    $input['customFields'][$i]['Name'] = 'Cook Time';
-                    $input['customFields'][$i]['Type'] = 'Item';
-                    $input['customFields'][$i]['Parent'] = 'recipe_times';
-                    $input['customFields'][$i]['Show_in_columns'] = false;
-
-                    $i++;
-                    $input['customFields'][$i]['ID'] = 'recipe_passive_time';
-                    $input['customFields'][$i]['Name'] = 'Passive Time';
-                    $input['customFields'][$i]['Type'] = 'Item';
-                    $input['customFields'][$i]['Parent'] = 'recipe_times';
-                    $input['customFields'][$i]['Show_in_columns'] = false;
-
-               /* Group Section */
-               $i++;
-               $input['customFields'][$i]['ID'] = 'group';
-               $input['customFields'][$i]['Name'] = 'Group';
-               $input['customFields'][$i]['Type'] = 'Section';
-               $input['customFields'][$i]['Parent'] = 'group';
-               $input['customFields'][$i]['Show_in_columns'] = false;
-
-                    /* Ingredients Section */
-                    $i++;
-                    $input['customFields'][$i]['ID'] = 'recipe_ingredients';
-                    $input['customFields'][$i]['Name'] = 'Ingredients';
-                    $input['customFields'][$i]['Type'] = 'SubSection';
-                    $input['customFields'][$i]['Parent'] = 'group';
-                    $input['customFields'][$i]['Show_in_columns'] = false;
-
-                         /* Single Ingredient Section */
-                         $i++;
-                         $input['customFields'][$i]['ID'] = 'recipe_ingredient_item';
-                         $input['customFields'][$i]['Name'] = 'Ingredient';
-                         $input['customFields'][$i]['Type'] = 'Item';
-                         $input['customFields'][$i]['Parent'] = 'recipe_ingredients';
-                         $input['customFields'][$i]['Show_in_columns'] = false;
-
-                              $i++;
-                              $input['customFields'][$i]['ID'] = 'recipe_ingredient_quantity';
-                              $input['customFields'][$i]['Name'] = 'Quantity';
-                              $input['customFields'][$i]['Type'] = 'SubItem';
-                              $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
-                              $input['customFields'][$i]['Show_in_columns'] = false;
-
-                              $i++;
-                              $input['customFields'][$i]['ID'] = 'recipe_ingredient_unit';
-                              $input['customFields'][$i]['Name'] = 'Unit';
-                              $input['customFields'][$i]['Type'] = 'SubItem';
-                              $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
-                              $input['customFields'][$i]['Show_in_columns'] = false;
-
-                              $i++;
-                              $input['customFields'][$i]['ID'] = 'recipe_ingredient_name';
-                              $input['customFields'][$i]['Name'] = 'Ingredient Name';
-                              $input['customFields'][$i]['Type'] = 'SubItem';
-                              $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
-                              $input['customFields'][$i]['Show_in_columns'] = false;
-
-                              $i++;
-                              $input['customFields'][$i]['ID'] = 'recipe_ingredient_notes';
-                              $input['customFields'][$i]['Name'] = 'Notes';
-                              $input['customFields'][$i]['Type'] = 'SubItem';
-                              $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
-                              $input['customFields'][$i]['Show_in_columns'] = false;
-
-                    /* Instructions Section */
-                    $i++;
-                    $input['customFields'][$i]['ID'] = 'recipe_instructions';
-                    $input['customFields'][$i]['Name'] = 'Instructions';
-                    $input['customFields'][$i]['Type'] = 'SubSection';
-                    $input['customFields'][$i]['Parent'] = 'group';
-                    $input['customFields'][$i]['Show_in_columns'] = false;
-
-                    /* Step Section */
-                    $i++;
-                    $input['customFields'][$i]['ID'] = 'recipe_Instruction';
-                    $input['customFields'][$i]['Name'] = 'Notes';
-                    $input['customFields'][$i]['Type'] = 'Item';
-                    $input['customFields'][$i]['Parent'] = 'recipe_instructions';
-                    $input['customFields'][$i]['Show_in_columns'] = false;
-
-                         $i++;
-                         $input['customFields'][$i]['ID'] = 'recipe_step_number';
-                         $input['customFields'][$i]['Name'] = 'Step Number';
-                         $input['customFields'][$i]['Type'] = 'SubItem';
-                         $input['customFields'][$i]['Parent'] = 'recipe_instructions';
-                         $input['customFields'][$i]['Show_in_columns'] = false;
-
-                         $i++;
-                         $input['customFields'][$i]['ID'] = 'recipe_step_instruction';
-                         $input['customFields'][$i]['Name'] = 'Instruction';
-                         $input['customFields'][$i]['Type'] = 'SubItem';
-                         $input['customFields'][$i]['Parent'] = 'recipe_instructions';
-                         $input['customFields'][$i]['Show_in_columns'] = false;
-
-                         $i++;
-                         $input['customFields'][$i]['ID'] = 'recipe_step_image';
-                         $input['customFields'][$i]['Name'] = 'Image';
-                         $input['customFields'][$i]['Type'] = 'SubItem';
-                         $input['customFields'][$i]['Parent'] = 'recipe_instructions';
-                         $input['customFields'][$i]['Show_in_columns'] = false;
-
-               /* Extras Section */
-               $i++;
-               $input['customFields'][$i]['ID'] = 'recipe_extras';
-               $input['customFields'][$i]['Name'] = 'Extra Information';
-               $input['customFields'][$i]['Type'] = 'Section';
-               $input['customFields'][$i]['Parent'] = 'recipe_extras';
-               $input['customFields'][$i]['Show_in_columns'] = false;
-
-                    $i++;
-                    $input['customFields'][$i]['ID'] = 'recipe_notes';
-                    $input['customFields'][$i]['Name'] = 'Recipe notes';
-                    $input['customFields'][$i]['Type'] = 'SubItem';
-                    $input['customFields'][$i]['Parent'] = 'recipe_extras';
-                    $input['customFields'][$i]['Show_in_columns'] = false;
-
-                    $i++;
-                    $input['customFields'][$i]['ID'] = 'recipe_video';
-                    $input['customFields'][$i]['Name'] = 'Recipe Video';
-                    $input['customFields'][$i]['Type'] = 'SubItem';
-                    $input['customFields'][$i]['Parent'] = 'recipe_extras';
-                    $input['customFields'][$i]['Show_in_columns'] = false;
-
-
-
-
-
-
-               $output = $this->cpt_callbacks->cptSanitize ( $input );
-               /* update option */
-               $option = 'mtk_plugin_cpt';
-               update_option( $option, $output);
-               /* Update the array */
-               $this->storeCustomPostTypes();
-
+          if ( isset ( $option['customFields'] ) )
+          {
+               /* Add the custom Fields to a variable that we are going to use in the rest of the functions */
+               $this->getColumns ( $option['post_type'] , $option['customFields'] );
           }
      }
 
-     /* We are going to manage the custom columns of the cpt */
-     /* Set columns */
-     public function getColumns ( $post_type , $customFields)
+
+
+}
+public function register_default_cpt ()
+{
+     if ( ! ( isset ( $this->custom_post_types['default_recipe'] ) ) )
      {
-          $this->customFields[$post_type] = $customFields;
+          /* We don't have a default post type yet so we need to register it */
+          $input['post_type'] = 'default_recipe';
+          $input['singular_name'] = 'Recipe';
+          $input['plural_name'] = 'Recipes';
+          $input['menu_icon'] = 'dashicons-carrot';
+          $input['public'] = 1;
+          $input['has_archive'] = 1;
+
+          /* General Section */
+          $i = 0;
+          $input['customFields'][$i]['ID'] = 'general';
+          $input['customFields'][$i]['Name'] = 'Recipe';
+          $input['customFields'][$i]['Type'] = 'Section';
+          $input['customFields'][$i]['Parent'] = 'general';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_name';
+          $input['customFields'][$i]['Name'] = 'Name';
+          $input['customFields'][$i]['Type'] = 'Item';
+          $input['customFields'][$i]['Parent'] = 'general';
+          $input['customFields'][$i]['Show_in_columns'] = true;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_author';
+          $input['customFields'][$i]['Name'] = 'Author';
+          $input['customFields'][$i]['Type'] = 'Item';
+          $input['customFields'][$i]['Parent'] = 'general';
+          $input['customFields'][$i]['Show_in_columns'] = true;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_image';
+          $input['customFields'][$i]['Name'] = 'Image';
+          $input['customFields'][$i]['Type'] = 'Item';
+          $input['customFields'][$i]['Parent'] = 'general';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_description';
+          $input['customFields'][$i]['Name'] = 'Description';
+          $input['customFields'][$i]['Type'] = 'Item';
+          $input['customFields'][$i]['Parent'] = 'general';
+          $input['customFields'][$i]['Show_in_columns'] = true;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_servings';
+          $input['customFields'][$i]['Name'] = 'Servings';
+          $input['customFields'][$i]['Type'] = 'Item';
+          $input['customFields'][$i]['Parent'] = 'general';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          /* Cooking Time */
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_times';
+          $input['customFields'][$i]['Name'] = 'Times';
+          $input['customFields'][$i]['Type'] = 'Item';
+          $input['customFields'][$i]['Parent'] = 'general';
+          $input['customFields'][$i]['Show_in_columns'] = true;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_prep_time';
+          $input['customFields'][$i]['Name'] = 'Prep Time';
+          $input['customFields'][$i]['Type'] = 'SubItem';
+          $input['customFields'][$i]['Parent'] = 'recipe_times';
+          $input['customFields'][$i]['Show_in_columns'] = true;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_cook_time';
+          $input['customFields'][$i]['Name'] = 'Cook Time';
+          $input['customFields'][$i]['Type'] = 'SubItem';
+          $input['customFields'][$i]['Parent'] = 'recipe_times';
+          $input['customFields'][$i]['Show_in_columns'] = true;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_passive_time';
+          $input['customFields'][$i]['Name'] = 'Passive Time';
+          $input['customFields'][$i]['Type'] = 'SubItem';
+          $input['customFields'][$i]['Parent'] = 'recipe_times';
+          $input['customFields'][$i]['Show_in_columns'] = true;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          /* Group Section */
+          $i++;
+          $input['customFields'][$i]['ID'] = 'group';
+          $input['customFields'][$i]['Name'] = 'Group';
+          $input['customFields'][$i]['Type'] = 'Section';
+          $input['customFields'][$i]['Parent'] = 'group';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = true;
+
+          /* Ingredients Section */
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_ingredients';
+          $input['customFields'][$i]['Name'] = 'Ingredients';
+          $input['customFields'][$i]['Type'] = 'SubSection';
+          $input['customFields'][$i]['Parent'] = 'group';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+
+          /* Single Ingredient Section */
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_ingredient_item';
+          $input['customFields'][$i]['Name'] = 'Ingredient';
+          $input['customFields'][$i]['Type'] = 'Item';
+          $input['customFields'][$i]['Parent'] = 'recipe_ingredients';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = true;
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_ingredient_quantity';
+          $input['customFields'][$i]['Name'] = 'Quantity';
+          $input['customFields'][$i]['Type'] = 'SubItem';
+          $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_ingredient_unit';
+          $input['customFields'][$i]['Name'] = 'Unit';
+          $input['customFields'][$i]['Type'] = 'SubItem';
+          $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_ingredient_name';
+          $input['customFields'][$i]['Name'] = 'Ingredient Name';
+          $input['customFields'][$i]['Type'] = 'SubItem';
+          $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_ingredient_notes';
+          $input['customFields'][$i]['Name'] = 'Notes';
+          $input['customFields'][$i]['Type'] = 'SubItem';
+          $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          /* Instructions Section */
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_instructions';
+          $input['customFields'][$i]['Name'] = 'Instructions';
+          $input['customFields'][$i]['Type'] = 'SubSection';
+          $input['customFields'][$i]['Parent'] = 'group';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          /* Step Section */
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_instructions_step';
+          $input['customFields'][$i]['Name'] = 'Step';
+          $input['customFields'][$i]['Type'] = 'Item';
+          $input['customFields'][$i]['Parent'] = 'recipe_instructions';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = true;
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_step_number';
+          $input['customFields'][$i]['Name'] = 'Step Number';
+          $input['customFields'][$i]['Type'] = 'SubItem';
+          $input['customFields'][$i]['Parent'] = 'recipe_instructions_step';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_step_instruction';
+          $input['customFields'][$i]['Name'] = 'Instruction';
+          $input['customFields'][$i]['Type'] = 'SubItem';
+          $input['customFields'][$i]['Parent'] = 'recipe_instructions_step';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_step_image';
+          $input['customFields'][$i]['Name'] = 'Insstrucions Image';
+          $input['customFields'][$i]['Type'] = 'SubItem';
+          $input['customFields'][$i]['Parent'] = 'recipe_instructions_step';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          /* Extras Section */
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_extras';
+          $input['customFields'][$i]['Name'] = 'Extra Information';
+          $input['customFields'][$i]['Type'] = 'Section';
+          $input['customFields'][$i]['Parent'] = 'recipe_extras';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_notes';
+          $input['customFields'][$i]['Name'] = 'Recipe notes';
+          $input['customFields'][$i]['Type'] = 'Item';
+          $input['customFields'][$i]['Parent'] = 'recipe_extras';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = true;
+
+          $i++;
+          $input['customFields'][$i]['ID'] = 'recipe_video';
+          $input['customFields'][$i]['Name'] = 'Recipe Video';
+          $input['customFields'][$i]['Type'] = 'Item';
+          $input['customFields'][$i]['Parent'] = 'recipe_extras';
+          $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = true;
+
+
+
+
+
+
+          $output = $this->cpt_callbacks->cptSanitize ( $input );
+          /* update option */
+          $option = 'mtk_plugin_cpt';
+          update_option( $option, $output);
+          /* Update the array */
+          $this->storeCustomPostTypes();
 
      }
-     public function manage_cpt_columns (  )
+}
+
+/* We are going to manage the custom columns of the cpt */
+/* Set columns */
+public function getColumns ( $post_type , $customFields)
+{
+     $this->customFields[$post_type] = $customFields;
+
+}
+public function manage_cpt_columns (  )
+{
+     /* Add metabox */
+     add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+     // /* Save new fields of the meta boxes */
+     add_action ( 'save_post' , array ( $this , 'save_meta_box') );
+
+     foreach ( $this->customFields as $post_type => $customFields )
      {
-
-
-
-          /* Add metabox */
-          add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-          /* Save new fields of the meta boxes */
-          add_action ( 'save_post' , array ( $this , 'save_meta_box') , 10, 3 );
-
-          foreach ( $this->customFields as $post_type => $customFields )
+          $this->ordered[$post_type] = $this->orderCustomcolumns ( $customFields );
+          if ( count ( $this->ordered[$post_type] ) == 0 )
           {
-               error_log ('estamos trabajando en las custom fields / columns');
-               error_log ('1. ordenamos los datos que tenemos en el array ');
-
-               $this->ordered[$post_type] = $this->orderCustomcolumns ( $customFields );
+               unset ( $this->ordered[$post_type] );
+               unset ( $this->customFields[$post_type] );
+          }
+          else
+          {
                $this->current_post_type = $post_type;
 
                /* Edit the custom columns of the custom post type */
@@ -641,17 +676,20 @@ class RecipeCPTController extends BaseController
                add_filter ( 'manage_edit-' . $post_type . '_sortable_columns' , array ( $this , 'set_custom_columns_sortable' ) );
           }
 
-
      }
-     /* order custom columns array */
-     public function orderCustomcolumns ( $customFields )
-     {
-          $ordered = [];
-          while ( count ( $customFields  ) > 0)
-          {
-               foreach ($customFields as $i => $fields)
-               {
 
+
+}
+/* order custom columns array */
+public function orderCustomcolumns ( $customFields )
+{
+     $ordered = [];
+     while ( count ( $customFields  ) > 0)
+     {
+          foreach ($customFields as $i => $fields)
+          {
+               if ( isset ( $fields['Parent'] ) )
+               {
                     /* Section */
                     if ($fields['Parent'] == $fields['ID'])
                     {
@@ -701,39 +739,66 @@ class RecipeCPTController extends BaseController
                          $ordered[ $first ] [ $second ] [ $third ] [ $fourth ] [ $id ] ['field-info'] =  $fields;
                          unset ($customFields[$i]);
                     }
-
+               }
+               else
+               {
+                    unset ($customFields[$i]);
                }
           }
-
-
-
-          return ($ordered);
-
-
      }
-     /* Adds the meta boxes */
-     public function add_meta_boxes( $post_type )
+
+
+
+     return ($ordered);
+
+
+}
+/* Adds the meta boxes */
+public function add_meta_boxes( $post_type )
+{
+     /* Check if we have columns */
+     if ( ! isset ( $this->ordered[$post_type] ) )
      {
-          /* Check if we have columns */
-          if ( ! isset ( $this->ordered[$post_type] ) )
+          /* empty array, nothing to add */
+          return ;
+     }
+
+     /* We create the meta boxes based on the section name */
+     foreach ( $this->ordered[$post_type] as $id => $fields )
+     {    unset ($id_value);
+          $id_value[0] = $id . '_0';
+          if ( isset ( $fields['field-info']['add_remove_buttons'] ) || ($fields['field-info']['add_remove_buttons']) )
           {
-               /* empty array, nothing to add */
-               return ;
+               $i = 0;
+               $foundMetas = true;
+               while ( $foundMetas )
+               {
+                    /* We are going to use multiple metaboxes for each */
+
+                    unset ($data);
+                    $data  = get_post_meta ( get_the_ID() , '_mtk_' . $post_type . '_'.$id . '_'. $i , true );
+
+                    if ( is_array ( $data ) )
+                    {
+                         $id_value[$i] = $id . '_'. $i;
+                         $i ++;
+                    }
+                    else
+                    {
+                         $foundMetas = false;
+                    }
+
+               }
+
           }
 
-          /* We create the meta boxes based on the section name */
-          foreach ( $this->ordered[$post_type] as $id => $fields )
+          foreach ($id_value as $i => $FixedId)
           {
-               // [field-info] => Array
-               // (
-               //      [ID] => group
-               //      [Name] => Group
-               //      [Type] => Section
-               //      [Parent] => group
-               //      [Show_in_columns] =>
-               // )
-               /* Author Name */
-               $id = $fields['field-info']['ID'];
+               error_log (__FUNCTION__ . ' - ' . __LINE__);
+               error_log ( print_r ( $FixedId , true ) );
+               error_log ( print_r ( $fields , true ) );
+               error_log ('----------------------------');
+
                $title = $fields['field-info']['Name'];
                $callback = array ( $this , 'render_features_box');
                $screen = $post_type;
@@ -741,223 +806,180 @@ class RecipeCPTController extends BaseController
                $priority = 'default';
                $callback_args = '';
 
-               add_meta_box ( $id, $title, $callback, $screen, $context, $priority, $callback_args );
-
-
+               add_meta_box ( $FixedId, $title, $callback, $screen, $context, $priority, $callback_args );
           }
 
 
+
      }
-     /* Creates the actual meta box that is previously added */
-     public function render_features_box ( $post , $args)
+
+
+}
+/* Creates the actual meta box that is previously added */
+public function render_features_box ( $post , $args )
+{
+     /*get the post type based on the post */
+     /* Get the post type */
+     $post_type = $post->post_type;
+     $post_id = $post->ID;
+     $id = $args['id'];
+
+     /*  validate that the contents of the form request */
+     echo '<p style="display: none;">';
+     wp_nonce_field( 'mtk_'.$post_type.'_nonce_' . $post_id, 'mtk_'.$post_type.'_nonce', FALSE );
+     echo '</p>';
+     /* Get the data */
+     unset ($data);
+     $data  = get_post_meta ( $post->ID , '_mtk_' . $post_type . '_'.$id , true );
+
+     /* Multiple sections? */
+     $add_remove_buttons = false;
+     if (isset ($this->ordered[$post_type][$id]['add_remove_buttons']) && ( $this->ordered[$post_type][$id]['add_remove_buttons'] ))
+     {
+          $add_remove_buttons = true;
+     }
+
+     /* We got a fixed id, we need to fix it to make it valid for our array */
+     if ( ! ( isset ($this->ordered[$post_type][$id]) ) )
+     {
+          $simpleId = $this->r_cptFuntions->removeIdExtension( $id );
+     }
+     foreach ( $this->ordered[$post_type][$simpleId] as $fieldId => $fieldInfo )
      {
 
-          /* Get the post type */
-          $post_type = $post->post_type;
-          $id = $args['id'];
-          /*  validate that the contents of the form request */
-          wp_nonce_field( 'mtk_' . $post_type . '_author' , 'mtk_' . $post_type . '_author_nonce' );
-          /* Get the data */
-          $data  = get_post_meta ( $post->ID , '_mtk_' . $post_type . '_key' , true );
-          /* what fields are we going tu use */
-
-          $fields = $this->ordered[$post_type][$id];
-          /* First Level */
-          foreach ($fields as $key => $value)
+          /* We don't use the field-info */
+          if ( $fieldId != 'field-info' )
           {
-               /* Ignore the first Field Info, we have already used id for the box*/
-               if ($key != 'field-info')
+               $values = $this->r_cptFuntions->filterMetadata( $fieldId , $data );
+
+
+               /* What type?*/
+               if ($fieldInfo['field-info']['Type'] == 'Section')
                {
-                    if ( count ( $value ) == 1 )
-                    {
 
-                         /* if the count is 1 means that this is the last of the level  */
-                         if ( isset ( $value['field-info'] ) )
-                         {
+               }
+               else if ($fieldInfo['field-info']['Type'] == 'SubSection')
+               {
+                    $this->r_cptFuntions->SetSubSectionFields ( $post_type , $fieldInfo , $id , $values , $add_remove_buttons);
+               }
+               else if ($fieldInfo['field-info']['Type'] == 'Item')
+               {
+                    $this->r_cptFuntions->SetItemFields ( $post_type , $fieldInfo , $id , $values , $add_remove_buttons);
+               }
+               else if ($fieldInfo['field-info']['Type'] == 'SubItem')
+               {
 
-                              /* the type is Section*/
-                              if ( $value['field-info']['Type'] == 'Section' )
-                              {
-                                   $this->SetSectionsFields ( $post_type , $value , $id , $data);
-                              }
-                              /* the type is SubSection*/
-                              else if ( $value['field-info']['Type'] == 'SubSection' )
-                              {
-                                   $this->SetSubSectionFields ( $post_type , $value , $id , $data);
-                              }
-                              else if ( $value['field-info']['Type'] == 'Item' )
-                              {
-                                   $this->SetItemFields ( $post_type , $value , $id , $data);
-                              }
-                              else if ( $value['field-info']['Type'] == 'SubItem' )
-                              {
-                                   $this->SetSubItemFields ( $post_type , $value , $id , $data);
-                              }
-
-                         }
-
-                    }
-                    else
-                    {
-                    }
                }
           }
      }
-     /* We create the fields depending on the field type */
-     public function SetSectionsFields ( $post_type , $value , $id , $data)
-     {
-          // error_log (__FUNCTION__ . ' - ' . __LINE__);
-          // error_log ( print_r ( $values , true ) );
-          // error_log ('----------------------------');
-     }
-     public function SetSubSectionFields ( $post_type , $value , $id , $data)
-     {
-          // error_log (__FUNCTION__ . ' - ' . __LINE__);
-          // error_log ( print_r ( $values , true ) );
-          // error_log ('----------------------------');
-     }
-     public function SetItemFields ( $post_type , $value , $id , $data)
-     {
 
-          /* we see if we have SubItems */
-          if ( count ( $value ) == 1 )
+}
+
+/* Saves the data we have added to the Meta box */
+public function save_meta_box( $post_id)
+{
+     /*---------------- Prevous checks and information ----------------*/
+     /* Get the post type */
+     $post_type = $this->r_cptFuntions->getThisPostId ( $post_id );
+     /* Check if is one of this our custom post types */
+     if ( ! ( isset ( $this->custom_post_types[$post_type] ) ) )
+     {
+          return ( $post_id );
+     }
+     if ( ! ( isset ( $this->customFields[$post_type] ) ) )
+     {
+          return ( $post_id );
+     }
+     /* Check if we should save the meta */
+     if ( ! ( $this->r_cptFuntions->save_meta_box_authorization ( $post_type, $post_id ) ) )
+     {
+          return ( $post_id );
+     }
+
+     /*  order the post into an data array */
+     $index = 'mtk_' . $post_type;
+     $data = $this->r_cptFuntions->orderForSaveMeta ( $index );
+     /*---------------- Store this metabox ----------------*/
+     /* We get the values saved in the post mtk_default_recipe*/
+     if ( is_array ( $data ) )
+     {
+          foreach ( $data as $sectionId => $section )
           {
-               if ( isset ( $value['field-info'] ) )
+               $index = '_mtk_' . $post_type . '_' . $sectionId;
+
+               /* if the section has not content no need to add it */
+
+               if ( ( count ( $section ) == 1 ) && ( isset ( $section[0] ) ) && ( $section[0] == '' )  )
                {
-                    // [ID] => recipe_image
-                    // [Name] => Image
-                    // [Type] => Item
-                    // [Parent] => general
-                    // [Show_in_columns] =>
-                    /* Add the gerarchy */
-                    $fieldName = 'mtk_' . $post_type . '_featured';
-                    if ( is_array ( $id ) )
-                    {
-                         foreach ($id as $key => $value)
-                         {
-                              $fieldName .= '['.$value.']';
-                         }
-                    }
-                    else
-                    {
-                         $fieldName .= '['.$id.']';
-                    }
-                    error_log (__FUNCTION__ . ' - ' . __LINE__);
-                    error_log ( print_r ( $fieldName , true ) );
-                    error_log ('----------------------------');
-                    /* add the id of this field */
-                    $fieldName .= '['.$value['field-info']['ID'].']';
-                    echo (__FUNCTION__ . ' - ' . __LINE__);
-
+                    /* First we delete old inforamtion */
+                    delete_post_meta( $post_id, $index );
                }
-          }
-          else
-          {
+               else {
+                    if ( ! add_post_meta( $post_id, $index, $section, true ) )
+                    {
+                         update_post_meta( $post_id, $index, $section );
+
+                    }
+                    error_log (__FUNCTION__ . ' - ' . __LINE__) . '<pre>';
+                    error_log($index);
+                    error_log(print_r($section, true));
+                    error_log('--------------------------------------------');
+               }
+
+
 
           }
      }
-     public function SetSubItemFields ( $post_type , $value , $id , $data)
-     {
-          // error_log (__FUNCTION__ . ' - ' . __LINE__);
-          // error_log ( print_r ( $values , true ) );
-          // error_log ('----------------------------');
 
-     }
-     /* Saves the data we have added to the Meta box */
-     public function save_meta_box( $post_id, $post, $update )
-     {
-          if (isset ( $_POST['post_type'] ))
-          {
-               $post_type = $_POST['post_type'];
-          }
-          else
-          {
-               $post_type = $post->post_type;
-          }
-          /* Happens every time the user saves the post */
-          if ( ! ( isset ( $_POST['mtk_'.$post_type.'_author_nonce'] ) ) )
-          {
-               /* If the another post is saved, not the testimonial type then we just return the post id*/
+}
+/*  Customizes the fields of the list we see in the  list */
+public function set_custom_column( $columns )
+{
+     $post_type = $this->current_post_type;
+     $cb = $columns['cb'];
+     $title = $columns['title'];
+     $date = $columns['date'];
+     unset ( $columns );
+     /* We are going to rearrange the information */
+     $columns['cb'] = $cb;
+     $columns['title'] = 'Post Title';
+     $columns['date'] = $date;
 
-               return ( $post_id );
-          }
-          /* then wer stoe our extra variables */
-          /* We store our custom nonce */
-          $nonce = $_POST['mtk_'.$post_type.'_author_nonce'];
-          /* Verify the that the none is valid */
-          if ( ! ( wp_verify_nonce ( $nonce , 'mtk_'.$post_type.'_author' ) ) )
-          {
-               /* if is not valid we stop the execution of the script */
-               return ( $post_id );
-          }
-          /* We check if Wordpress is doing an autosave we interrupt the script */
-          if ( defined ('DOING_AUTOSAVE') && DOING_AUTOSAVE)
-          {
-               return ( $post_id );
-          }
-          /* Check it the user has the ability to edit the post */
-          if ( ! ( current_user_can ( 'edit_post' , $post_id ) ) )
-          {
-               return ( $post_id );
-          }
-          /* Store this metabox */
-          foreach ($this->customFields[$post_type] as $i => $customFields)
-          {
-               $data[$customFields['ID']] = sanitize_text_field( $_POST['mtk_'.$post_type.'_' .$customFields['ID']] );
-          }
-          // error_log('data Array: ');
-          // error_log(print_r($data, true));
-          // error_log('--------------------------------------------');
-          update_post_meta( $post_id, '_mtk_'.$post_type.'_key', $data );
-     }
-     /*  Customizes the fields of the list we see in the  list */
-     public function set_custom_column( $columns )
+     foreach ($this->customFields[$post_type] as $i => $fieldInfo)
      {
-          $post_type = $this->current_post_type;
-
-          unset ( $columns );
-          /* We are going to rearrange the information */
-          foreach ($this->customFields[$post_type] as $i => $fieldInfo)
+          if ($fieldInfo['Show_in_columns'])
           {
                $columns[$fieldInfo['ID']] = $fieldInfo['Name'];
           }
-          return ( $columns );
-     }
-     /* Sets the data that will be display in the list */
-     public function set_custom_columns_data( $column , $post_id )
-     {
 
-          $data  = get_post_meta ( $post_id , '_mtk_'.$post_type.'_key' , true );
-          /* Create the variables where we are going to sort the information */
-          /* Author Name */
-          $name = isset($data['name']) ? $data['name'] : '';
-          /* Email */
-          $email = isset($data['email']) ? $data['email'] : '';
-          /* approved */
-          $approved = ( isset($data['approved']) && ( $data['approved'] === 1 ) ) ? '<strong>YES</strong>' : 'NO';
-          /* featured */
-          $featured = ( isset($data['featured']) && ( $data['featured'] === 1 ) ) ? '<strong>YES</strong>' : 'NO';
+     }
+     return ( $columns );
+}
+/* Sets the data that will be display in the list */
+public function set_custom_columns_data( $column , $post_id )
+{
 
-          switch ( $column )
-          {
-               case 'name':
-                    echo '<strong>' . $name . '</strong><br /><a href="mailto:'. $email .'">'. $email .'</a>';
-                    break;
-                    case 'approved':
-                         echo ($approved);
-                         break;
-               case 'featured':
-                    echo ($featured);
-                    break;
-          }
-     }
-     /* Sets Which fields are sortable */
-     public function set_custom_columns_sortable ( $columns )
+     $data  = get_post_meta ( $post_id , '_mtk_'.$post_type.'_key' , true );
+     switch ( $column )
      {
-          $columns['name'] = 'name';
-          $columns['approved'] = 'approved';
-          $columns['featured'] = 'featured';
-          return ( $columns );
+          case 'name':
+          echo '<strong>' . $name . '</strong><br /><a href="mailto:'. $email .'">'. $email .'</a>';
+          break;
+          case 'approved':
+          echo ($approved);
+          break;
+          case 'featured':
+          echo ($featured);
+          break;
      }
+}
+/* Sets Which fields are sortable */
+public function set_custom_columns_sortable ( $columns )
+{
+     $columns['name'] = 'name';
+     $columns['approved'] = 'approved';
+     $columns['featured'] = 'featured';
+     return ( $columns );
+}
 
 }
