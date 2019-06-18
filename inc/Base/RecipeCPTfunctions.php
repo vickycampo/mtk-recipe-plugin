@@ -278,7 +278,7 @@ class RecipeCPTFunctions extends BaseController
                foreach ( $ExtendedId as $i => $ExtendedIdValue )
                {
                     $fieldName = $this->createFieldName ( $post_type , $parent_id, $ExtendedIdValue );
-                    echo ('<div class="SubSection_div" id="'.$fieldName.'[main_div]">');
+                    echo ('<div class="SubSection_div '.$value['field-info']['ID'].'_div" id="'.$fieldName.'[main_div]">');
                     echo ('<div class="SubSection_title_div" id="'.$fieldName.'[title_div]">');
                     /* add the title  */
                     echo ('<h3 class=""><span>');
@@ -296,7 +296,7 @@ class RecipeCPTFunctions extends BaseController
                     echo ('</h3>');
                     echo ('</div><!-- title_div -->');
                     /* add the content   */
-                    echo ('<div class="SubSection_content_div" id="'.$fieldName.'[content_div]">');
+                    echo ('<div class="SubSection_content_div '.$value['field-info']['ID'].'_content_div" id="'.$fieldName.'[content_div]">');
 
                     /* add the kids */
 
@@ -393,9 +393,9 @@ class RecipeCPTFunctions extends BaseController
                          echo ('<div class="Item_div '.$value['field-info']['ID'].'_main_div" id="'.$fieldName.'[main_div]">');
                               echo ('<div class="Item_title_div '.$value['field-info']['ID'].'_title_div" id="'.$fieldName.'_title_div">');
                               /* add the title  */
-                              echo ('<h3 class=""><span>');
+                              echo ('<h4 class=""><span>');
                               echo ( $value['field-info']['Name'] );
-                              echo ('</span>');
+                              echo ('</span></h4>');
                               echo ('</div><!-- Item_title_div -->');
                               echo ('<div class="Item_div '.$value['field-info']['ID'].'_content_div" id="'.$fieldName.'[content_div]">');
                               /* add subitems */
@@ -408,8 +408,10 @@ class RecipeCPTFunctions extends BaseController
                                         /* Type? */
                                         if ( isset ( $kidsFields['field-info'] ) )
                                         {
+                                             echo ('<div class="SubItem '.$value['field-info']['Type'].'_single  '.$value['field-info']['ID'].'">');
                                              $kidsData = $this->filterMetadata( $kidsId , $data );
                                              $this->SetItemFields ( $post_type , $kidsFields , $fieldName , $kidsData);
+                                             echo ('</div><!-- SubItem -->');
                                         }
                                         else
                                         {
@@ -425,7 +427,9 @@ class RecipeCPTFunctions extends BaseController
                               /* Do we add the add remove button? */
                               if ( $value['field-info']['add_remove_buttons'] )
                               {
+
                                    $this->add_remove_buttons( $fieldName );
+
 
                               }
                               echo ('</div><!-- content_div -->');

@@ -26,6 +26,7 @@
 
 
 /* Style the specific for Custom Recipe post type  */
+/* -------------- General -------------- */
 .recipe_name_input
 {
 
@@ -46,34 +47,53 @@
 {
 
 }
+/* -------------- Times -------------- */
 .recipe_times_main_div
 {
 
 }
-     .recipe_times_main_div > div >label
+     .recipe_times_main_div > div > div >label
      {
           margin-left: 10px;
           margin-right: 10px;
      }
-     .recipe_times_main_div > div > input
+     .recipe_times_main_div > div > div > input
      {
           width: 50px;
+
      }
 .recipe_times_title_div
 {
 }
 
-.recipe_ingredient_item_div
+/* -------------- Ingredients -------------- */
+.recipe_ingredient_item_main_div
+{
+
+}
+.recipe_ingredient_item_title_div
 {
      display: none;
 }
+.recipe_ingredient_item_content_div
+{
+}
+.recipe_ingredient_item
+{
+     display: inline-block;
+}
+
 .recipe_ingredient_quantity_input
 {
-     width: 50px;
+     width: 10%;
+}
+.recipe_ingredient_unit_input
+{
+     width: 10%;
 }
 .recipe_ingredient_name_input
 {
-     width: 50px;
+     width: 150px;
 }
 .recipe_ingredient_notes_input
 {
