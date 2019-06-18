@@ -30,7 +30,7 @@ class RecipeCPTController extends BaseController
      public $ordered;
      public $current_post_type;
      public $r_cptFuntions;
-     public $hasStylesFiles = false;
+     public $scriptsAdded = false;
 
 
      public function register ()
@@ -816,8 +816,13 @@ public function add_meta_boxes( $post_type )
 public function render_features_box ( $post , $args )
 {
      /* add scripts and css */
-     echo ( "<script src=\"$this->plugin_url/assets/cpt_customFields.js\"></script> " );
-     echo ( "<link rel=\"stylesheet\" href=\"$this->plugin_url/assets/cpt_customFields.css\"> " );
+     if ( ! $this->scriptsAdded )
+     {
+          echo ( "<script src=\"$this->plugin_url/assets/cpt_customFields.js\"></script> " );
+          echo ( "<link rel=\"stylesheet\" href=\"$this->plugin_url/assets/cpt_customFields.css\"> " );
+          $this->scriptsAdded = true;
+     }
+
      /*get the post type based on the post */
      /* Get the post type */
      $post_type = $post->post_type;
@@ -840,7 +845,7 @@ public function render_features_box ( $post , $args )
      {
           $simpleId = $this->r_cptFuntions->removeIdExtension( $id );
      }
-     echo ('<div class="'.$this->ordered[$post_type][$simpleId]['field-info']['Type'].' '.$fieldName.'" id="'.$fieldName.'">');
+     echo ('<div class="'.$this->ordered[$post_type][$simpleId]['field-info']['Type'].'_div " id="'.$fieldName.'">');
 
      if (isset ($this->ordered[$post_type][$simpleId]['field-info']['add_remove_buttons']) && ( $this->ordered[$post_type][$simpleId]['field-info']['add_remove_buttons'] ))
      {

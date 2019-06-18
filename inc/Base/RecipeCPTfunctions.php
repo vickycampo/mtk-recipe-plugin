@@ -278,8 +278,8 @@ class RecipeCPTFunctions extends BaseController
                foreach ( $ExtendedId as $i => $ExtendedIdValue )
                {
                     $fieldName = $this->createFieldName ( $post_type , $parent_id, $ExtendedIdValue );
-                    echo ('<div class="SubSection_div '.$value['field-info']['ID'].'_div" id="'.$fieldName.'[main_div]">');
-                    echo ('<div class="SubSection_title_div" id="'.$fieldName.'[title_div]">');
+                    echo ('<div class="'.$value['field-info']['Type'].'_main_div '.$value['field-info']['ID'].'_main_div"  id="'.$fieldName.'">');
+                    echo ('<div class="'.$value['field-info']['Type'].'_title_div '.$value['field-info']['ID'].'_title_div" >');
                     /* add the title  */
                     echo ('<h3 class=""><span>');
                     echo ( $value['field-info']['Name'] );
@@ -287,7 +287,7 @@ class RecipeCPTFunctions extends BaseController
                     /*Create the varibles to be used in the fields */
                     $className = "";
                     $id = "";
-                    if ( $value['field-info']['add_remove_buttons'] )
+                    if ( isset ( ( $value['field-info']['add_remove_buttons'] ) ) && ( $value['field-info']['add_remove_buttons'] ) )
                     {
                          $this->add_remove_buttons( $fieldName );
 
@@ -296,7 +296,7 @@ class RecipeCPTFunctions extends BaseController
                     echo ('</h3>');
                     echo ('</div><!-- title_div -->');
                     /* add the content   */
-                    echo ('<div class="SubSection_content_div '.$value['field-info']['ID'].'_content_div" id="'.$fieldName.'[content_div]">');
+                    echo ('<div class="'.$value['field-info']['Type'].'_content_div '.$value['field-info']['ID'].'_content_div">');
 
                     /* add the kids */
 
@@ -390,49 +390,49 @@ class RecipeCPTFunctions extends BaseController
                     {
                          /*since it has kids we start by adding a div for the kids */
                          $fieldName = $this->createFieldName ( $post_type , $parent_id, $ExtendedIdValue );
-                         echo ('<div class="Item_div '.$value['field-info']['ID'].'_main_div" id="'.$fieldName.'[main_div]">');
-                              echo ('<div class="Item_title_div '.$value['field-info']['ID'].'_title_div" id="'.$fieldName.'_title_div">');
-                              /* add the title  */
-                              echo ('<h4 class=""><span>');
-                              echo ( $value['field-info']['Name'] );
-                              echo ('</span></h4>');
-                              echo ('</div><!-- Item_title_div -->');
-                              echo ('<div class="Item_div '.$value['field-info']['ID'].'_content_div" id="'.$fieldName.'[content_div]">');
-                              /* add subitems */
-                              foreach ( $value as $kidsId => $kidsFields )
+                         echo ('<div class="'.$value['field-info']['Type'].'_main_div '.$value['field-info']['ID'].'_main_div"  id="'.$fieldName.'">');
+                         echo ('<div class="'.$value['field-info']['Type'].'_title_div '.$value['field-info']['ID'].'_title_div">');
+                         /* add the title  */
+                         echo ('<h4 class=""><span>');
+                         echo ( $value['field-info']['Name'] );
+                         echo ('</span></h4>');
+                         echo ('</div><!-- Title_div -->');
+                         echo ('<div class="'.$value['field-info']['Type'].'_content_div '.$value['field-info']['ID'].'_content_div">');
+                         /* add subitems */
+                         foreach ( $value as $kidsId => $kidsFields )
+                         {
+                              if ($kidsId != 'field-info')
                               {
-                                   if ($kidsId != 'field-info')
+
+                                   /* Generate the kids fields */
+                                   /* Type? */
+                                   if ( isset ( $kidsFields['field-info'] ) )
                                    {
-
-                                        /* Generate the kids fields */
-                                        /* Type? */
-                                        if ( isset ( $kidsFields['field-info'] ) )
-                                        {
-                                             echo ('<div class="SubItem '.$value['field-info']['Type'].'_single  '.$value['field-info']['ID'].'">');
-                                             $kidsData = $this->filterMetadata( $kidsId , $data );
-                                             $this->SetItemFields ( $post_type , $kidsFields , $fieldName , $kidsData);
-                                             echo ('</div><!-- SubItem -->');
-                                        }
-                                        else
-                                        {
-
-                                        }
+                                        echo ('<div class="'.$value['field-info']['Type'].'_sub_div '.$value['field-info']['ID'].'_sub_div">');
+                                        $kidsData = $this->filterMetadata( $kidsId , $data );
+                                        $this->SetItemFields ( $post_type , $kidsFields , $fieldName , $kidsData);
+                                        echo ('</div><!-- '.$value['field-info']['Type'].'_div -->');
                                    }
                                    else
                                    {
 
-
                                    }
                               }
-                              /* Do we add the add remove button? */
-                              if ( $value['field-info']['add_remove_buttons'] )
+                              else
                               {
-
-                                   $this->add_remove_buttons( $fieldName );
 
 
                               }
-                              echo ('</div><!-- content_div -->');
+                         }
+                         /* Do we add the add remove button? */
+                         if ( $value['field-info']['add_remove_buttons'] )
+                         {
+
+                              $this->add_remove_buttons( $fieldName );
+
+
+                         }
+                         echo ('</div><!-- content_div -->');
                          echo ('</div><!-- main_div -->');
 
                     }
