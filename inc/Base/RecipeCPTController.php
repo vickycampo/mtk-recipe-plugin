@@ -30,6 +30,7 @@ class RecipeCPTController extends BaseController
      public $ordered;
      public $current_post_type;
      public $r_cptFuntions;
+     public $hasStylesFiles = false;
 
 
      public function register ()
@@ -518,6 +519,7 @@ public function register_default_cpt ()
           $input['customFields'][$i]['Type'] = 'SubSection';
           $input['customFields'][$i]['Parent'] = 'group';
           $input['customFields'][$i]['Show_in_columns'] = false;
+          $input['customFields'][$i]['add_remove_buttons'] = false;
 
           /* Single Ingredient Section */
           $i++;
@@ -596,7 +598,7 @@ public function register_default_cpt ()
 
           $i++;
           $input['customFields'][$i]['ID'] = 'recipe_step_image';
-          $input['customFields'][$i]['Name'] = 'Insstrucions Image';
+          $input['customFields'][$i]['Name'] = 'Instructions Image';
           $input['customFields'][$i]['Type'] = 'SubItem';
           $input['customFields'][$i]['Parent'] = 'recipe_instructions_step';
           $input['customFields'][$i]['Show_in_columns'] = false;
@@ -651,10 +653,12 @@ public function getColumns ( $post_type , $customFields)
 }
 public function manage_cpt_columns (  )
 {
+
      /* Add metabox */
      add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
      // /* Save new fields of the meta boxes */
      add_action ( 'save_post' , array ( $this , 'save_meta_box') );
+
 
      foreach ( $this->customFields as $post_type => $customFields )
      {
@@ -753,6 +757,18 @@ public function orderCustomcolumns ( $customFields )
 
 
 }
+/* Enqueue styles and scripts */
+public function enqueue ()
+{
+     /* Enqueue the styles and scripts*/
+     error_log (__FUNCTION__ . ' - ' . __LINE__) . '<pre>';
+     error_log ($this->plugin_url . 'assets/cpt_customFields.css');
+     error_log ($this->plugin_url . 'assets/cpt_customFields.js');
+     error_log ('<br>----------------------------</pre>');
+     wp_enqueue_style ( 'authStyle' , $this->plugin_url . 'assets/cpt_customFields.css');
+     wp_enqueue_script ( 'authScript' , $this->plugin_url . 'assets/cpt_customFields.js');
+
+}
 /* Adds the meta boxes */
 public function add_meta_boxes( $post_type )
 {
@@ -767,37 +783,18 @@ public function add_meta_boxes( $post_type )
      foreach ( $this->ordered[$post_type] as $id => $fields )
      {    unset ($id_value);
           $id_value[0] = $id . '_0';
+
           if ( isset ( $fields['field-info']['add_remove_buttons'] ) || ($fields['field-info']['add_remove_buttons']) )
           {
-               $i = 0;
-               $foundMetas = true;
-               while ( $foundMetas )
-               {
-                    /* We are going to use multiple metaboxes for each */
-
-                    unset ($data);
-                    $data  = get_post_meta ( get_the_ID() , '_mtk_' . $post_type . '_'.$id . '_'. $i , true );
-
-                    if ( is_array ( $data ) )
-                    {
-                         $id_value[$i] = $id . '_'. $i;
-                         $i ++;
-                    }
-                    else
-                    {
-                         $foundMetas = false;
-                    }
-
-               }
-
+               $id_value = $this->r_cptFuntions->addIdExtension ( $post_type , $id );
           }
 
           foreach ($id_value as $i => $FixedId)
           {
-               error_log (__FUNCTION__ . ' - ' . __LINE__);
-               error_log ( print_r ( $FixedId , true ) );
-               error_log ( print_r ( $fields , true ) );
-               error_log ('----------------------------');
+               // error_log (__FUNCTION__ . ' - ' . __LINE__);
+               // error_log ( print_r ( $FixedId , true ) );
+               // error_log ( print_r ( $fields , true ) );
+               // error_log ('----------------------------');
 
                $title = $fields['field-info']['Name'];
                $callback = array ( $this , 'render_features_box');
@@ -818,6 +815,9 @@ public function add_meta_boxes( $post_type )
 /* Creates the actual meta box that is previously added */
 public function render_features_box ( $post , $args )
 {
+     /* add scripts and css */
+     echo ( "<script src=\"$this->plugin_url/assets/cpt_customFields.js\"></script> " );
+     echo ( "<link rel=\"stylesheet\" href=\"$this->plugin_url/assets/cpt_customFields.css\"> " );
      /*get the post type based on the post */
      /* Get the post type */
      $post_type = $post->post_type;
@@ -834,16 +834,20 @@ public function render_features_box ( $post , $args )
 
      /* Multiple sections? */
      $add_remove_buttons = false;
-     if (isset ($this->ordered[$post_type][$id]['add_remove_buttons']) && ( $this->ordered[$post_type][$id]['add_remove_buttons'] ))
-     {
-          $add_remove_buttons = true;
-     }
-
+     $fieldName = $this->r_cptFuntions->createFieldName ( $post_type , '', $id );
      /* We got a fixed id, we need to fix it to make it valid for our array */
      if ( ! ( isset ($this->ordered[$post_type][$id]) ) )
      {
           $simpleId = $this->r_cptFuntions->removeIdExtension( $id );
      }
+     echo ('<div class="'.$this->ordered[$post_type][$simpleId]['field-info']['Type'].' '.$fieldName.'" id="'.$fieldName.'">');
+
+     if (isset ($this->ordered[$post_type][$simpleId]['field-info']['add_remove_buttons']) && ( $this->ordered[$post_type][$simpleId]['field-info']['add_remove_buttons'] ))
+     {
+          $add_remove_buttons = true;
+          $this->r_cptFuntions->add_remove_buttons( $fieldName );
+     }
+
      foreach ( $this->ordered[$post_type][$simpleId] as $fieldId => $fieldInfo )
      {
 
@@ -852,7 +856,6 @@ public function render_features_box ( $post , $args )
           {
                $values = $this->r_cptFuntions->filterMetadata( $fieldId , $data );
 
-
                /* What type?*/
                if ($fieldInfo['field-info']['Type'] == 'Section')
                {
@@ -860,11 +863,11 @@ public function render_features_box ( $post , $args )
                }
                else if ($fieldInfo['field-info']['Type'] == 'SubSection')
                {
-                    $this->r_cptFuntions->SetSubSectionFields ( $post_type , $fieldInfo , $id , $values , $add_remove_buttons);
+                    $this->r_cptFuntions->SetSubSectionFields ( $post_type , $fieldInfo , $id , $values);
                }
                else if ($fieldInfo['field-info']['Type'] == 'Item')
                {
-                    $this->r_cptFuntions->SetItemFields ( $post_type , $fieldInfo , $id , $values , $add_remove_buttons);
+                    $this->r_cptFuntions->SetItemFields ( $post_type , $fieldInfo , $id , $values);
                }
                else if ($fieldInfo['field-info']['Type'] == 'SubItem')
                {
@@ -872,6 +875,7 @@ public function render_features_box ( $post , $args )
                }
           }
      }
+     echo ('</div><!-- ' . $fieldName . ' -->');
 
 }
 

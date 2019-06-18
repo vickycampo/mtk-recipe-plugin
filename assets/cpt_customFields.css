@@ -1,0 +1,81 @@
+.Section
+{
+     font-size: 14px;
+}
+
+.SubSection
+{
+
+}
+.Item_div
+{
+     width: 100%;
+}
+.Item_field
+{
+
+}
+.SubItem_field
+{
+     width:auto;
+     display: inline-block;
+}
+
+
+
+
+
+/* Style the specific for Custom Recipe post type  */
+.recipe_name_input
+{
+
+}
+.recipe_author_input
+{
+
+}
+.recipe_image_input
+{
+
+}
+.recipe_description_input
+{
+
+}
+.recipe_servings_input
+{
+
+}
+.recipe_times_main_div
+{
+
+}
+     .recipe_times_main_div > div >label
+     {
+          margin-left: 10px;
+          margin-right: 10px;
+     }
+     .recipe_times_main_div > div > input
+     {
+          width: 50px;
+     }
+.recipe_times_title_div
+{
+}
+
+.recipe_ingredient_item_div
+{
+     display: none;
+}
+.recipe_ingredient_quantity_input
+{
+     width: 50px;
+}
+.recipe_ingredient_name_input
+{
+     width: 50px;
+}
+.recipe_ingredient_notes_input
+{
+
+}
