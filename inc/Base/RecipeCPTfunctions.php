@@ -125,7 +125,7 @@ class RecipeCPTFunctions extends BaseController
 
           return ( $data );
      }
-     public function addIdExtension ( $post_type , $id )
+     public function addIdExtension ( $post_type , $id , $PreviousData='' )
      {
           $i = 0;
           $foundMetas = true;
@@ -134,19 +134,33 @@ class RecipeCPTFunctions extends BaseController
           while ( $foundMetas )
           {
                /* We are going to use multiple metaboxes for each */
-
-               unset ($data);
-               $data  = get_post_meta ( get_the_ID() , '_mtk_' . $post_type . '_'.$id . '_'. $i , true );
-
-               if ( is_array ( $data ) )
+               if ( $PreviousData == '' )
                {
-                    $id_value[$i] = $id . '_'. $i;
-                    $i ++;
+                    unset ($data);
+                    $data  = get_post_meta ( get_the_ID() , '_mtk_' . $post_type . '_'.$id . '_'. $i , true );
+                    if ( is_array ( $data ) )
+                    {
+                         $id_value[$i] = $id . '_'. $i;
+                         $i ++;
+                    }
+                    else
+                    {
+                         $foundMetas = false;
+                    }
                }
                else
                {
-                    $foundMetas = false;
+                    if ( isset ( $PreviousData[$id . '_'. $i] ) )
+                    {
+                         $id_value[$i] = $id . '_'. $i;
+                         $i ++;
+                    }
+                    else
+                    {
+                         $foundMetas = false;
+                    }
                }
+
 
           }
           return ( $id_value );
@@ -187,14 +201,15 @@ class RecipeCPTFunctions extends BaseController
                $values = [];
                foreach ( $data as $index => $SingleValue)
                {
-                    /* Remove the extension and compare to the FieldId */
-                    // echo (__FUNCTION__ . ' - ' . __LINE__ . '<br>data - <pre>');
-                    // var_dump ( $index );
-                    // var_dump ( $this->removeIdExtension ( $index ) );
-                    // var_dump ( $fieldId );
-                    // echo ('<pre>');
+
                     if ($this->removeIdExtension ( $index ) === $fieldId)
                     {
+                         /* Remove the extension and compare to the FieldId */
+                         // echo (__FUNCTION__ . ' - ' . __LINE__ . '<br><pre>');
+                         // var_dump ( $index );
+                         // var_dump ( $this->removeIdExtension ( $index ) );
+                         // var_dump ( $fieldId );
+                         // echo ('<pre>');
                          $indexExt = str_replace ( $fieldId . '_' , "" , $index );
                          // echo ('line 198 - <pre><br>' .$fieldId . ' - ' .$index. '<br>');
                          // print_r ($data);
@@ -241,16 +256,26 @@ class RecipeCPTFunctions extends BaseController
      }
      public function add_remove_buttons(  $fieldName  )
      {
-          echo ('<span class="dashicons dashicons-plus-alt add-substract-button addButton" id="'.$fieldName.'[addButton]" ></span>');
-          echo ('<span class="dashicons dashicons-dismiss add-substract-button removeButton]" id="'.$fieldName.'[removeButton]" ></span>');
-          echo ('<br>');
+          $textForId = $fieldName.'[addButton]';
+          $textForId = str_replace( "[" , "-" , $textForId );
+          $textForId = str_replace( "]" , "-" , $textForId );
+          echo ('<span class="dashicons dashicons-plus-alt add-substract-button addButton" id="'.$textForId.'" ></span>');
+
+          $textForId = $fieldName.'[removeButton]';
+          $textForId = str_replace( "[" , "-" , $textForId );
+          $textForId = str_replace( "]" , "-" , $textForId );
+          echo ('<span class="dashicons dashicons-dismiss add-substract-button removeButton]" id="'.$textForId.'" ></span>');
+
      }
      public function createTextInputField ( $fieldName , $labelText , $Fieldvalue , $Type , $simpleId )
      {
           // echo ('line 249 - <pre><br>');
           // print_r ($Fieldvalue);
           // echo ('<pre>');
-          echo ('<label class="components-base-control__label " for="'.$fieldName.'">'.$labelText.': </label><input id="'.$fieldName.'" name="'.$fieldName.'" class="components-text-control__input '.$Type.'_field '.$simpleId.'_input" type="text"'. $Fieldvalue .'/>');
+          $textForId = $fieldName.'[input]';
+          $textForId = str_replace( "[" , "-" , $textForId );
+          $textForId = str_replace( "]" , "-" , $textForId );
+          echo ('<label class="components-base-control__label " for="'.$fieldName.'">'.$labelText.': </label><input id="'.$textForId.'" name="'.$fieldName.'" class="components-text-control__input '.$Type.'_field '.$simpleId.'_input" type="text"'. $Fieldvalue .'/>');
      }
      /* We create the fields depending on the field type */
      public function SetSectionsFields ( $post_type , $value , $parent_id , $data)
@@ -279,16 +304,25 @@ class RecipeCPTFunctions extends BaseController
           if ( isset ( $value['field-info'] ) )
           {
                /* Get the extended id's */
-               $ExtendedId = $this->addIdExtension ( $post_type , $value['field-info']['ID'] );
+               $ExtendedId = $this->addIdExtension ( $post_type , $value['field-info']['ID'] , $data );
                /* we add a div for the section */
                /* for each sub section we add a div */
+
                foreach ( $ExtendedId as $i => $ExtendedIdValue )
                {
+
                     $fieldName = $this->createFieldName ( $post_type , $parent_id, $ExtendedIdValue );
-                    echo ('<div class="'.$value['field-info']['Type'].'_main_div '.$value['field-info']['ID'].'_main_div"  id="'.$fieldName.'[main_div]">');
-                    echo ('<div class="'.$value['field-info']['Type'].'_title_div '.$value['field-info']['ID'].'_title_div" id="'.$fieldName.'[title_div]">');
+
+                    $textForId = $fieldName.'[main_div]';
+                    $textForId = str_replace( "[" , "-" , $textForId );
+                    $textForId = str_replace( "]" , "-" , $textForId );
+                    echo ('<div class="'.$value['field-info']['Type'].'_main_div '.$value['field-info']['ID'].'_main_div"  id="'.$textForId.'">');
+                    $textForId = $fieldName.'[title_div]';
+                    $textForId = str_replace( "[" , "-" , $textForId );
+                    $textForId = str_replace( "]" , "-" , $textForId );
+                    echo ('<div class="'.$value['field-info']['Type'].'_title_div '.$value['field-info']['ID'].'_title_div" id="'.$textForId.'">');
                     /* add the title  */
-                    echo ('<h3 class=""><span>');
+                    echo ('<h3 class="'.$value['field-info']['Type'].'_title_h3"><span>');
                     echo ( $value['field-info']['Name'] );
                     echo ('</span>');
                     /*Create the varibles to be used in the fields */
@@ -303,7 +337,10 @@ class RecipeCPTFunctions extends BaseController
                     echo ('</h3>');
                     echo ('</div><!-- title_div -->');
                     /* add the content   */
-                    echo ('<div class="'.$value['field-info']['Type'].'_content_div '.$value['field-info']['ID'].'_content_div" id="'.$fieldName.'[content_div]">');
+                    $textForId = $fieldName.'[content_div]';
+                    $textForId = str_replace( "[" , "-" , $textForId );
+                    $textForId = str_replace( "]" , "-" , $textForId );
+                    echo ('<div class="'.$value['field-info']['Type'].'_content_div '.$value['field-info']['ID'].'_content_div" id="'. $textForId .'">');
 
                     /* add the kids */
 
@@ -311,17 +348,26 @@ class RecipeCPTFunctions extends BaseController
                     {
                          if ($kidsId != 'field-info')
                          {
-
                               /* Generate the kids fields */
                               /* Type? */
                               if ( isset ( $kidsFields['field-info'] ) )
                               {
                                    if ( $kidsFields['field-info']['Type'] == 'Item')
                                    {
-
-
-                                        $kidsData = $this->filterMetadata( $kidsId , $data[$ExtendedIdValue] );
-
+                                        // echo ('<br>' . __FUNCTION__ . ' - ' . __LINE__) . '<pre>';
+                                        // echo ('<br> ' . $ExtendedIdValue . ' <br>');
+                                        // print_r ( $data);
+                                        if ( isset ( $data[$ExtendedIdValue] ) )
+                                        {
+                                             $kidsData = $this->filterMetadata( $kidsId , $data[$ExtendedIdValue] );
+                                        }
+                                        else
+                                        {
+                                             $kidsData = [];
+                                        }
+                                        // echo ('<br>' . __FUNCTION__ . ' - ' . __LINE__) . '<pre>';
+                                        // echo ('<br> ' . $kidsId . ' <br>');
+                                        // print_r ( $kidsData);
                                         $this->SetItemFields ( $post_type , $kidsFields , $fieldName , $kidsData);
                                    }
 
@@ -363,7 +409,8 @@ class RecipeCPTFunctions extends BaseController
           /* ------------------------------------------------------------------------------ */
 
           /* Get the extended id's */
-          $ExtendedId = $this->addIdExtension ( $post_type , $value['field-info']['ID'] );
+
+          $ExtendedId = $this->addIdExtension ( $post_type , $value['field-info']['ID'] , $data);
           /* we add a div for the section */
           /* for each sub section we add a div */
           foreach ( $ExtendedId as $i => $ExtendedIdValue )
@@ -375,6 +422,11 @@ class RecipeCPTFunctions extends BaseController
                     if ( isset ( $value['field-info'] ) )
                     {
                          $fieldName = $this->createFieldName ( $post_type , $parent_id, $ExtendedIdValue );
+                         $textForId = $fieldName.'[input_div]';
+                         $textForId = str_replace( "[" , "-" , $textForId );
+                         $textForId = str_replace( "]" , "-" , $textForId );
+                         echo ('<div class="'.$value['field-info']['Type'].'_input_div '.$value['field-info']['ID'].'_input_div" id="'.$textForId.'">');
+
                          $Fieldvalue = '';
 
                          if ( ( isset ($data[$ExtendedIdValue]) ) && ($data[$ExtendedIdValue] != ''))
@@ -383,35 +435,41 @@ class RecipeCPTFunctions extends BaseController
                          }
                          $labelText = $value['field-info']['Name'];
 
-                         // echo ('line 382 - <pre><br>');
-                         // print_r ($data);
-                         // echo ('<pre>');
-
                          $this->createTextInputField ( $fieldName , $labelText , $Fieldvalue , $value['field-info']['Type']  , $value['field-info']['ID'] );
 
                          if ( ( isset ( $value['field-info']['add_remove_buttons'] ) ) && ( $value['field-info']['add_remove_buttons'] ) )
                          {
                               $this->add_remove_buttons( $fieldName );
                          }
+                         echo ('</div>');
                     }
                }
                else
                {
-                    // echo ('<br>value - <pre>');
-                    // print_r ($value);
-                    // echo ('<pre>');
                     if ( isset ( $value['field-info'] ) )
                     {
                          /*since it has kids we start by adding a div for the kids */
                          $fieldName = $this->createFieldName ( $post_type , $parent_id, $ExtendedIdValue );
-                         echo ('<div class="'.$value['field-info']['Type'].'_main_div '.$value['field-info']['ID'].'_main_div"  id="'.$fieldName.'[main_div]">');
-                         echo ('<div class="'.$value['field-info']['Type'].'_title_div '.$value['field-info']['ID'].'_title_div" id="'.$fieldName.'[title_div]">');
+
+                         $textForId = $fieldName.'[main_div]';
+                         $textForId = str_replace( "[" , "-" , $textForId );
+                         $textForId = str_replace( "]" , "-" , $textForId );
+                         echo ('<div class="'.$value['field-info']['Type'].'_main_div '.$value['field-info']['ID'].'_main_div"  id="'.$textForId.'">');
+
+                         $textForId = $fieldName.'[title_div]';
+                         $textForId = str_replace( "[" , "-" , $textForId );
+                         $textForId = str_replace( "]" , "-" , $textForId );
+                         echo ('<div class="'.$value['field-info']['Type'].'_title_div '.$value['field-info']['ID'].'_title_div" id="'.$textForId.'">');
                          /* add the title  */
                          echo ('<h4 class=""><span>');
                          echo ( $value['field-info']['Name'] );
                          echo ('</span></h4>');
                          echo ('</div><!-- Title_div -->');
-                         echo ('<div class="'.$value['field-info']['Type'].'_content_div '.$value['field-info']['ID'].'_content_div" id="'.$fieldName.'[content_div]">');
+
+                         $textForId = $fieldName.'[content_div]';
+                         $textForId = str_replace( "[" , "-" , $textForId );
+                         $textForId = str_replace( "]" , "-" , $textForId );
+                         echo ('<div class="'.$value['field-info']['Type'].'_content_div '.$value['field-info']['ID'].'_content_div" id="'.$textForId.'">');
                          /* add subitems */
                          foreach ( $value as $kidsId => $kidsFields )
                          {
@@ -422,7 +480,10 @@ class RecipeCPTFunctions extends BaseController
                                    /* Type? */
                                    if ( isset ( $kidsFields['field-info'] ) )
                                    {
-                                        echo ('<div class="'.$value['field-info']['Type'].'_sub_div '.$value['field-info']['ID'].'_sub_div" id="'.$fieldName.'[SubItem_div]">');
+                                        $textForId = $fieldName.'[SubItem_div]';
+                                        $textForId = str_replace( "[" , "-" , $textForId );
+                                        $textForId = str_replace( "]" , "-" , $textForId );
+                                        echo ('<div class="'.$value['field-info']['Type'].'_sub_div '.$value['field-info']['ID'].'_sub_div" id="'.$textForId.'">');
 
                                         if (isset ( $data[$ExtendedIdValue] ))
                                         {

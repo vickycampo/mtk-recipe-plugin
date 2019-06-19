@@ -847,7 +847,10 @@ public function render_features_box ( $post , $args )
      {
           $simpleId = $this->r_cptFuntions->removeIdExtension( $id );
      }
-     echo ('<div class="'.$this->ordered[$post_type][$simpleId]['field-info']['Type'].'_div " id="'.$fieldName.'">');
+     $textForId = $fieldName;
+     $textForId = str_replace( "[" , "-" , $textForId );
+     $textForId = str_replace( "]" , "-" , $textForId );
+     echo ('<div class="'.$this->ordered[$post_type][$simpleId]['field-info']['Type'].'_div " id="'.$textForId.'">');
 
      if (isset ($this->ordered[$post_type][$simpleId]['field-info']['add_remove_buttons']) && ( $this->ordered[$post_type][$simpleId]['field-info']['add_remove_buttons'] ))
      {

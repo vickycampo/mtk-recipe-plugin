@@ -18,46 +18,49 @@ function addButtonDown ( e )
 
      /* From the target id we get all the parents information */
      /* We look for the parent - which is the one we are going to duplicate */
-     var parent = document.getElementById(e.target.id).parentElement;
+     var Parent = document.getElementById(e.target.id).parentElement;
      /* We look for the grandparent which is the target */
-     var grandparent = parent.parentElement;
+     var GrandParent = Parent.parentElement;
      /* We look for the Greatgrandparent which is the target */
-     var greatgrandparent = grandparent.parentElement;
+     var GreatGrandParent = GrandParent.parentElement;
 
-     var idsArray = e.target.id.split("[");
+     var idsArray = e.target.id.split("-");
      /* we get the last id */
-     var i = idsArray.length-2;
+     var i = idsArray.length-4;
      var lastId = idsArray[i];
-     console.log ( 'lastId - ' + lastId );
 
      /* we see if e is a Section */
-     if ( parent.classList.contains('Section_div') > -1 )
+     if ( Parent.classList.contains('Section_div')  )
      {
           /* We are duplicating a whole Section */
-
           /* we need to duplicate group_0 div*/
           duplicateSection ( lastId );
-
      }
-     else if ( parent.classList.contains('SubSection_main_div') > -1 )
+     else if ( Parent.classList.contains('SubSection_title_h3') )
      {
           /* We are duplicating a whole SubSection */
-          console.log ("Target classList - " + e.target.id);
-          console.log ("parent classList - " + parent.id);
-          console.log (parent.classList);
+          duplicateSubSection ( lastId , GreatGrandParent );
      }
-     else if ( parent.classList.contains('Item_content_div') > -1 )
+     else if ( Parent.classList.contains('Item_content_div ') )
      {
-          /* We are duplicating a whole Item */
+          console.log ('create function to duplicate item');
      }
-     else if ( parent.classList.contains('Item_sub_div') > -1 )
+     else if ( Parent.classList.contains('Item_input_div') )
      {
-          /* We are duplicating a whole Item */
+          console.log ('create function to duplicate other item');
      }
-     // console.log ("parent id - " + parent.id );
-     // console.log ( parent );
-     // console.log ("grandparent id - " + grandparent.id );
-     // console.log ( grandparent );
+     else
+     {
+          console.log ('Why am I here?');
+          console.log ("parent id - " + Parent.id );
+          console.log ( Parent );
+          console.log ("grandparent id - " + GrandParent.id );
+          console.log ( GrandParent );
+          console.log ("GreatGrandParent id - " + GreatGrandParent.id );
+          console.log ( GreatGrandParent );
+          console.log ("lastId id - " + lastId );
+     }
+
 
 
 
@@ -69,16 +72,37 @@ function duplicateSection ( Id )
      /* we look for the last one */
      var BaseId = getBaseId ( Id );
      /* Search for the maximum id */
-     var IdArray = getlastValidId (BaseId);
+     var IdArray = getlastSectionValidId (BaseId);
      LastValidId = IdArray['LastValidId'];
      FirstAvailable = IdArray['FirstAvailable'];
-     console.log (BaseId + ' - '+ LastValidId + ' - '+  FirstAvailable );
+
      newSection = $('#' + LastValidId).clone(true);
      newSection.attr("id",FirstAvailable);
      $( newSection ).insertAfter('#' + LastValidId );
      /* we go through all the the elements */
      /* fix all the children ids */
      FixChildrenId ( LastValidId , FirstAvailable  );
+
+}
+function duplicateSubSection ( Id , GreatGrandParent )
+{
+     /* we look for the last one */
+     var BaseId = getBaseId ( Id );
+     var SearchId = Id.replace ( ']' , '');
+     var TargetId = GreatGrandParent.id;
+
+     /* Search for the maximum id */
+     var IdArray = getlastSubSectionValidId (BaseId , SearchId , TargetId);
+
+     console.log ( IdArray );
+
+     /* clone element */
+     var NewObject = $( '#' + IdArray['parent']['LastValidId'] ).clone(true);
+     NewObject.attr( "id",IdArray['parent']['FirstAvailable'] );
+     $( NewObject ).insertAfter('#' + IdArray['parent']['LastValidId'] );
+     /* we go through all the the elements */
+     /* fix all the children ids */
+     FixChildrenId ( IdArray['simple']['LastValidId'] , IdArray['simple']['FirstAvailable'] , IdArray['parent']['FirstAvailable'] );
 
 }
 function removeButtonDown ( e )
@@ -92,12 +116,13 @@ function getBaseId ( id )
      var BaseId = id.substring(0, id.lastIndexOf("_"));
      return ( BaseId );
 }
-function getlastValidId ( BaseId )
+function getlastSectionValidId ( BaseId )
 {
      var i = 0;
      var FoundQuery = true;
      while ( FoundQuery )
      {
+          console.log (BaseId + '_' + i);
           if ( $('#' + BaseId + '_' + i).length > 0 )
           {
                LastValidId = BaseId + '_' + i;
@@ -116,10 +141,45 @@ function getlastValidId ( BaseId )
      ReturnArray['FirstAvailable'] = FirstAvailable;
      return ( ReturnArray );
 }
-function FixChildrenId ( PreviousId , NewId  )
+function getlastSubSectionValidId (BaseId , SearchId , TargetId)
 {
-     /* look for all the children */
-     var Target = document.getElementById(NewId);
+     var i = 0;
+     var FoundQuery = true;
+     var ReturnArray = new Array;
+     ReturnArray['simple'] = new Array;
+     ReturnArray['parent'] = new Array;
+     while ( FoundQuery )
+     {
+          var NewId = TargetId.replace ( SearchId , BaseId + '_' + i );
+          ReturnArray['parent']['FirstAvailable'] = NewId;
+          if ( $('#' + NewId).length > 0 )
+          {
+               ReturnArray['parent']['LastValidId'] = NewId;
+               LastValidId = BaseId + '_' + i;
+               i++;
+          }
+          else
+          {
+               FirstAvailable = BaseId + '_' + i;
+               FoundQuery = false;
+          }
+     }
+     ReturnArray['simple']['LastValidId'] = LastValidId;
+     ReturnArray['simple']['FirstAvailable'] = FirstAvailable;
+     return ( ReturnArray );
+}
+function FixChildrenId ( PreviousId , NewId , targetID=''  )
+{
+     if ( targetID == '' )
+     {
+          /* look for all the children */
+          var Target = document.getElementById(NewId);
+     }
+     else
+     {
+          var Target = document.getElementById(targetID);
+     }
+
      var kids = Target.querySelectorAll('*');
      for (var i = 0; i < kids.length; i++)
      {
@@ -132,10 +192,17 @@ function FixChildrenId ( PreviousId , NewId  )
                kids[i].id = cleanId;
 
                /*fix the name */
-               var dirtyName = Target.getElementsByName(dirtyId);
-               console.log ( dirtyId );
-               //mtk_default_recipe[group_0][recipe_ingredients_0][recipe_ingredient_item_0][recipe_ingredient_quantity_0]
-               console.log ( dirtyName );
+
+               for (j in kids[i].attributes )
+               {
+                    if ( kids[i].attributes[j].name === 'name' )
+                    {
+                         var dirtyName = kids[i].attributes[j].value;
+                         var cleanName = dirtyName.replace( PreviousId , NewId );
+                         kids[i].attributes[j].value = cleanName;
+                    }
+
+               }
           }
 
      }
