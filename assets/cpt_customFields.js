@@ -132,7 +132,7 @@ function FixChildrenId ( PreviousId , NewId  )
                kids[i].id = cleanId;
 
                /*fix the name */
-               var dirtyName = document.getElementsByName('dirtyId');
+               var dirtyName = Target.getElementsByName(dirtyId);
                console.log ( dirtyId );
                //mtk_default_recipe[group_0][recipe_ingredients_0][recipe_ingredient_item_0][recipe_ingredient_quantity_0]
                console.log ( dirtyName );
