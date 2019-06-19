@@ -82,7 +82,12 @@ $('.customFields_container').ready(function()
           console.log (formErrors);
           if ( formErrors )
           {
-               event.preventDefault();
+               updateParentSelector ( );
+               if ( formErrors )
+               {
+                    event.preventDefault();
+               }
+
           }
           else
           {

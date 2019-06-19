@@ -784,7 +784,7 @@ public function add_meta_boxes( $post_type )
      {    unset ($id_value);
           $id_value[0] = $id . '_0';
 
-          if ( isset ( $fields['field-info']['add_remove_buttons'] ) || ($fields['field-info']['add_remove_buttons']) )
+          if ( isset ( $fields['field-info']['add_remove_buttons'] ) && ( $fields['field-info']['add_remove_buttons'] ) )
           {
                $id_value = $this->r_cptFuntions->addIdExtension ( $post_type , $id );
           }
@@ -833,9 +833,11 @@ public function render_features_box ( $post , $args )
      echo '<p style="display: none;">';
      wp_nonce_field( 'mtk_'.$post_type.'_nonce_' . $post_id, 'mtk_'.$post_type.'_nonce', FALSE );
      echo '</p>';
+
      /* Get the data */
      unset ($data);
-     $data  = get_post_meta ( $post->ID , '_mtk_' . $post_type . '_'.$id , true );
+     $data  = get_post_meta ( $post->ID , '_mtk_' . $post_type . '_'. $id , true );
+
 
      /* Multiple sections? */
      $add_remove_buttons = false;
@@ -868,6 +870,7 @@ public function render_features_box ( $post , $args )
                }
                else if ($fieldInfo['field-info']['Type'] == 'SubSection')
                {
+
                     $this->r_cptFuntions->SetSubSectionFields ( $post_type , $fieldInfo , $id , $values);
                }
                else if ($fieldInfo['field-info']['Type'] == 'Item')
@@ -907,6 +910,9 @@ public function save_meta_box( $post_id)
 
      /*  order the post into an data array */
      $index = 'mtk_' . $post_type;
+     error_log (__FILE__ . ' - ' . __LINE__ . ' - ' . __FUNCTION__);
+     error_log(print_r($_POST, true));
+     error_log('--------------------------------------------');
      $data = $this->r_cptFuntions->orderForSaveMeta ( $index );
      /*---------------- Store this metabox ----------------*/
      /* We get the values saved in the post mtk_default_recipe*/
@@ -929,7 +935,7 @@ public function save_meta_box( $post_id)
                          update_post_meta( $post_id, $index, $section );
 
                     }
-                    error_log (__FUNCTION__ . ' - ' . __LINE__) . '<pre>';
+                    error_log (__FILE__ . ' - ' . __LINE__ . ' - ' . __FUNCTION__);
                     error_log($index);
                     error_log(print_r($section, true));
                     error_log('--------------------------------------------');
