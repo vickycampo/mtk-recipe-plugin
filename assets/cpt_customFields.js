@@ -1,17 +1,22 @@
 window.addEventListener ( "load" , function ()
 {
+
      /*1. We are going to add eventst to this buttons - Add and remove */
      /*2. Create the add function - Gets the parent div and multiplies it updating the id's */
      /*3. Create the remove function - updating id's */
      /*4. After Remove - updating id's */
      $( ".addButton" ).click(function( e ) {
+
           addButtonDown ( e );
+
      });
      $( ".removeButton" ).click(function( e ) {
           removeButtonDown ( e );
      });
 });
-
+/* ---------------------------------------------- */
+/*                   add functions                */
+/* ---------------------------------------------- */
 function addButtonDown ( e )
 {
 
@@ -23,6 +28,7 @@ function addButtonDown ( e )
      var GrandParent = Parent.parentElement;
      /* We look for the Greatgrandparent which is the target */
      var GreatGrandParent = GrandParent.parentElement;
+
 
      var idsArray = e.target.id.split("-");
      /* we get the last id */
@@ -44,15 +50,12 @@ function addButtonDown ( e )
      else if ( Parent.classList.contains('Item_sub_td') )
      {
           /* Items */
-          // console.log ("parent id - " + Parent.id );
-          // console.log ("grandparent id - " + GrandParent.id );
-          // console.log ("lastId id - " + lastId );
           duplicateSubSection ( lastId , GrandParent );
 
      }
      else
      {
-          console.log ('Why am I here?');
+          console.log ('Why am I here?-------------------------');
           console.log ("parent id - " + Parent.id );
           console.log ( Parent );
           console.log ("grandparent id - " + GrandParent.id );
@@ -94,11 +97,7 @@ function duplicateSubSection ( Id , GreatGrandParent )
 
      /* Search for the maximum id */
      var IdArray = getlastSubSectionValidId (BaseId , SearchId , TargetId);
-     console.log (IdArray['parent']['LastValidId']);
-     console.log (IdArray['parent']['FirstAvailable']);
-     console.log (Id);
 
-     // console.log ( IdArray );
 
      /* clone element */
      var NewObject = $( '#' + IdArray['parent']['LastValidId'] ).clone(true);
@@ -109,12 +108,200 @@ function duplicateSubSection ( Id , GreatGrandParent )
      FixChildrenId ( IdArray['simple']['LastValidId'] , IdArray['simple']['FirstAvailable'] , IdArray['parent']['FirstAvailable'] );
 
 }
+
+/* ---------------------------------------------- */
+/*                  remove function               */
+/* ---------------------------------------------- */
 function removeButtonDown ( e )
 {
-     console.log ( e );
+
+     var IdsArray = e.target.id.split("-");
+
+     /* we get the last id */
+     var i = IdsArray.length-4;
+     var LastTargetId = IdsArray[i];
+     i = IdsArray.length-6;
+     var ParentId = IdsArray[i];
+
+
+
+     /* From the target id we get all the parents information */
+     /* We look for the parent - which is the one we are going to duplicate */
+     var Parent = document.getElementById(e.target.id).parentElement;
+     /* We look for the grandparent which is the target */
+     var GrandParent = Parent.parentElement;
+     /* We look for the Greatgrandparent which is the target */
+     var GreatGrandParent = GrandParent.parentElement;
+
+     /* We need to erase the grandparent */
+
+     if ( Parent.classList.contains('Section_div')  )
+     {
+          /* Remove section */
+          var BaseId = getBaseId ( LastTargetId );
+          var IdCombination = getlastSectionValidId ( BaseId );
+          /* Only Item we don't erase id */
+          if ((LastTargetId === BaseId + '_0') && (IdCombination['LastValidId'] === BaseId + '_0'))
+          {
+               // console.log ('Cant erase ' + BaseId + '_0');
+               return;
+          }
+          else if (IdCombination['LastValidId'] === LastTargetId)
+          {
+               /* We just remove the item, no need to update anyting */
+
+               $( "#" + LastTargetId ).remove();
+               return;
+          }
+          /* update ids */
+          $( "#" + LastTargetId ).remove();
+          var erasedExtension = LastTargetId.replace(BaseId+"_", "");
+          var FirstAvailable = IdCombination['LastValidId'].replace(BaseId+"_", "");
+          while ( erasedExtension < FirstAvailable )
+          {
+               erasedExtension ++;
+               previousExtension = erasedExtension -1;
+               Section = document.getElementById( BaseId + "_" + erasedExtension );
+
+               Section.id = BaseId + "_" + previousExtension;
+
+          }
+          return;
+     }
+     else
+     {
+          if ( Parent.classList.contains('SubSection_title_h3') )
+          {
+               /* Remove subsection */
+               var RemoveTarget = GreatGrandParent;
+
+          }
+          else if ( Parent.classList.contains('Item_sub_td') )
+          {
+               /* Items */
+               var RemoveTarget = GrandParent;
+          }
+          else
+          {
+               console.log ('Why am I here?-------------------------');
+               // console.log ('Parent -----------------------------');
+               // console.log (Parent);
+               // console.log ('GrandParent -----------------------------');
+               // console.log (GrandParent);
+               // console.log ('Greatgrandparent -----------------------------');
+               // console.log (Greatgrandparent);
+               return;
+          }
+
+
+
+          var BaseId = getBaseId ( LastTargetId );
+          var RemoveTarget_id = RemoveTarget.id;
+          var IdCombination = getlastSubSectionValidId (BaseId , LastTargetId , RemoveTarget_id);
+          /* Only Item we don't erase id */
+          if ((LastTargetId === BaseId + '_0') && (IdCombination['simple']['LastValidId'] === BaseId + '_0'))
+          {
+
+               return;
+          }
+          if ( IdCombination['parent']['LastValidId'] === LastTargetId)
+          {
+               /* We just remove the item, no need to update anyting */
+               $( "#" + LastTargetId ).remove();
+               return;
+          }
+
+
+          var erasedExtension = parseInt(LastTargetId.replace(BaseId+"_", ""));
+          var LastValidId = parseInt(IdCombination['simple']['LastValidId'].replace(BaseId+"_", ""));
+          var i =  erasedExtension;
+          $( "#" + RemoveTarget_id ).remove();
+          while  (  i < LastValidId)
+          {
+               /* update the parent information */
+               i ++;
+               /* This Fixes the parent elements */
+               previousExtension = i - 1;
+               /*swap in the parent id */
+               oldTargetId = RemoveTarget_id.replace(LastTargetId, BaseId + "_" + i);
+               newTargetId = RemoveTarget_id.replace(LastTargetId, BaseId + "_" + previousExtension);
+
+               Section = document.getElementById( oldTargetId );
+               if ( Section )
+               {
+                    Section.id = newTargetId;
+               }
+               else
+               {
+                    console.log ('not found - ' + i + ' - '+ FirstAvailable);
+               }
+
+               /*update the rest of the items */
+               //mtk_default_recipe-group_0--recipe_ingredients_0--recipe_ingredient_item_0--addButton-
+               //mtk_default_recipe-group_0--recipe_ingredients_0--recipe_ingredient_item_0--removeButton-
+
+               //mtk_default_recipe-group_0--recipe_ingredients_0--recipe_ingredient_item_1--content_div-
+               //mtk_default_recipe-group_0--recipe_ingredients_0--recipe_ingredient_item_0--content_div-
+               if (oldTargetId.indexOf ('content_div') >-1)
+               {
+                    oldTargetId_button = oldTargetId.replace( 'content_div' , 'addButton' );
+                    newTargetId_button = newTargetId.replace( 'content_div' , 'addButton' );
+
+
+                    Section = document.getElementById( oldTargetId_button );
+                    Section.id = newTargetId_button;
+
+                    oldTargetId_button = oldTargetId.replace( 'content_div' , 'removeButton' );
+                    newTargetId_button = newTargetId.replace( 'content_div' , 'removeButton' );
+                    Section = document.getElementById( oldTargetId_button );
+                    Section.id = newTargetId_button;
+
+               }
+               else if (oldTargetId.indexOf ('main_div') >-1)
+               {
+                    oldTargetId_button = oldTargetId.replace( '--main_div-' , '--addButton-' );
+                    newTargetId_button = newTargetId.replace( '--main_div-' , '--addButton-' );
+                    Section = document.getElementById( oldTargetId_button );
+                    Section.id = newTargetId_button;
+
+                    oldTargetId_button = oldTargetId.replace( '--main_div-' , '--removeButton-' );
+                    newTargetId_button = newTargetId.replace( '--main_div-' , '--removeButton-' );
+                    Section = document.getElementById( oldTargetId_button );
+                    Section.id = newTargetId_button;
+
+               }
+               else
+               {
+                    console.log (e.target.id);
+                    //mtk_default_recipe-group_0--recipe_ingredients_1--removeButton-
+                    console.log (oldTargetId);
+                    //mtk_default_recipe-group_0--recipe_ingredients_1--main_div-
+                    console.log (newTargetId);
+                    //mtk_default_recipe-group_0--recipe_ingredients_0--main_div-
+               }
+
+          }
+          return;
+
+
+     }
+
+
+}
+function removeThisItem ( Target )
+{
+     // console.log ( 'removeSection' );
+     // console.log ( Target );
+}
+function UpdateIds ( BaseId , RemovedExtension,  LastExtension )
+{
+     // console.log ( 'removeSection' );
+     // console.log ( BaseId + ' - ' + RemovedExtension + ' - ' + LastExtension );
 }
 
-/* ---------- common function ---------- */
+/* ---------------------------------------------- */
+/*                  common function               */
+/* ---------------------------------------------- */
 function getBaseId ( id )
 {
      var BaseId = id.substring(0, id.lastIndexOf("_"));
@@ -126,7 +313,7 @@ function getlastSectionValidId ( BaseId )
      var FoundQuery = true;
      while ( FoundQuery )
      {
-          console.log (BaseId + '_' + i);
+          // console.log (BaseId + '_' + i);
           if ( $('#' + BaseId + '_' + i).length > 0 )
           {
                LastValidId = BaseId + '_' + i;

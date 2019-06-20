@@ -1,0 +1,273 @@
+/* ----- Section ----- */
+.Section_div
+{}
+/* ----- SubSection ----- */
+/* ----- Item ----- */
+/* ----- SubItem ----- */
+.Item_label
+{}
+.Item_input_div
+{}
+.Item_input
+{}
+
+​​
+/* ----- Specific for this post Type */
+/* ----- General ----- */
+.recipe_name_input_div
+​​{}
+.recipe_name_label
+​​{}
+.recipe_name_input
+​​{}
+.recipe_author_input_div
+​​{}
+.recipe_author_label
+​​{}
+.recipe_author_input
+​​{}
+.recipe_image_input_div
+​​{}
+.recipe_image_label
+​​{}
+.recipe_image_input
+{}
+.recipe_description_input_div
+{}
+.recipe_description_label
+{}
+.recipe_description_input
+{}
+.recipe_servings_input_div
+{}
+.recipe_servings_label
+{}
+.recipe_servings_input
+{}
+.Item_title_td
+{}
+.Item_table
+{}
+.recipe_times_title_td
+{}
+
+.recipe_times_table
+​​
+33: Item_columnTitle_tr
+​​
+34: recipe_times_columnTitle_tr
+​​
+35: SubItem_columnTitle_td
+​​
+36: recipe_prep_time_columnTitle_td
+​​
+37: recipe_cook_time_columnTitle_td
+​​
+38: recipe_passive_time_columnTitle_td
+​​
+39: Item_content_tr
+​​
+40: recipe_times_content_tr
+​​
+41: SubItem_label_td
+​​
+42: recipe_prep_time_label_td
+​​
+43: SubItem_label
+​​
+44: recipe_prep_time_label
+​​
+45: SubItem_input_td
+​​
+46: recipe_prep_time_input_td
+​​
+47: SubItem_input
+​​
+48: recipe_prep_time_input
+​​
+49: recipe_cook_time_label_td
+​​
+50: recipe_cook_time_label
+​​
+51: recipe_cook_time_input_td
+​​
+52: recipe_cook_time_input
+​​
+53: recipe_passive_time_label_td
+​​
+54: recipe_passive_time_label
+​​
+55: recipe_passive_time_input_td
+​​
+56: recipe_passive_time_input
+​​
+57: Item_sub_td
+​​
+58: recipe_times_sub_td
+​​
+59: dashicons
+​​
+60: dashicons-plus-alt
+​​
+61: add-substract-button
+​​
+62: addButton
+​​
+63: dashicons-dismiss
+​​
+64: removeButton]
+​​
+65: SubSection_main_div
+​​
+66: recipe_ingredients_main_div
+​​
+67: SubSection_title_div
+​​
+68: recipe_ingredients_title_div
+​​
+69: SubSection_title_h3
+​​
+70: SubSection_content_div
+​​
+71: recipe_ingredients_content_div
+​​
+72: recipe_ingredient_item_title_td
+​​
+73: recipe_ingredient_item_table
+​​
+74: recipe_ingredient_item_columnTitle_tr
+​​
+75: recipe_ingredient_quantity_columnTitle_td
+​​
+76: recipe_ingredient_unit_columnTitle_td
+​​
+77: recipe_ingredient_name_columnTitle_td
+​​
+78: recipe_ingredient_notes_columnTitle_td
+​​
+79: recipe_ingredient_item_content_tr
+​​
+80: recipe_ingredient_quantity_label_td
+​​
+81: recipe_ingredient_quantity_label
+​​
+82: recipe_ingredient_quantity_input_td
+​​
+83: recipe_ingredient_quantity_input
+​​
+84: recipe_ingredient_unit_label_td
+​​
+85: recipe_ingredient_unit_label
+​​
+86: recipe_ingredient_unit_input_td
+​​
+87: recipe_ingredient_unit_input
+​​
+88: recipe_ingredient_name_label_td
+​​
+89: recipe_ingredient_name_label
+​​
+90: recipe_ingredient_name_input_td
+​​
+91: recipe_ingredient_name_input
+​​
+92: recipe_ingredient_notes_label_td
+​​
+93: recipe_ingredient_notes_label
+​​
+94: recipe_ingredient_notes_input_td
+​​
+95: recipe_ingredient_notes_input
+​​
+96: recipe_ingredient_item_sub_td
+​​
+97: recipe_instructions_main_div
+​​
+98: recipe_instructions_title_div
+​​
+99: recipe_instructions_content_div
+100: recipe_instructions_step_title_td
+​​
+101: recipe_instructions_step_table
+​​
+102: recipe_instructions_step_columnTitle_tr
+​​
+103: recipe_step_number_columnTitle_td
+​​
+104: recipe_step_instruction_columnTitle_td
+​​
+105: recipe_step_image_columnTitle_td
+​​
+106: recipe_instructions_step_content_tr
+​​
+107: recipe_step_number_label_td
+​​
+108: recipe_step_number_label
+​​
+109: recipe_step_number_input_td
+​​
+110: recipe_step_number_input
+​​
+111: recipe_step_instruction_label_td
+​​
+112: recipe_step_instruction_label
+​​
+113: recipe_step_instruction_input_td
+​​
+114: recipe_step_instruction_input
+​​
+115: recipe_step_image_label_td
+​​
+116: recipe_step_image_label
+​​
+117: recipe_step_image_input_td
+​​
+118: recipe_step_image_input
+​​
+119: recipe_instructions_step_sub_td
+​​
+120: recipe_notes_input_div
+​​
+121: recipe_notes_label
+​​
+122: recipe_notes_input
+​​
+123: recipe_video_title_td
+​​
+124: recipe_video_table
+​​
+125: recipe_video_columnTitle_tr
+​​
+126: recipe_video_name_columnTitle_td
+​​
+127: recipe_video_description_columnTitle_td
+​​
+128: recipe_video_notes_columnTitle_td
+​​
+129: recipe_video_content_tr
+​​
+130: recipe_video_name_label_td
+​​
+131: recipe_video_name_label
+​​
+132: recipe_video_name_input_td
+​​
+133: recipe_video_name_input
+​​
+134: recipe_video_description_label_td
+​​
+135: recipe_video_description_label
+​​
+136: recipe_video_description_input_td
+​​
+137: recipe_video_description_input
+​​
+138: recipe_video_notes_label_td
+​​
+139: recipe_video_notes_label
+​​
+140: recipe_video_notes_input_td
+​​
+141: recipe_video_notes_input
+​​
+142: recipe_video_sub_td

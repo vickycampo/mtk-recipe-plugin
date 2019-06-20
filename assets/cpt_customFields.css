@@ -1,6 +1,4 @@
-table, th, td {
-  border: 1px solid black;
-}
+
 /* ----- Section ----- */
 .Section_div
 {
@@ -8,31 +6,14 @@ table, th, td {
 }
 /* ----- SubSection ----- */
 .SubSection_main_div
-{
-     margin-top: 10px;
-     margin-bottom: 10px;
-     padding-left: 10px;
-     padding-right: 10px;
-     padding-bottom: 10px;
-     border:1px solid #ddd;
-     box-shadow:inset 0 1px 2px rgba(0,0,0,.07);
-     color: #32373c;
-     outline: 0;
-}
+{}
 .SubSection_title_div
-{
-
-}
+{}
 .SubSection_title_h3
-{
-
-}
+{}
 .SubSection_content_div
-{
-
-}
+{}
 /* ----- Item ----- */
-
 .Item_input_div
 {
 
@@ -42,6 +23,12 @@ table, th, td {
           display: inline-block;
           width: 75px;
      }
+.Item_label
+{}
+.Item_input
+{}
+.Item_title_td
+{}
 .Item_table
 {
      max-width: 95%;
@@ -55,50 +42,37 @@ table, th, td {
      color: #32373c;
      outline: 0;
 }
-.Item_table > tr > td
+
+     .Item_table > tr , .Item_table > td
+     {
+          border:none !important;;
+          padding: 0px !important;
+     }
+.Item_columnTitle_tr
+{}
+.SubItem_columnTitle_td
 {
-     border:none;
-}
-.Item_title_tr
-{
+     word-wrap: break-word;
      border:none;
 }
 .Item_content_tr
-{
-     border:none;
-}
-.Item_title_td
-{
-     border:none;
-}
-.Item_sub_td
-{
-     border:none;
-}
-.SubItem_label_td
-{
-     border:none;
-
-}
-.SubItem_input_td
-{
-     border:none;
-}
-.SubItem_input
-{
-
-}
-
+{}
 
 /* ----- SubItem ----- */
-.SubItem_input_div
+.SubItem_label_td
 {
-     display: inline;
+     display: none;
 }
-.SubItem_field
+.SubItem_label
 {
-
+     word-wrap: break-word;
 }
+.SubItem_input_td
+{}
+.SubItem_input
+{}
+.Item_sub_td
+{}
 /* ----- add-remove-buttons ----- */
 .add-substract-button
 {
@@ -113,55 +87,84 @@ table, th, td {
 
 }
 
+
 /* ----- General ----- */
-.recipe_title_input
-{
-
-}
+.recipe_name_input_div
+{}
+.recipe_name_label
+{}
+.recipe_name_input
+{}
+.recipe_author_input_div
+{}
+.recipe_author_label
+{}
 .recipe_author_input
-{
-
-}
+{}
+.recipe_image_input_div
+{}
+.recipe_image_label
+{}
 .recipe_image_input
-{
-
-}
+{}
+.recipe_description_input_div
+{}
+.recipe_description_label
+{}
 .recipe_description_input
-{
-
-}
+{}
+.recipe_servings_input_div
+{}
+.recipe_servings_label
+{}
 .recipe_servings_input
-{
-
-}
+{}
 /* ----- General - Times ----- */
-
-
-.recipe_times_table
-{}
-.recipe_times_title_tr
-{}
 .recipe_times_title_td
 {}
-.recipe_prep_time_columnTitle_td, .recipe_cook_time_columnTitle_td, .recipe_passive_time_columnTitle_td
-{
-     border:none;
-}
+.recipe_times_table
+{}
+.recipe_times_columnTitle_tr
+{}
+.recipe_prep_time_columnTitle_td
+{}
+.recipe_cook_time_columnTitle_td
+{}
+.recipe_passive_time_columnTitle_td
+{}
 .recipe_times_content_tr
 {}
-.recipe_prep_time_label_td, .recipe_cook_time_label_td, .recipe_passive_time_label_td
-{
-     display: none;
-}
-.recipe_prep_time_input_td, .recipe_cook_time_input_td, .recipe_passive_time_input_td
+.recipe_prep_time_label_td
+{}
+.recipe_prep_time_label
+{}
+.recipe_prep_time_input_td
+{}
+.recipe_prep_time_input
+{}
+.recipe_cook_time_label_td
+{}
+.recipe_cook_time_label
+{}
+.recipe_cook_time_input_td
+{}
+.recipe_cook_time_input
+{}
+.recipe_passive_time_label_td
+{}
+.recipe_passive_time_label
+{}
+.recipe_passive_time_input_td
+{}
+.recipe_passive_time_input
+{}
+.recipe_times_sub_td
 {}
 .recipe_prep_time_input, .recipe_cook_time_input, .recipe_passive_time_input
 {
      width:250px;
 }
 
-.recipe_times_sub_td
-{}
 /* ----- Group  ----- */
 /* ----- Ingredients  ----- */
 .recipe_group_general_name_input_div
@@ -199,99 +202,173 @@ table, th, td {
           display: inline-block;
      }
 .recipe_ingredients_main_div
-{
-
-}
+{}
 .recipe_ingredients_title_div
-{
-
-}
+{}
 .recipe_ingredients_content_div
+{}
+.recipe_ingredient_item_title_td
+{}
+.recipe_ingredient_item_table
+{}
+.recipe_ingredient_item_columnTitle_tr
+{}
+.recipe_ingredient_quantity_columnTitle_td
+{}
+.recipe_ingredient_unit_columnTitle_td
+{}
+.recipe_ingredient_name_columnTitle_td
+{}
+.recipe_ingredient_notes_columnTitle_td
+{}
+.recipe_ingredient_item_content_tr
+{}
+.recipe_ingredient_quantity_label_td
+{}
+.recipe_ingredient_quantity_label
+{}
+.recipe_ingredient_quantity_input_td
+.recipe_ingredient_quantity_input
 {
-
+     width: 40px !important;
+     text-align: center;
 }
-
-     .recipe_ingredient_quantity_columnTitle_td, .recipe_ingredient_unit_columnTitle_td, .recipe_ingredient_name_columnTitle_td, .recipe_ingredient_notes_columnTitle_td
-     {
-          border: none;
-     }
-     .recipe_ingredient_quantity_label_td, .recipe_ingredient_unit_label_td, .recipe_ingredient_name_label_td, .recipe_ingredient_notes_label_td
-     {
-          display: none;
-     }
-     .recipe_ingredient_quantity_input
-     {
-          width: 50px !important;
-          text-align: center;
-     }
-     .recipe_ingredient_unit_input
-     {
-          width: 75px !important;
-     }
-     .recipe_ingredient_name_input
-     {
-          width: 200px !important;
-     }
-     .recipe_ingredient_notes_input
-     {
-          width: 350px !important;
-     }
+.recipe_ingredient_unit_label_td
+{}
+.recipe_ingredient_unit_label
+{}
+.recipe_ingredient_unit_input_td
+{}
+.recipe_ingredient_unit_input
+{
+     width: 75px !important;
+}
+.recipe_ingredient_name_label_td
+{}
+.recipe_ingredient_name_label
+{}
+.recipe_ingredient_name_input_td
+{}
+.recipe_ingredient_name_input
+{
+     width: 150px !important;
+}
+.recipe_ingredient_notes_label_td
+{}
+.recipe_ingredient_notes_label
+{}
+.recipe_ingredient_notes_input_td
+{}
+.recipe_ingredient_notes_input
+{
+     width: 300px !important;
+}
+.recipe_ingredient_item_sub_td
+{}
 /* ----- Instruction  ----- */
 .recipe_instructions_main_div
-{
-
-}
+{}
 .recipe_instructions_title_div
-{
-
-}
+{}
 .recipe_instructions_content_div
+{}
+.recipe_instructions_step_title_td
+{}
+.recipe_instructions_step_table
+{}
+.recipe_instructions_step_columnTitle_tr
+{}
+.recipe_step_number_columnTitle_td
 {
-
+     width: 50px;
 }
-.recipe_instructions_step_main_div
+.recipe_step_instruction_columnTitle_td
+{}
+.recipe_step_image_columnTitle_td
+{}
+.recipe_instructions_step_content_tr
+{}
+.recipe_step_number_label_td
+{}
+.recipe_step_number_label
+{}
+.recipe_step_number_input_td
+{}
+.recipe_step_number_input
 {
-
+     width: 50px !important;
 }
-.recipe_instructions_step_title_div
+.recipe_step_instruction_label_td
+{}
+.recipe_step_instruction_label
+{}
+.recipe_step_instruction_input_td
+{}
+.recipe_step_instruction_input
 {
-
+     width: 350px !important;
 }
-.recipe_instructions_step_content_div
+.recipe_step_image_label_td
+{}
+.recipe_step_image_label
+{}
+.recipe_step_image_input_td
+{}
+.recipe_step_image_input
 {
-
+     width: 150px !important;
 }
-.recipe_instructions_step_sub_div
-{
+.recipe_instructions_step_sub_td
+{}
 
-}
-     .recipe_step_number_input
-     {
-          width: 50px !important;
-     }
-     .recipe_step_instruction_input
-     {
-          width: 350px !important;
-     }
-     .recipe_step_image_input
-     {
-          width: 150px !important;
-     }
 /* ----- Extras  ----- */
+.recipe_notes_input_div
+{}
+.recipe_notes_label
+{}
 .recipe_notes_input
-{
+{}
 
-}
-.recipe_video_input
-{
+.recipe_video_title_td
+{}
+.recipe_video_table
+{}
+.recipe_video_columnTitle_tr
+{}
+.recipe_video_name_columnTitle_td
+{}
+.recipe_video_description_columnTitle_td
+{}
+.recipe_video_notes_columnTitle_td
+{}
+.recipe_video_content_tr
+{}
 
-}
-/* ----- WP - Generic  ----- */
-.components-base-control__label
-{
+.recipe_video_name_label_td
+{}
+.recipe_video_name_label
+{}
+.recipe_video_name_input_td
+{}
+.recipe_video_name_input
+{}
 
-}
-.components-text-control__input
-{
+.recipe_video_description_label_td
+{}
+.recipe_video_description_label
+{}
+.recipe_video_description_input_td
+{}
+.recipe_video_description_input
+{}
 
-}
+.recipe_video_notes_label_td
+{}
+.recipe_video_notes_label
+{}
+.recipe_video_notes_input_td
+{}
+.recipe_video_notes_input
+{}
+.recipe_video_sub_td
+{}

@@ -264,7 +264,7 @@ class RecipeCPTFunctions extends BaseController
           $textForId = $fieldName.'[removeButton]';
           $textForId = str_replace( "[" , "-" , $textForId );
           $textForId = str_replace( "]" , "-" , $textForId );
-          echo ('<span class="dashicons dashicons-dismiss add-substract-button removeButton]" id="'.$textForId.'" ></span>');
+          echo ('<span class="dashicons dashicons-dismiss add-substract-button removeButton" id="'.$textForId.'" ></span>');
 
      }
 
@@ -476,7 +476,7 @@ class RecipeCPTFunctions extends BaseController
                                    $textForId = str_replace( "]" , "-" , $textForId );
                                    echo ('<td class="'.$value['field-info']['Type'].'_label_td '.$value['field-info']['ID'].'_label_td" id="'.$textForId.'">');
                               }
-                              echo ('<label class="components-base-control__label " for="'.$fieldName.'">'.$labelText.': </label>');
+                              echo ('<label class="'.$value['field-info']['Type'].'_label '.$value['field-info']['ID'].'_label " for="'.$fieldName.'">'.$labelText.': </label>');
                               if ( $table )
                               {
                                    echo ('</td>');
@@ -488,19 +488,22 @@ class RecipeCPTFunctions extends BaseController
                                    $textForId = str_replace( "]" , "-" , $textForId );
                                    echo ('<td class="'.$value['field-info']['Type'].'_input_td '.$value['field-info']['ID'].'_input_td" id="'.$textForId.'">');
                               }
-                              echo ('<input id="'.$textForId.'" name="'.$fieldName.'" class="components-text-control__input '.$value['field-info']['Type'].'_input '.$value['field-info']['ID'].'_input " type="text"'. $Fieldvalue .'/>');
+                              echo ('<input id="'.$textForId.'" name="'.$fieldName.'" class="'.$value['field-info']['Type'].'_input '.$value['field-info']['ID'].'_input " type="text"'. $Fieldvalue .'/>');
                               if ( $table )
                               {
                                    echo ('</td>');
                               }
                               if ( ( isset ( $value['field-info']['add_remove_buttons'] ) ) && ( $value['field-info']['add_remove_buttons'] ) )
                               {
+                                   // echo ($fieldName . '<br>');
                                    $this->add_remove_buttons( $fieldName );
                               }
                          if ( ! $table )
                          {
+                              // echo ('closing the div<br>');
                               echo ('</div>');
                          }
+
 
                     }
                }
