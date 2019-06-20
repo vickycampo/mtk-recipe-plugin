@@ -41,13 +41,14 @@ function addButtonDown ( e )
           /* We are duplicating a whole SubSection */
           duplicateSubSection ( lastId , GreatGrandParent );
      }
-     else if ( Parent.classList.contains('Item_content_div ') )
+     else if ( Parent.classList.contains('Item_sub_td') )
      {
-          console.log ('create function to duplicate item');
-     }
-     else if ( Parent.classList.contains('Item_input_div') )
-     {
-          console.log ('create function to duplicate other item');
+          /* Items */
+          // console.log ("parent id - " + Parent.id );
+          // console.log ("grandparent id - " + GrandParent.id );
+          // console.log ("lastId id - " + lastId );
+          duplicateSubSection ( lastId , GrandParent );
+
      }
      else
      {
@@ -93,8 +94,11 @@ function duplicateSubSection ( Id , GreatGrandParent )
 
      /* Search for the maximum id */
      var IdArray = getlastSubSectionValidId (BaseId , SearchId , TargetId);
+     console.log (IdArray['parent']['LastValidId']);
+     console.log (IdArray['parent']['FirstAvailable']);
+     console.log (Id);
 
-     console.log ( IdArray );
+     // console.log ( IdArray );
 
      /* clone element */
      var NewObject = $( '#' + IdArray['parent']['LastValidId'] ).clone(true);
@@ -134,7 +138,6 @@ function getlastSectionValidId ( BaseId )
                FirstAvailable = BaseId + '_' + i;
                FoundQuery = false;
           }
-
      }
      var ReturnArray = new Array;
      ReturnArray['LastValidId'] = LastValidId;

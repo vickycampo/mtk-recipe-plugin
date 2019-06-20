@@ -430,78 +430,78 @@ public function register_default_cpt ()
           $input['customFields'][$i]['add_remove_buttons'] = false;
 
 
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_name';
-          $input['customFields'][$i]['Name'] = 'Name';
-          $input['customFields'][$i]['Type'] = 'Item';
-          $input['customFields'][$i]['Parent'] = 'general';
-          $input['customFields'][$i]['Show_in_columns'] = true;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_name';
+               $input['customFields'][$i]['Name'] = 'Name';
+               $input['customFields'][$i]['Type'] = 'Item';
+               $input['customFields'][$i]['Parent'] = 'general';
+               $input['customFields'][$i]['Show_in_columns'] = true;
+               $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_author';
-          $input['customFields'][$i]['Name'] = 'Author';
-          $input['customFields'][$i]['Type'] = 'Item';
-          $input['customFields'][$i]['Parent'] = 'general';
-          $input['customFields'][$i]['Show_in_columns'] = true;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_author';
+               $input['customFields'][$i]['Name'] = 'Author';
+               $input['customFields'][$i]['Type'] = 'Item';
+               $input['customFields'][$i]['Parent'] = 'general';
+               $input['customFields'][$i]['Show_in_columns'] = true;
+               $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_image';
-          $input['customFields'][$i]['Name'] = 'Image';
-          $input['customFields'][$i]['Type'] = 'Item';
-          $input['customFields'][$i]['Parent'] = 'general';
-          $input['customFields'][$i]['Show_in_columns'] = false;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_image';
+               $input['customFields'][$i]['Name'] = 'Image';
+               $input['customFields'][$i]['Type'] = 'Item';
+               $input['customFields'][$i]['Parent'] = 'general';
+               $input['customFields'][$i]['Show_in_columns'] = false;
+               $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_description';
-          $input['customFields'][$i]['Name'] = 'Description';
-          $input['customFields'][$i]['Type'] = 'Item';
-          $input['customFields'][$i]['Parent'] = 'general';
-          $input['customFields'][$i]['Show_in_columns'] = true;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_description';
+               $input['customFields'][$i]['Name'] = 'Description';
+               $input['customFields'][$i]['Type'] = 'Item';
+               $input['customFields'][$i]['Parent'] = 'general';
+               $input['customFields'][$i]['Show_in_columns'] = true;
+               $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_servings';
-          $input['customFields'][$i]['Name'] = 'Servings';
-          $input['customFields'][$i]['Type'] = 'Item';
-          $input['customFields'][$i]['Parent'] = 'general';
-          $input['customFields'][$i]['Show_in_columns'] = false;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_servings';
+               $input['customFields'][$i]['Name'] = 'Servings';
+               $input['customFields'][$i]['Type'] = 'Item';
+               $input['customFields'][$i]['Parent'] = 'general';
+               $input['customFields'][$i]['Show_in_columns'] = false;
+               $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          /* Cooking Time */
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_times';
-          $input['customFields'][$i]['Name'] = 'Times';
-          $input['customFields'][$i]['Type'] = 'Item';
-          $input['customFields'][$i]['Parent'] = 'general';
-          $input['customFields'][$i]['Show_in_columns'] = true;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+               /* Cooking Time */
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_times';
+               $input['customFields'][$i]['Name'] = 'Times';
+               $input['customFields'][$i]['Type'] = 'Item';
+               $input['customFields'][$i]['Parent'] = 'general';
+               $input['customFields'][$i]['Show_in_columns'] = true;
+               $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_prep_time';
-          $input['customFields'][$i]['Name'] = 'Prep Time';
-          $input['customFields'][$i]['Type'] = 'SubItem';
-          $input['customFields'][$i]['Parent'] = 'recipe_times';
-          $input['customFields'][$i]['Show_in_columns'] = true;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_prep_time';
+                    $input['customFields'][$i]['Name'] = 'Prep Time';
+                    $input['customFields'][$i]['Type'] = 'SubItem';
+                    $input['customFields'][$i]['Parent'] = 'recipe_times';
+                    $input['customFields'][$i]['Show_in_columns'] = true;
+                    $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_cook_time';
-          $input['customFields'][$i]['Name'] = 'Cook Time';
-          $input['customFields'][$i]['Type'] = 'SubItem';
-          $input['customFields'][$i]['Parent'] = 'recipe_times';
-          $input['customFields'][$i]['Show_in_columns'] = true;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_cook_time';
+                    $input['customFields'][$i]['Name'] = 'Cook Time';
+                    $input['customFields'][$i]['Type'] = 'SubItem';
+                    $input['customFields'][$i]['Parent'] = 'recipe_times';
+                    $input['customFields'][$i]['Show_in_columns'] = true;
+                    $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_passive_time';
-          $input['customFields'][$i]['Name'] = 'Passive Time';
-          $input['customFields'][$i]['Type'] = 'SubItem';
-          $input['customFields'][$i]['Parent'] = 'recipe_times';
-          $input['customFields'][$i]['Show_in_columns'] = true;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_passive_time';
+                    $input['customFields'][$i]['Name'] = 'Passive Time';
+                    $input['customFields'][$i]['Type'] = 'SubItem';
+                    $input['customFields'][$i]['Parent'] = 'recipe_times';
+                    $input['customFields'][$i]['Show_in_columns'] = true;
+                    $input['customFields'][$i]['add_remove_buttons'] = false;
 
           /* Group Section */
           $i++;
@@ -512,97 +512,131 @@ public function register_default_cpt ()
           $input['customFields'][$i]['Show_in_columns'] = false;
           $input['customFields'][$i]['add_remove_buttons'] = true;
 
-          /* Ingredients Section */
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_ingredients';
-          $input['customFields'][$i]['Name'] = 'Ingredients';
-          $input['customFields'][$i]['Type'] = 'SubSection';
-          $input['customFields'][$i]['Parent'] = 'group';
-          $input['customFields'][$i]['Show_in_columns'] = false;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+               /* Ingredients Section */
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_group_general';
+               $input['customFields'][$i]['Name'] = 'Group General';
+               $input['customFields'][$i]['Type'] = 'SubSection';
+               $input['customFields'][$i]['Parent'] = 'group';
+               $input['customFields'][$i]['Show_in_columns'] = false;
+               $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          /* Single Ingredient Section */
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_ingredient_item';
-          $input['customFields'][$i]['Name'] = 'Ingredient';
-          $input['customFields'][$i]['Type'] = 'Item';
-          $input['customFields'][$i]['Parent'] = 'recipe_ingredients';
-          $input['customFields'][$i]['Show_in_columns'] = false;
-          $input['customFields'][$i]['add_remove_buttons'] = true;
+                    /* Gropup detials */
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_group_general_name';
+                    $input['customFields'][$i]['Name'] = 'Procedure Name';
+                    $input['customFields'][$i]['Type'] = 'Item';
+                    $input['customFields'][$i]['Parent'] = 'recipe_group_general';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
+                    $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_ingredient_quantity';
-          $input['customFields'][$i]['Name'] = 'Quantity';
-          $input['customFields'][$i]['Type'] = 'SubItem';
-          $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
-          $input['customFields'][$i]['Show_in_columns'] = false;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_group_general_notes';
+                    $input['customFields'][$i]['Name'] = 'Procedure Notes';
+                    $input['customFields'][$i]['Type'] = 'Item';
+                    $input['customFields'][$i]['Parent'] = 'recipe_group_general';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
+                    $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_ingredient_unit';
-          $input['customFields'][$i]['Name'] = 'Unit';
-          $input['customFields'][$i]['Type'] = 'SubItem';
-          $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
-          $input['customFields'][$i]['Show_in_columns'] = false;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_group_general_image';
+                    $input['customFields'][$i]['Name'] = 'Procedure Image';
+                    $input['customFields'][$i]['Type'] = 'Item';
+                    $input['customFields'][$i]['Parent'] = 'recipe_group_general';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
+                    $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_ingredient_name';
-          $input['customFields'][$i]['Name'] = 'Ingredient Name';
-          $input['customFields'][$i]['Type'] = 'SubItem';
-          $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
-          $input['customFields'][$i]['Show_in_columns'] = false;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+               /* Ingredients Section */
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_ingredients';
+               $input['customFields'][$i]['Name'] = 'Ingredients';
+               $input['customFields'][$i]['Type'] = 'SubSection';
+               $input['customFields'][$i]['Parent'] = 'group';
+               $input['customFields'][$i]['Show_in_columns'] = false;
+               $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_ingredient_notes';
-          $input['customFields'][$i]['Name'] = 'Notes';
-          $input['customFields'][$i]['Type'] = 'SubItem';
-          $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
-          $input['customFields'][$i]['Show_in_columns'] = false;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+                    /* Single Ingredient Section */
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_ingredient_item';
+                    $input['customFields'][$i]['Name'] = 'Ingredient';
+                    $input['customFields'][$i]['Type'] = 'Item';
+                    $input['customFields'][$i]['Parent'] = 'recipe_ingredients';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
+                    $input['customFields'][$i]['add_remove_buttons'] = true;
 
-          /* Instructions Section */
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_instructions';
-          $input['customFields'][$i]['Name'] = 'Instructions';
-          $input['customFields'][$i]['Type'] = 'SubSection';
-          $input['customFields'][$i]['Parent'] = 'group';
-          $input['customFields'][$i]['Show_in_columns'] = false;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_ingredient_quantity';
+                    $input['customFields'][$i]['Name'] = 'Quantity';
+                    $input['customFields'][$i]['Type'] = 'SubItem';
+                    $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
+                    $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          /* Step Section */
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_instructions_step';
-          $input['customFields'][$i]['Name'] = 'Step';
-          $input['customFields'][$i]['Type'] = 'Item';
-          $input['customFields'][$i]['Parent'] = 'recipe_instructions';
-          $input['customFields'][$i]['Show_in_columns'] = false;
-          $input['customFields'][$i]['add_remove_buttons'] = true;
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_ingredient_unit';
+                    $input['customFields'][$i]['Name'] = 'Unit';
+                    $input['customFields'][$i]['Type'] = 'SubItem';
+                    $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
+                    $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_step_number';
-          $input['customFields'][$i]['Name'] = 'Step Number';
-          $input['customFields'][$i]['Type'] = 'SubItem';
-          $input['customFields'][$i]['Parent'] = 'recipe_instructions_step';
-          $input['customFields'][$i]['Show_in_columns'] = false;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_ingredient_name';
+                    $input['customFields'][$i]['Name'] = 'Ingredient Name';
+                    $input['customFields'][$i]['Type'] = 'SubItem';
+                    $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
+                    $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_step_instruction';
-          $input['customFields'][$i]['Name'] = 'Instruction';
-          $input['customFields'][$i]['Type'] = 'SubItem';
-          $input['customFields'][$i]['Parent'] = 'recipe_instructions_step';
-          $input['customFields'][$i]['Show_in_columns'] = false;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_ingredient_notes';
+                    $input['customFields'][$i]['Name'] = 'Notes';
+                    $input['customFields'][$i]['Type'] = 'SubItem';
+                    $input['customFields'][$i]['Parent'] = 'recipe_ingredient_item';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
+                    $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          $i++;
-          $input['customFields'][$i]['ID'] = 'recipe_step_image';
-          $input['customFields'][$i]['Name'] = 'Instructions Image';
-          $input['customFields'][$i]['Type'] = 'SubItem';
-          $input['customFields'][$i]['Parent'] = 'recipe_instructions_step';
-          $input['customFields'][$i]['Show_in_columns'] = false;
-          $input['customFields'][$i]['add_remove_buttons'] = false;
+               /* Instructions Section */
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_instructions';
+               $input['customFields'][$i]['Name'] = 'Instructions';
+               $input['customFields'][$i]['Type'] = 'SubSection';
+               $input['customFields'][$i]['Parent'] = 'group';
+               $input['customFields'][$i]['Show_in_columns'] = false;
+               $input['customFields'][$i]['add_remove_buttons'] = false;
+
+                    /* Step Section */
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_instructions_step';
+                    $input['customFields'][$i]['Name'] = 'Step';
+                    $input['customFields'][$i]['Type'] = 'Item';
+                    $input['customFields'][$i]['Parent'] = 'recipe_instructions';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
+                    $input['customFields'][$i]['add_remove_buttons'] = true;
+
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_step_number';
+                    $input['customFields'][$i]['Name'] = 'Step Number';
+                    $input['customFields'][$i]['Type'] = 'SubItem';
+                    $input['customFields'][$i]['Parent'] = 'recipe_instructions_step';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
+                    $input['customFields'][$i]['add_remove_buttons'] = false;
+
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_step_instruction';
+                    $input['customFields'][$i]['Name'] = 'Instruction';
+                    $input['customFields'][$i]['Type'] = 'SubItem';
+                    $input['customFields'][$i]['Parent'] = 'recipe_instructions_step';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
+                    $input['customFields'][$i]['add_remove_buttons'] = false;
+
+                    $i++;
+                    $input['customFields'][$i]['ID'] = 'recipe_step_image';
+                    $input['customFields'][$i]['Name'] = 'Instructions Image';
+                    $input['customFields'][$i]['Type'] = 'SubItem';
+                    $input['customFields'][$i]['Parent'] = 'recipe_instructions_step';
+                    $input['customFields'][$i]['Show_in_columns'] = false;
+                    $input['customFields'][$i]['add_remove_buttons'] = false;
 
           /* Extras Section */
           $i++;

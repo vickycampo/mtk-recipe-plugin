@@ -1,3 +1,6 @@
+table, th, td {
+  border: 1px solid black;
+}
 /* ----- Section ----- */
 .Section_div
 {
@@ -6,7 +9,15 @@
 /* ----- SubSection ----- */
 .SubSection_main_div
 {
-
+     margin-top: 10px;
+     margin-bottom: 10px;
+     padding-left: 10px;
+     padding-right: 10px;
+     padding-bottom: 10px;
+     border:1px solid #ddd;
+     box-shadow:inset 0 1px 2px rgba(0,0,0,.07);
+     color: #32373c;
+     outline: 0;
 }
 .SubSection_title_div
 {
@@ -21,43 +32,69 @@
 
 }
 /* ----- Item ----- */
-.Item_main_div
-{
 
-}
-.Item_title_div
-{
-
-}
-
-.Item_content_div
-{
-
-}
-.Item_field
-{
-
-}
 .Item_input_div
 {
-     
+
 }
-.Item_sub_div
+     .Item_input_div > label
+     {
+          display: inline-block;
+          width: 75px;
+     }
+.Item_table
+{
+     max-width: 95%;
+     margin-top: 10px;
+     margin-bottom: 10px;
+     padding-left: 10px;
+     padding-right: 10px;
+     padding-bottom: 10px;
+     border:1px solid #ddd;
+     box-shadow:inset 0 1px 2px rgba(0,0,0,.07);
+     color: #32373c;
+     outline: 0;
+}
+.Item_table > tr > td
+{
+     border:none;
+}
+.Item_title_tr
+{
+     border:none;
+}
+.Item_content_tr
+{
+     border:none;
+}
+.Item_title_td
+{
+     border:none;
+}
+.Item_sub_td
+{
+     border:none;
+}
+.SubItem_label_td
+{
+     border:none;
+
+}
+.SubItem_input_td
+{
+     border:none;
+}
+.SubItem_input
+{
+
+}
+
+
+/* ----- SubItem ----- */
+.SubItem_input_div
 {
      display: inline;
 }
-     .Item_sub_div > label
-     {
-          display:inline-block;
-          padding-right: 10px;
-          padding-left: 10px;
-     }
-     .Item_sub_div > input
-     {
-          display: inline;
-          width: 20%;
-     }
-/* ----- SubItem ----- */
 .SubItem_field
 {
 
@@ -98,55 +135,69 @@
 
 }
 /* ----- General - Times ----- */
-.recipe_times_main_div
-{
-
-}
-.recipe_times_title_div
-{
-
-}
-.recipe_times_content_div
-{
-     padding: 10px;
-     border:1px solid #ddd;
-     box-shadow:inset 0 1px 2px rgba(0,0,0,.07);
-     color: #32373c;
-     outline: 0;
-}
-.recipe_times_sub_div
-{
 
 
+.recipe_times_table
+{}
+.recipe_times_title_tr
+{}
+.recipe_times_title_td
+{}
+.recipe_prep_time_columnTitle_td, .recipe_cook_time_columnTitle_td, .recipe_passive_time_columnTitle_td
+{
+     border:none;
 }
-     .recipe_times_sub_div > label
-     {
-          width: 100px;
-          display:inline-block;
-          padding-right: 10px;
-          padding-left: 10px;
-     }
-     .recipe_times_sub_div > .SubItem_field::after
-     {
-          content: " min.";
-     }
-     .recipe_prep_time_input
-     {
-          width: 15%;
-          display:inline-block;
-     }
-     .recipe_cook_time_input
-     {
-          width: 15%;
-          display:inline-block;
-     }
-     .recipe_passive_time_input
-     {
-          width: 15%;
-          display:inline-block;
-     }
+.recipe_times_content_tr
+{}
+.recipe_prep_time_label_td, .recipe_cook_time_label_td, .recipe_passive_time_label_td
+{
+     display: none;
+}
+.recipe_prep_time_input_td, .recipe_cook_time_input_td, .recipe_passive_time_input_td
+{}
+.recipe_prep_time_input, .recipe_cook_time_input, .recipe_passive_time_input
+{
+     width:250px;
+}
+
+.recipe_times_sub_td
+{}
 /* ----- Group  ----- */
 /* ----- Ingredients  ----- */
+.recipe_group_general_name_input_div
+{
+
+}
+     .recipe_group_general_name_input_div > label
+     {
+          width: 25%;
+          display: inline-block;
+     }
+     .recipe_group_general_notes_input_div > label
+     {
+          width: 25%;
+          display: inline-block;
+     }
+     .recipe_group_general_image_input_div > label
+     {
+          width: 25%;
+          display: inline-block;
+     }
+     .recipe_group_general_name_input
+     {
+          width: 50% !important;
+          display: inline-block;
+     }
+     .recipe_group_general_notes_input
+     {
+          width: 50% !important;
+          display: inline-block;
+     }
+     .recipe_group_general_image_input
+     {
+          width: 50% !important;
+          display: inline-block;
+     }
 .recipe_ingredients_main_div
 {
 
@@ -159,37 +210,31 @@
 {
 
 }
-.recipe_ingredient_item_main_div
-{
 
-}
-.recipe_ingredient_item_title_div
-{
-     display: none;
-}
-.recipe_ingredient_item_content_div
-{
-
-}
-.recipe_ingredient_item_sub_div
-{
-
-}
+     .recipe_ingredient_quantity_columnTitle_td, .recipe_ingredient_unit_columnTitle_td, .recipe_ingredient_name_columnTitle_td, .recipe_ingredient_notes_columnTitle_td
+     {
+          border: none;
+     }
+     .recipe_ingredient_quantity_label_td, .recipe_ingredient_unit_label_td, .recipe_ingredient_name_label_td, .recipe_ingredient_notes_label_td
+     {
+          display: none;
+     }
      .recipe_ingredient_quantity_input
      {
           width: 50px !important;
+          text-align: center;
      }
      .recipe_ingredient_unit_input
      {
-          width: 100px !important;
+          width: 75px !important;
      }
      .recipe_ingredient_name_input
      {
-          width: 250px !important;
+          width: 200px !important;
      }
      .recipe_ingredient_notes_input
      {
-          width: 250px !important;
+          width: 350px !important;
      }
 /* ----- Instruction  ----- */
 .recipe_instructions_main_div
@@ -220,18 +265,18 @@
 {
 
 }
-.recipe_step_number_input
-{
-
-}
-.recipe_step_instruction_input
-{
-
-}
-.recipe_step_image_input
-{
-
-}
+     .recipe_step_number_input
+     {
+          width: 50px !important;
+     }
+     .recipe_step_instruction_input
+     {
+          width: 350px !important;
+     }
+     .recipe_step_image_input
+     {
+          width: 150px !important;
+     }
 /* ----- Extras  ----- */
 .recipe_notes_input
 {
