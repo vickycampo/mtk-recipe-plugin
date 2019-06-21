@@ -53,6 +53,10 @@ function addButtonDown ( e )
           duplicateSubSection ( lastId , GrandParent );
 
      }
+     else if ( Parent.classList.contains ('Item_input_div') )
+     {
+          duplicateSubSection ( lastId , Parent );
+     }
      else
      {
           console.log ('Why am I here?-------------------------');
@@ -164,7 +168,7 @@ function removeButtonDown ( e )
                Section = document.getElementById( BaseId + "_" + erasedExtension );
 
                Section.id = BaseId + "_" + previousExtension;
-
+               console.log (BaseId + "_" + erasedExtension + ' - ' + BaseId + "_" + previousExtension + ' - ' + Section.id);
           }
           return;
      }
@@ -180,6 +184,10 @@ function removeButtonDown ( e )
           {
                /* Items */
                var RemoveTarget = GrandParent;
+          }
+          else if ( Parent.classList.contains ('Item_input_div') )
+          {
+               var RemoveTarget = Parent;
           }
           else
           {
@@ -235,50 +243,8 @@ function removeButtonDown ( e )
                {
                     console.log ('not found - ' + i + ' - '+ FirstAvailable);
                }
-
-               /*update the rest of the items */
-               //mtk_default_recipe-group_0--recipe_ingredients_0--recipe_ingredient_item_0--addButton-
-               //mtk_default_recipe-group_0--recipe_ingredients_0--recipe_ingredient_item_0--removeButton-
-
-               //mtk_default_recipe-group_0--recipe_ingredients_0--recipe_ingredient_item_1--content_div-
-               //mtk_default_recipe-group_0--recipe_ingredients_0--recipe_ingredient_item_0--content_div-
-               if (oldTargetId.indexOf ('content_div') >-1)
-               {
-                    oldTargetId_button = oldTargetId.replace( 'content_div' , 'addButton' );
-                    newTargetId_button = newTargetId.replace( 'content_div' , 'addButton' );
-
-
-                    Section = document.getElementById( oldTargetId_button );
-                    Section.id = newTargetId_button;
-
-                    oldTargetId_button = oldTargetId.replace( 'content_div' , 'removeButton' );
-                    newTargetId_button = newTargetId.replace( 'content_div' , 'removeButton' );
-                    Section = document.getElementById( oldTargetId_button );
-                    Section.id = newTargetId_button;
-
-               }
-               else if (oldTargetId.indexOf ('main_div') >-1)
-               {
-                    oldTargetId_button = oldTargetId.replace( '--main_div-' , '--addButton-' );
-                    newTargetId_button = newTargetId.replace( '--main_div-' , '--addButton-' );
-                    Section = document.getElementById( oldTargetId_button );
-                    Section.id = newTargetId_button;
-
-                    oldTargetId_button = oldTargetId.replace( '--main_div-' , '--removeButton-' );
-                    newTargetId_button = newTargetId.replace( '--main_div-' , '--removeButton-' );
-                    Section = document.getElementById( oldTargetId_button );
-                    Section.id = newTargetId_button;
-
-               }
-               else
-               {
-                    console.log (e.target.id);
-                    //mtk_default_recipe-group_0--recipe_ingredients_1--removeButton-
-                    console.log (oldTargetId);
-                    //mtk_default_recipe-group_0--recipe_ingredients_1--main_div-
-                    console.log (newTargetId);
-                    //mtk_default_recipe-group_0--recipe_ingredients_0--main_div-
-               }
+               /* change the id's of all the child elements */
+               FixChildrenId ( BaseId + "_" + i , BaseId + "_" + previousExtension , newTargetId );
 
           }
           return;
@@ -360,6 +326,7 @@ function getlastSubSectionValidId (BaseId , SearchId , TargetId)
 }
 function FixChildrenId ( PreviousId , NewId , targetID=''  )
 {
+     //console.log (PreviousId + ' - ' + NewId + ' - ' + targetID);
      if ( targetID == '' )
      {
           /* look for all the children */

@@ -16,6 +16,7 @@ console.log ('uncomment 13');
 //   --------------------------------------------------
 //        MANAGES THE TABS
 //   --------------------------------------------------
+
 window.addEventListener ( "load" , function ()
 {
 

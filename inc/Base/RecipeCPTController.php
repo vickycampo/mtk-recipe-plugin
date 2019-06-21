@@ -15,6 +15,7 @@ use Inc\Base\BaseController;
 use Inc\Base\RecipeCPTFunctions;
 use Inc\Api\Callbacks\CptCallbacks;
 use Inc\Api\Callbacks\AdminCallbacks;
+use Inc\Api\Widgets\MediaWidget;
 
 /**
 * Enqueue - Enqueue the scripts and style files
@@ -68,8 +69,12 @@ class RecipeCPTController extends BaseController
           /* Manage CPT columns */
           if ( isset ( $this->customFields ) )
           {
+               /* if wer are using Custom Fields we also need to activate the mediawidget */
+               $media_widget = new MediaWidget ();
+               $media_widget -> register ();
                $this->manage_cpt_columns (  );
           }
+
 
 
 
@@ -447,7 +452,7 @@ public function register_default_cpt ()
                $input['customFields'][$i]['add_remove_buttons'] = false;
 
                $i++;
-               $input['customFields'][$i]['ID'] = 'recipe_image';
+               $input['customFields'][$i]['ID'] = 'recipe_image_file';
                $input['customFields'][$i]['Name'] = 'Image';
                $input['customFields'][$i]['Type'] = 'Item';
                $input['customFields'][$i]['Parent'] = 'general';
@@ -539,7 +544,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['add_remove_buttons'] = false;
 
                     $i++;
-                    $input['customFields'][$i]['ID'] = 'recipe_group_general_image';
+                    $input['customFields'][$i]['ID'] = 'recipe_group_general_image_file';
                     $input['customFields'][$i]['Name'] = 'Procedure Image';
                     $input['customFields'][$i]['Type'] = 'Item';
                     $input['customFields'][$i]['Parent'] = 'recipe_group_general';
@@ -631,7 +636,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['add_remove_buttons'] = false;
 
                     $i++;
-                    $input['customFields'][$i]['ID'] = 'recipe_step_image';
+                    $input['customFields'][$i]['ID'] = 'recipe_step_image_file';
                     $input['customFields'][$i]['Name'] = 'Instructions Image';
                     $input['customFields'][$i]['Type'] = 'SubItem';
                     $input['customFields'][$i]['Parent'] = 'recipe_instructions_step';
@@ -662,6 +667,28 @@ public function register_default_cpt ()
           $input['customFields'][$i]['Parent'] = 'recipe_extras';
           $input['customFields'][$i]['Show_in_columns'] = false;
           $input['customFields'][$i]['add_remove_buttons'] = true;
+
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_video_file';
+               $input['customFields'][$i]['Name'] = 'Recipe Video';
+               $input['customFields'][$i]['Type'] = 'SubItem';
+               $input['customFields'][$i]['Parent'] = 'recipe_video';
+               $input['customFields'][$i]['Show_in_columns'] = false;
+               $input['customFields'][$i]['add_remove_buttons'] = false;
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_video_title';
+               $input['customFields'][$i]['Name'] = 'Video Title';
+               $input['customFields'][$i]['Type'] = 'SubItem';
+               $input['customFields'][$i]['Parent'] = 'recipe_video';
+               $input['customFields'][$i]['Show_in_columns'] = false;
+               $input['customFields'][$i]['add_remove_buttons'] = false;
+               $i++;
+               $input['customFields'][$i]['ID'] = 'recipe_video_notes';
+               $input['customFields'][$i]['Name'] = 'Video Notes';
+               $input['customFields'][$i]['Type'] = 'SubItem';
+               $input['customFields'][$i]['Parent'] = 'recipe_video';
+               $input['customFields'][$i]['Show_in_columns'] = false;
+               $input['customFields'][$i]['add_remove_buttons'] = false;
 
 
 

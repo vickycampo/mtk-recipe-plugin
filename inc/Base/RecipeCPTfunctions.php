@@ -476,7 +476,21 @@ class RecipeCPTFunctions extends BaseController
                                    $textForId = str_replace( "]" , "-" , $textForId );
                                    echo ('<td class="'.$value['field-info']['Type'].'_label_td '.$value['field-info']['ID'].'_label_td" id="'.$textForId.'">');
                               }
-                              echo ('<label class="'.$value['field-info']['Type'].'_label '.$value['field-info']['ID'].'_label " for="'.$fieldName.'">'.$labelText.': </label>');
+                              if ( strpos($value['field-info']['ID'] ,"_file")  )
+                              {
+                                   /* <p>
+                                        <label for="<?php echo esc_attr( $this->get_field_id( 'image' ) ); ?>"><?php esc_attr_e( 'Image:', 'mtk_recipe_plugin' ); ?></label>
+                                        <input class="widefat image-upload" id="<?php echo esc_attr( $this->get_field_id( 'image' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'image' ) ); ?>" type="text" value="<?php echo esc_url( $image ); ?>">
+
+                                        <button type="button" class="button button-primary js-image-upload">Select Image</button>
+                                   </p> */
+                                   echo ('add file uploader here ' . $value['field-info']['ID']);
+                              }
+                              else
+                              {
+                                   echo ('<label class="'.$value['field-info']['Type'].'_label '.$value['field-info']['ID'].'_label " for="'.$fieldName.'">'.$labelText.': </label>');
+                              }
+
                               if ( $table )
                               {
                                    echo ('</td>');
@@ -488,6 +502,7 @@ class RecipeCPTFunctions extends BaseController
                                    $textForId = str_replace( "]" , "-" , $textForId );
                                    echo ('<td class="'.$value['field-info']['Type'].'_input_td '.$value['field-info']['ID'].'_input_td" id="'.$textForId.'">');
                               }
+
                               echo ('<input id="'.$textForId.'" name="'.$fieldName.'" class="'.$value['field-info']['Type'].'_input '.$value['field-info']['ID'].'_input " type="text"'. $Fieldvalue .'/>');
                               if ( $table )
                               {
