@@ -374,4 +374,8 @@ class CptCallbacks
           /*2. add a button of add more fields */
 
      }
+     function shortcodePage ()
+     {
+          return ( require_once ( "$this->plugin_path/templates/shortcode_custom-recipe.php" ) );
+     }
 }

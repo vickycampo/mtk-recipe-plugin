@@ -73,6 +73,10 @@ class RecipeCPTController extends BaseController
                $media_widget = new MediaWidget ();
                $media_widget -> register ();
                $this->manage_cpt_columns (  );
+
+               /* If we have meta boxes it means that we need to insert the short-code */
+               add_shortcode ( 'cpt_shortcode'  , array ( $this , 'cpt_shortcode' ));
+
           }
 
 
@@ -309,18 +313,8 @@ class RecipeCPTController extends BaseController
           /* After adding the post type we should add the filter to fix the title */
 
 
-          add_filter( 'enter_title_here', array( $this , 'mtk_change_title_text' ) );
-     }
-}
-public function mtk_change_title_text( $title )
-{
-     $screen = get_current_screen();
 
-     if  ( 'events' == $screen->post_type ) {
-          $title = 'Enter event name with date';
      }
-
-     return $title;
 }
 public function storeCustomPostTypes()
 {
@@ -830,6 +824,24 @@ public function enqueue ()
      wp_enqueue_script ( 'authScript' , $this->plugin_url . 'assets/cpt_customFields.js');
 
 }
+/* Functions for the shortCodes */
+/* Activates the Shurtcodes */
+/* Function that Generate the testimonial slideshow */
+public function cpt_shortcode()
+{
+
+     /* require one simple php file that contains the form */
+     /* Read but don't execute */
+     // ob_start ();
+     /* Load the styles*/
+     echo ( "<link rel=\"stylesheet\" href=\"$this->plugin_url/assets/slider.css\" type=\"text/css\" media=\"all\" /> " );
+     /* Load the file */
+     require_once ( "$this->plugin_path/templates/cpt_shortcode.php");
+     /* only enqueues the javascript file if I am using the form */
+     echo ( "<script src=\"$this->plugin_url/assets/slider.js\"></script> " );
+     return;
+     // return ( ob_get_clean () );
+}
 /* Adds the meta boxes */
 public function add_meta_boxes( $post_type )
 {
@@ -840,9 +852,14 @@ public function add_meta_boxes( $post_type )
           return ;
      }
 
+
      /* We create the meta boxes based on the section name */
      foreach ( $this->ordered[$post_type] as $id => $fields )
-     {    unset ($id_value);
+     {
+
+
+
+          unset ($id_value);
           $id_value[0] = $id . '_0';
 
           if ( isset ( $fields['field-info']['add_remove_buttons'] ) && ( $fields['field-info']['add_remove_buttons'] ) )

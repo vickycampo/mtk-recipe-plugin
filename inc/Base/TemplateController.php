@@ -25,7 +25,7 @@ class TemplateController extends BaseController
           /* Check if it is active */
 
           if ( ! ( $this->activated( 'templates_manager' ) ) ) return;
-
+          
           $this->templates = array (
                'page-templates/two-columns-tpl.php' => 'Two Columns Layout'
           );

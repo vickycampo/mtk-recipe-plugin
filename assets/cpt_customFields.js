@@ -5,6 +5,7 @@ window.addEventListener ( "load" , function ()
      /*2. Create the add function - Gets the parent div and multiplies it updating the id's */
      /*3. Create the remove function - updating id's */
      /*4. After Remove - updating id's */
+     
      $( ".addButton" ).click(function( e ) {
 
           addButtonDown ( e );

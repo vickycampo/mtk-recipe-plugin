@@ -32,7 +32,6 @@ class RecipeCPTFunctions extends BaseController
      public function save_meta_box_authorization( $post_type , $post_id )
      {
           /**/
-
           /* We check if Wordpress is doing an autosave we interrupt the script */
 
           if ( ! ( isset ( $_POST ) ) || ( count ( $_POST ) == 0 ) )
@@ -67,7 +66,8 @@ class RecipeCPTFunctions extends BaseController
           return true;
      }
      public function orderForSaveMeta ( $index )
-     {    $data = [];
+     {
+           $data = [];
           if (isset ($_POST[$index]))
           {
                foreach ($_POST[$index] as $i => $value)
@@ -509,7 +509,8 @@ class RecipeCPTFunctions extends BaseController
                               }
                               else if ( strpos($value['field-info']['ID'] ,"video_file")  )
                               {
-
+                                   echo ('<input id="'.$textForIdInput.'" name="'.$fieldName.'" class="'.$value['field-info']['Type'].'_input '.$value['field-info']['ID'].'_input " type="text"'. $Fieldvalue .'/>');
+                                   echo ('<br><small class="small-youtube">Copy the embed text from <br>YouTube.com</small>');
                               }
                               else
                               {
