@@ -16,17 +16,19 @@
 /* ----- Item ----- */
 .Item_input_div
 {
-
+     width: 75%;
 }
      .Item_input_div > label
      {
           display: inline-block;
-          width: 75px;
+          width: 25%;
      }
 .Item_label
 {}
 .Item_input
-{}
+{
+     width: 60%;
+}
 .Item_title_td
 {}
 .Item_table
@@ -101,12 +103,14 @@
 {}
 .recipe_author_input
 {}
-.recipe_image_input_div
+.recipe_image_file_input_div
 {}
-.recipe_image_label
+.recipe_image_file_label
 {}
-.recipe_image_input
-{}
+.recipe_image_file_input
+{
+     width:30%;
+}
 .recipe_description_input_div
 {}
 .recipe_description_label
@@ -181,7 +185,7 @@
           width: 25%;
           display: inline-block;
      }
-     .recipe_group_general_image_input_div > label
+     .recipe_group_general_image_file_input_div > label
      {
           width: 25%;
           display: inline-block;
@@ -196,7 +200,7 @@
           width: 50% !important;
           display: inline-block;
      }
-     .recipe_group_general_image_input
+     .recipe_group_general_image_file_input
      {
           width: 50% !important;
           display: inline-block;
@@ -284,7 +288,7 @@
 }
 .recipe_step_instruction_columnTitle_td
 {}
-.recipe_step_image_columnTitle_td
+.recipe_step_image_file_columnTitle_td
 {}
 .recipe_instructions_step_content_tr
 {}
@@ -308,13 +312,13 @@
 {
      width: 350px !important;
 }
-.recipe_step_image_label_td
+.recipe_step_image_file_label_td
 {}
-.recipe_step_image_label
+.recipe_step_image_file_label
 {}
-.recipe_step_image_input_td
+.recipe_step_image_file_input_td
 {}
-.recipe_step_image_input
+.recipe_step_image_file_input
 {
      width: 150px !important;
 }
