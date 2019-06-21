@@ -75,7 +75,7 @@ class RecipeCPTController extends BaseController
                $this->manage_cpt_columns (  );
           }
           /* If we have meta boxes it means that we need to insert the short-code */
-          add_shortcode('test_shortcodes', array ( $this , 'test_shortcodes' ) );
+          add_shortcode('cpt_shortcode', array ( $this , 'cpt_shortcode' ) );
 
           global $shortcode_tags;
           error_log ('List of shorcodes');
@@ -86,10 +86,7 @@ class RecipeCPTController extends BaseController
           error_log('add_shortcode - ' . debug_backtrace()[1]['function'] );
           error_log ('----------------------------');
      }
-     function test_shortcodes()
-     {
-         return '<h1>Shortcodes are working!</h1>';
-     }
+
      public function setSubpages()
      {
           $this->subpages = array(
@@ -834,13 +831,8 @@ public function enqueue ()
 /* Functions for the shortCodes */
 /* Activates the Shurtcodes */
 /* Function that Generate the testimonial slideshow */
-public function cpt_shortcode( $atts, $content = "" )
+public function cpt_shortcode( )
 {
-     if ($content == "")
-     error_log (__FILE__ . ' - ' . __FUNCTION__ . ' - ' . __LINE__);
-     error_log('add_shortcode - ' . debug_backtrace()[1]['function'] );
-     error_log ('----------------------------');
-
      $content = 'found a shortcode without content';
      return $content;
 }
