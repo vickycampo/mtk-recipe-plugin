@@ -831,10 +831,16 @@ public function enqueue ()
 /* Functions for the shortCodes */
 /* Activates the Shurtcodes */
 /* Function that Generate the testimonial slideshow */
-public function cpt_shortcode( )
+
+public function cpt_shortcode()
 {
-     $content = 'found a shortcode without content';
-     return $content;
+     /* require one simple php file that contains the form */
+     /* Read but don't execute */
+     ob_start ();
+     /* Load the contact form */
+     require_once ( "$this->plugin_path/templates/shortcode/cpt_shortcode.php");
+
+     return ( ob_get_clean () );
 }
 /* Adds the meta boxes */
 public function add_meta_boxes( $post_type )
