@@ -73,15 +73,22 @@ class RecipeCPTController extends BaseController
                $media_widget = new MediaWidget ();
                $media_widget -> register ();
                $this->manage_cpt_columns (  );
-
-               /* If we have meta boxes it means that we need to insert the short-code */
-               add_shortcode ( 'cpt_shortcode'  , array ( $this , 'cpt_shortcode' ));
-
           }
+          /* If we have meta boxes it means that we need to insert the short-code */
+          add_shortcode('test_shortcodes', array ( $this , 'test_shortcodes' ) );
 
+          global $shortcode_tags;
+          error_log ('List of shorcodes');
+          error_log ( print_r($shortcode_tags ,true ));
+          error_log ('');
 
-
-
+          error_log (__FILE__ . ' - ' . __FUNCTION__ . ' - ' . __LINE__);
+          error_log('add_shortcode - ' . debug_backtrace()[1]['function'] );
+          error_log ('----------------------------');
+     }
+     function test_shortcodes()
+     {
+         return '<h1>Shortcodes are working!</h1>';
      }
      public function setSubpages()
      {
@@ -827,20 +834,15 @@ public function enqueue ()
 /* Functions for the shortCodes */
 /* Activates the Shurtcodes */
 /* Function that Generate the testimonial slideshow */
-public function cpt_shortcode()
+public function cpt_shortcode( $atts, $content = "" )
 {
+     if ($content == "")
+     error_log (__FILE__ . ' - ' . __FUNCTION__ . ' - ' . __LINE__);
+     error_log('add_shortcode - ' . debug_backtrace()[1]['function'] );
+     error_log ('----------------------------');
 
-     /* require one simple php file that contains the form */
-     /* Read but don't execute */
-     // ob_start ();
-     /* Load the styles*/
-     echo ( "<link rel=\"stylesheet\" href=\"$this->plugin_url/assets/slider.css\" type=\"text/css\" media=\"all\" /> " );
-     /* Load the file */
-     require_once ( "$this->plugin_path/templates/cpt_shortcode.php");
-     /* only enqueues the javascript file if I am using the form */
-     echo ( "<script src=\"$this->plugin_url/assets/slider.js\"></script> " );
-     return;
-     // return ( ob_get_clean () );
+     $content = 'found a shortcode without content';
+     return $content;
 }
 /* Adds the meta boxes */
 public function add_meta_boxes( $post_type )
