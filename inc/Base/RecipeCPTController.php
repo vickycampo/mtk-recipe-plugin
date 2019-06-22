@@ -77,14 +77,6 @@ class RecipeCPTController extends BaseController
           /* If we have meta boxes it means that we need to insert the short-code */
           add_shortcode('cpt_shortcode', array ( $this , 'cpt_shortcode' ) );
 
-          global $shortcode_tags;
-          error_log ('List of shorcodes');
-          error_log ( print_r($shortcode_tags ,true ));
-          error_log ('');
-
-          error_log (__FILE__ . ' - ' . __FUNCTION__ . ' - ' . __LINE__);
-          error_log('add_shortcode - ' . debug_backtrace()[1]['function'] );
-          error_log ('----------------------------');
      }
 
      public function setSubpages()
@@ -820,10 +812,10 @@ public function orderCustomcolumns ( $customFields )
 public function enqueue ()
 {
      /* Enqueue the styles and scripts*/
-     error_log (__FUNCTION__ . ' - ' . __LINE__) . '<pre>';
-     error_log ($this->plugin_url . 'assets/cpt_customFields.css');
-     error_log ($this->plugin_url . 'assets/cpt_customFields.js');
-     error_log ('<br>----------------------------</pre>');
+     // error_log (__FUNCTION__ . ' - ' . __LINE__) . '<pre>';
+     // error_log ($this->plugin_url . 'assets/cpt_customFields.css');
+     // error_log ($this->plugin_url . 'assets/cpt_customFields.js');
+     // error_log ('<br>----------------------------</pre>');
      wp_enqueue_style ( 'authStyle' , $this->plugin_url . 'assets/cpt_customFields.css');
      wp_enqueue_script ( 'authScript' , $this->plugin_url . 'assets/cpt_customFields.js');
 

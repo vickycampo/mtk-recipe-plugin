@@ -25,12 +25,18 @@
      }
 .Item_label
 {}
+.Item_label_td
+{
+
+}
 .Item_input
 {
      width: 60%;
 }
 .Item_title_td
-{}
+{
+     display: none;
+}
 .Item_table
 {
      max-width: 95%;
