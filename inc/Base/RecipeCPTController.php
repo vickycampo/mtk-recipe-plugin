@@ -709,7 +709,8 @@ public function manage_cpt_columns (  )
      add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
      // /* Save new fields of the meta boxes */
      add_action ( 'save_post' , array ( $this , 'save_meta_box') );
-
+     /* add a media button */
+     add_action('post_submitbox_misc_actions', array ( $this , 'add_my_media_button' , 10 , 1) );
 
      foreach ( $this->customFields as $post_type => $customFields )
      {
@@ -823,7 +824,11 @@ public function enqueue ()
 /* Functions for the shortCodes */
 /* Activates the Shurtcodes */
 /* Function that Generate the testimonial slideshow */
-
+public function add_my_media_button ()
+{
+     error_log ('add_my_media_button');
+     echo '<a href="#" id="insert-my-media" class="button">Add my media</a>';
+}
 public function cpt_shortcode()
 {
      /* require one simple php file that contains the form */
