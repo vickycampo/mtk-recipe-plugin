@@ -81,12 +81,12 @@ function duplicateSection ( Id )
      /* we look for the last one */
      var BaseId = getBaseId ( Id );
      /* Search for the maximum id */
-     var IdArray = getlastSectionValidId (BaseId);
-     console.log (IdArray);
-     LastValidId = IdArray['LastValidId'];
-     FirstAvailable = IdArray['FirstAvailable'];
+     var IdArray = new Array;
+     IdArray = getlastSectionValidId (BaseId);
+     var LastValidId = IdArray['LastValidId'];
+     var FirstAvailable = IdArray['FirstAvailable'];
 
-     newSection = $('#' + LastValidId).clone(true);
+     var newSection = $('#' + LastValidId).clone(true);
      newSection.attr("id",FirstAvailable);
      $( newSection ).insertAfter('#' + LastValidId );
      /* we go through all the the elements */
@@ -143,6 +143,7 @@ function removeButtonDown ( e )
 
      if ( Parent.classList.contains('Section_div')  )
      {
+          var previousExtension;
           /* Remove section */
           var BaseId = getBaseId ( LastTargetId );
           var IdCombination = getlastSectionValidId ( BaseId );
@@ -233,10 +234,10 @@ function removeButtonDown ( e )
                /* This Fixes the parent elements */
                previousExtension = i - 1;
                /*swap in the parent id */
-               oldTargetId = RemoveTarget_id.replace(LastTargetId, BaseId + "_" + i);
-               newTargetId = RemoveTarget_id.replace(LastTargetId, BaseId + "_" + previousExtension);
+               var oldTargetId = RemoveTarget_id.replace(LastTargetId, BaseId + "_" + i);
+               var newTargetId = RemoveTarget_id.replace(LastTargetId, BaseId + "_" + previousExtension);
 
-               Section = document.getElementById( oldTargetId );
+               var Section = document.getElementById( oldTargetId );
                if ( Section )
                {
                     Section.id = newTargetId;
@@ -305,6 +306,9 @@ function getlastSubSectionValidId (BaseId , SearchId , TargetId)
 {
      var i = 0;
      var FoundQuery = true;
+
+     var LastValidId;
+     var FirstAvailable;
      var ReturnArray = new Array;
      ReturnArray['simple'] = new Array;
      ReturnArray['parent'] = new Array;
@@ -354,7 +358,7 @@ function FixChildrenId ( PreviousId , NewId , targetID=''  )
 
                /*fix the name */
 
-               for (j in kids[i].attributes )
+               for (var j in kids[i].attributes )
                {
                     if ( kids[i].attributes[j].name === 'name' )
                     {

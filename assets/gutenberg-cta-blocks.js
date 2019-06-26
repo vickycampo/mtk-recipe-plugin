@@ -1,0 +1,1 @@
+registerBlockType('namespace/block-slug')

@@ -10,8 +10,8 @@
 */
 /* Function to control the multiple tabs */
 /* Import the files for code-prettify */
-console.log ('uncomment 13');
-//import 'code-prettify';
+//console.log ('uncomment 13');
+import 'code-prettify';
 
 //   --------------------------------------------------
 //        MANAGES THE TABS
@@ -21,8 +21,8 @@ window.addEventListener ( "load" , function ()
 {
 
      /* Load the code prettify function */
-     console.log ('uncomment 19');
-     //PR.prettyPrint();
+     //console.log ('uncomment 19');
+     PR.prettyPrint();
 
      //   -----------------------------------------
      //        Add the event to the tab buttons
