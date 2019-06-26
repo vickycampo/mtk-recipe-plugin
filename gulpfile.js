@@ -30,22 +30,30 @@ var reload       = browserSync.reload;
 // Project related variables
 var projectURL   = 'https://test.dev';
 
-var styleSRC     = './src/scss/mystyle.scss';
-var styleForm    = './src/scss/form.scss';
-var styleSlider  = './src/scss/slider.scss';
-var styleAuth    = './src/scss/auth.scss';
-var styleDashiconsPicker    = './src/scss/dashicons-picker.scss';
+var styleSRC     			= './src/scss/mystyle.scss';
+var styleAuth	  			= './src/scss/auth.scss';
+var stylecpt_customFields	= './src/scss/cpt_customFields.scss';
+var styleDashiconsPicker	  	= './src/scss/dashicons-picker.scss';
+var styleDefaultRecipe	 	= './src/scss/default_recipe.scss';
+var styleForm	  			= './src/scss/form.scss';
+var styleAdmin	  			= './src/scss/mystyle.scss';
+var styleSlider	  		= './src/scss/slider.scss';
+
 
 var styleURL     = './assets/';
 var mapURL       = './';
 
-var jsSRC        = './src/js/';
-var jsAdmin	  = 'myscript.js';
-var jsForm	  = 'form.js';
-var jsSlider	  = 'slider.js';
-var jsAuth	  = 'auth.js';
-var jsDashiconsPicker	  = 'dashicons-picker.js';
-var jsFiles	  = [jsAdmin , jsForm, jsSlider, jsAuth, jsDashiconsPicker];
+var jsSRC        			= './src/js/';
+var jsAuth	  			= 'auth.js';
+var jscpt_customFields	  	= 'cpt_customFields.js';
+var jsDashiconsPicker	  	= 'dashicons-picker.js';
+var jsDefaultRecipe	 		= 'default_recipe.js';
+var jsForm	  			= 'form.js';
+var jsAdmin	  			= 'myscript.js';
+var jsSlider	  			= 'slider.js';
+
+
+var jsFiles	  = [jsAuth, jscpt_customFields, jsDashiconsPicker, jsDefaultRecipe, jsForm, jsAdmin, jsSlider];
 var jsURL        = './assets/';
 
 var styleWatch   = './src/scss/**/*.scss';
@@ -66,7 +74,7 @@ gulp.task( 'browser-sync', function() {
 });
 
 gulp.task( 'styles', function() {
-	gulp.src( [styleSRC , styleForm, styleSlider, styleAuth, styleDashiconsPicker] )
+	gulp.src( [styleAuth, stylecpt_customFields, styleDashiconsPicker, styleDefaultRecipe, styleForm, styleAdmin, styleSlider] )
 		.pipe( sourcemaps.init() )
 		.pipe( sass({
 			errLogToConsole: true,

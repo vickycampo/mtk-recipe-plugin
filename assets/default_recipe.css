@@ -1,16 +1,3 @@
-.default_recipe_container
-{
-     display: inline;
-     margin: 5%;
-     padding: 3%;
-     background-color: white;
-     max-width: 100%;
-     width: 100%;
-     overflow: hidden;
-     word-wrap: break-word;
-     border-radius: 10%;
-}
-.mtk_default_recipe_shortcode
-{
+.default_recipe_container{display:inline;margin:5%;padding:3%;background-color:white;max-width:100%;width:100%;overflow:hidden;word-wrap:break-word;border-radius:10%}
 
-}
+/*# sourceMappingURL=default_recipe.css.map */

@@ -13,9 +13,10 @@ namespace Inc\Base;
 use Inc\Api\SettingsApi;
 use Inc\Base\BaseController;
 use Inc\Base\RecipeCPTFunctions;
+use Inc\Api\Widgets\MediaWidget;
 use Inc\Api\Callbacks\CptCallbacks;
 use Inc\Api\Callbacks\AdminCallbacks;
-use Inc\Api\Widgets\MediaWidget;
+
 
 /**
 * Enqueue - Enqueue the scripts and style files

@@ -16,6 +16,7 @@ console.log ('uncomment 13');
 //   --------------------------------------------------
 //        MANAGES THE TABS
 //   --------------------------------------------------
+
 window.addEventListener ( "load" , function ()
 {
 
@@ -64,6 +65,7 @@ $('.customFields_container').ready(function()
      var index;
      var optionsArray = new Array;
      var formErrors = false;
+     var Fields;
      //   --------------------------------------------------
      //        INITIALIZE PREVIOUS INFORMATION
      //   --------------------------------------------------
@@ -519,7 +521,7 @@ $('.customFields_container').ready(function()
           var fieldNames = new Array;
           formErrors = false;
 
-          for (i = 0; i < customFields_ID_input.length ; i++)
+          for (var i = 0; i < customFields_ID_input.length ; i++)
           {
                //console.log (i);
                var previousValue = customFields_Parent_select[i].value;

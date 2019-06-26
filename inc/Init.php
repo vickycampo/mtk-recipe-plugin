@@ -29,7 +29,8 @@ final class Init //final - cannot be extended
                Base\MediaWidgetController::class,
                Base\TestimonialController::class,
                Base\TemplateController::class,
-               Base\AuthController::class
+               Base\AuthController::class,
+               Base\GutenbergFunctions::class
           ];
      }
      /*** Initialize the class, and call the register method if it exists ***/
