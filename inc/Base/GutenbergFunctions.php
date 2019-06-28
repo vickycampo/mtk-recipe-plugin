@@ -10,77 +10,56 @@
 *
 */
 namespace Inc\Base;
-class GutenbergFunctions
+use Inc\Base\BaseController;
+
+class GutenbergFunctions extends BaseController
 {
+     public $blocksList = [];
      public function register ()
      {
-          add_action ( 'init' , array ( $this , 'addThemeSupport' ) );
+          /* We keep a list of all the block we want to create in an array */
+
+          add_action( 'enqueue_block_editor_assets', array ( $this , 'mtk_enqueueBlockEditorFiles' ) );
+          add_action( 'enqueue_block_assets ', array ( $this , 'mtk_enqueueBlockFiles' ) );
+          $this->registerBlock();
      }
-     public function addThemeSupport ()
+     public function mtk_enqueueBlockEditorFiles()
      {
-          $this -> addDefaultColors ();
-          $this -> addFontSizes ();
+          /* Register the block-building Script */
+          $handle = 'mtk_myfirstblock_editor';
+          $src = $this->plugin_url . 'assets/gut_myfirstblock.js';
+          $deps = array( 'wp-blocks' , 'wp-element') ;
+          wp_register_script( $handle ,  $src , $deps );
+
+          /* Register global block css - backend only */
+          $handle = 'mtk_myfirstblock_editor';
+          $src = $this->plugin_url . 'assets/gut_myfirstblock_editor.css';
+          $deps = array( 'wp-edit-blocks') ;
+          $ver = filemtime( $this->plugin_path . 'assets/gut_myfirstblock_editor.css' );
+          wp_register_style( $handle, $src, $deps, $ver );
      }
-     public function addDefaultColors ()
+     public function mtk_enqueueBlockFiles()
      {
-          add_theme_support (
-               'editor-color-palette' ,
-               array
-               (
-                    array (
-                         'name' => 'White',
-                         'slug' => 'slug',
-                         'color' => '#ffffff'
-                    ),
-                    array (
-                         'name' => 'Black',
-                         'slug' => 'slug',
-                         'color' => '#000000'
-                    ),
-                    array (
-                         'name' => 'Orange',
-                         'slug' => 'slug',
-                         'color' => '#ffa500'
-                    ),
-                    array (
-                         'name' => 'Light Gray',
-                         'slug' => 'slug',
-                         'color' => '#dcdcdc'
-                    ),
-                    array (
-                         'name' => 'Middle Gray',
-                         'slug' => 'slug',
-                         'color' => '#BEBEBE'
-                    ),
-                    array (
-                         'name' => 'Dark Gray',
-                         'slug' => 'slug',
-                         'color' => '#282828'
-                    )
-               )
-          );
+          /* Register global block css - Front and backend */
+          $handle = 'mtk_myfirstblock';
+          $src = $this->plugin_url . 'assets/gut_myfirstblock.css';
+          $deps = array( 'wp-edit-blocks') ;
+          $ver = filemtime( $this->plugin_path . 'assets/gut_myfirstblock.css' );
+          wp_register_style( $handle, $src, $deps, $ver );
      }
-     public function addFontSizes ()
+     public function registerBlock()
      {
-          add_theme_support(
-               'edit-font-sizes',
-               array
-               (
-                    array
-                    (
-                         'name' => 'Normal',
-                         'slug' => 'normal',
-                         'size' => 16
-                    ),
-                    array
-                    (
-                         'name' => 'Large',
-                         'slug' => 'large',
-                         'size' => 24
-                    )
-               )
-          );
+          /* Register the block type */
+          register_block_type( 'mtk-plugin/myfirstblock' , array (
+               'editor_script' => 'mtk_myfirstblock_editor',
+               'editor_style' => 'mtk_myfirstblock_editor',
+               'style' => 'mtk_myfirstblock',
+          ) );
+
      }
+
 
 
 }
+/* Documentation */
+//https://developer.wordpress.org/block-editor/tutorials/block-tutorial/creating-dynamic-blocks/

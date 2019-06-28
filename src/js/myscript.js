@@ -95,7 +95,7 @@ $('.customFields_container').ready(function()
           {
                //we check if there is information in the last fielda line
                var customFields_ID_input = document.querySelectorAll (".customFields_ID_input");
-               lastElement = customFields_ID_input[customFields_ID_input.length - 1];
+               var lastElement = customFields_ID_input[customFields_ID_input.length - 1];
 
                if ( lastElement.value == "" )
                {
@@ -126,8 +126,8 @@ $('.customFields_container').ready(function()
 
           for (var i = 0; i < customFields_titles.length; i++ )
           {
-               inputId =  "#" + customFields_input[i].id;
-               spanId = "#" + customFields_titles[i].id;
+               var inputId =  "#" + customFields_input[i].id;
+               var spanId = "#" + customFields_titles[i].id;
                if ($(inputId)[0].tagName != 'SPAN')
                {
                     $(spanId).css("display","inline-block");
@@ -157,7 +157,7 @@ $('.customFields_container').ready(function()
           for (var i = 0; i < customFields_input.length; i++ )
           {
 
-               inputId =  "#" + customFields_input[i].id;
+               var inputId =  "#" + customFields_input[i].id;
                if ($(inputId)[0].tagName == 'SPAN')
                {
                     $(inputId).css("display","inline-block");
@@ -371,13 +371,13 @@ $('.customFields_container').ready(function()
           }
           else
           {
-               classList = className.split(" ");
+               var classList = className.split(" ");
                for (var j in classList)
                {
                     i.classList.add(classList[j]);
                }
           }
-          targetId = "#" + target.id;
+          var targetId = "#" + target.id;
           $(targetId).append( i );
      }
      /* Creates the input - Select type */
@@ -395,14 +395,14 @@ $('.customFields_container').ready(function()
           }
           else
           {
-               classList = className.split(" ");
+               var classList = className.split(" ");
                for (var j in classList)
                {
 
                     selectList.classList.add(classList[j]);
                }
           }
-          targetId = "#" + target.id;
+          var targetId = "#" + target.id;
           $(targetId).append( selectList );
 
           /* Create and append the options */
@@ -434,17 +434,17 @@ $('.customFields_container').ready(function()
           }
           else
           {
-               classList = className.split(" ");
+               var classList = className.split(" ");
                for (var j in classList)
                {
                     span.classList.add(classList[j]);
                }
           }
           /* add the styles to the span */
-          spanID = "#" + span.id;
+          var spanID = "#" + span.id;
           //console.log (spanID);
           /* add the check box */
-          targetId = "#" + target.id;
+          var targetId = "#" + target.id;
           $(targetId).append( span );
 
           $(spanID).css("display","inline-block");
@@ -457,7 +457,7 @@ $('.customFields_container').ready(function()
           xbox.name = name;
           xbox.value = placeholder;
 
-          spanID = "#" + span.id;
+          var spanID = "#" + span.id;
           $(spanID).append( xbox );
 
 
@@ -476,14 +476,14 @@ $('.customFields_container').ready(function()
           }
           else
           {
-               classList = className.split(" ");
+               var classList = className.split(" ");
                for (var j in classList)
                {
                     span.classList.add(classList[j]);
                }
           }
           /* add the check box */
-          targetId = "#" + target.id;
+          var targetId = "#" + target.id;
           $(targetId).append( span );
      }
      //   --------------------------------------------------
@@ -528,12 +528,12 @@ $('.customFields_container').ready(function()
                var select_id = '#' + customFields_Parent_select[i].id;
 
                /*We always start adding the choose ...*/
-               optionText = '<option value="">Choose Parent</option>';
+               var optionText = '<option value="">Choose Parent</option>';
 
                /* We go through all the values availabe and choosse the ones that will respect the gerarchy */
                /* we check which type this field is */
 
-               currentType = customFields_Type_select[i].value;
+               var currentType = customFields_Type_select[i].value;
 
                /* After we have highlighted the errors we add the fields to the parent select */
                if (currentType == 'Section')

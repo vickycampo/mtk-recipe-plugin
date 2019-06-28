@@ -1,1 +1,0 @@
-registerBlockType('namespace/block-slug')

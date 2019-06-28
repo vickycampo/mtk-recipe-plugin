@@ -58,5 +58,8 @@
 	"license": "GPL-3.0",
 	"dependencies": {
 		"code-prettify": "^0.1.0"
+	},
+	"scripts": {
+		"build:scripts": "wp-scripts build"
 	}
 }
