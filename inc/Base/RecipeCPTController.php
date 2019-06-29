@@ -322,7 +322,7 @@ public function storeCustomPostTypes()
           return;
      }
      $options = get_option ('mtk_plugin_cpt');
-
+     
      foreach ( $options as $option)
      {
           /* we fix the taxonomies array */
@@ -710,8 +710,6 @@ public function manage_cpt_columns (  )
      add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
      // /* Save new fields of the meta boxes */
      add_action ( 'save_post' , array ( $this , 'save_meta_box') );
-     /* add a media button */
-     add_action('post_submitbox_misc_actions', array ( $this , 'add_my_media_button' , 10 , 1) );
 
      foreach ( $this->customFields as $post_type => $customFields )
      {
@@ -823,13 +821,7 @@ public function enqueue ()
 
 }
 /* Functions for the shortCodes */
-/* Activates the Shurtcodes */
-/* Function that Generate the testimonial slideshow */
-public function add_my_media_button ()
-{
-     error_log ('add_my_media_button');
-     echo '<a href="#" id="insert-my-media" class="button">Add my media</a>';
-}
+
 public function cpt_shortcode()
 {
      /* require one simple php file that contains the form */
@@ -989,9 +981,9 @@ public function save_meta_box( $post_id)
 
      /*  order the post into an data array */
      $index = 'mtk_' . $post_type;
-     error_log (__FILE__ . ' - ' . __LINE__ . ' - ' . __FUNCTION__);
-     error_log(print_r($_POST, true));
-     error_log('--------------------------------------------');
+     // error_log (__FILE__ . ' - ' . __LINE__ . ' - ' . __FUNCTION__);
+     // error_log(print_r($_POST, true));
+     // error_log('--------------------------------------------');
      $data = $this->r_cptFuntions->orderForSaveMeta ( $index );
      /*---------------- Store this metabox ----------------*/
      /* We get the values saved in the post mtk_default_recipe*/
@@ -1014,10 +1006,10 @@ public function save_meta_box( $post_id)
                          update_post_meta( $post_id, $index, $section );
 
                     }
-                    error_log (__FILE__ . ' - ' . __LINE__ . ' - ' . __FUNCTION__);
-                    error_log($index);
-                    error_log(print_r($section, true));
-                    error_log('--------------------------------------------');
+                    // error_log (__FILE__ . ' - ' . __LINE__ . ' - ' . __FUNCTION__);
+                    // error_log($index);
+                    // error_log(print_r($section, true));
+                    // error_log('--------------------------------------------');
                }
 
 

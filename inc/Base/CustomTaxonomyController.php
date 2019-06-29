@@ -25,6 +25,7 @@ class CustomTaxonomyController extends BaseController
      public $tax_callbacks;
      public $subpages = array ();
      public $taxonomies = array ();
+     public $TermsToInsert = array ();
      public function register ()
      {
           /* Check if it is active */
@@ -47,11 +48,17 @@ class CustomTaxonomyController extends BaseController
           $this->settings->addSubPages( $this->subpages )->register();
           /* Store the custom taxonomy */
           $this->storeCustomTaxonomies();
+          /* Create a default set of Taxonomies */
+          $this->register_default_taxnomies ();
           // add_action ( 'init' , array ( $this , 'activate') );
           /* Register the taxonomy */
           if ( ! ( empty ( $this->taxonomies ) ) )
           {
                add_action ( 'init' , array( $this , 'registerCustomTaxonomy') );
+          }
+          if ( ! ( empty ( $this->TermsToInsert ) ) )
+          {
+               add_action ( 'init' , array( $this , 'registerTerms') );
           }
           /* Update taxonomies based on posible post changes */
           $this->updateChanges ();
@@ -197,7 +204,7 @@ class CustomTaxonomyController extends BaseController
 				'new_item_name'     => 'New ' . $option['singular_name'] . ' Name',
 				'menu_name'         => $option['singular_name'],
 			);
-			$this->taxonomies[] = array(
+			$this->taxonomies[$option['taxonomy']] = array(
 				'hierarchical'      => isset($option['hierarchical']) ? true : false,
 				'labels'            => $labels,
 				'show_ui'           => true,
@@ -208,6 +215,286 @@ class CustomTaxonomyController extends BaseController
                     'objects'           => isset ( $option['objects'] ) ? $option['objects'] : null
 			);
           }
+     }
+     public function register_default_taxnomies ()
+     {
+          $i = 0;
+          $DefaultTax[$i]['taxonomy'] = 'recipe_tax';
+          $DefaultTax[$i]['singular_name'] = 'Recipe Taxonomies';
+          $DefaultTax[$i]['hierarchical'] = 1;
+          $DefaultTax[$i]['objects']['default_recipe'] = 1;
+
+               $j = 0;
+               $k = 0;
+               $TaxTerms[$i][$j][$k] = 'By meal';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Breakfast';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Brunch';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Lunch';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Dinner';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Snack';
+
+               $j++;
+               $k = 0;
+               $TaxTerms[$i][$j][$k] = 'By meal course or type of dish';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Appetizer';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Main course';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Soup';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Salad';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Bread';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Pizza and Focaccia';
+
+                    $k ++;
+                    $l= 0;
+                    $TaxTerms[$i][$j][$k][$l] = 'Dessert';
+                         $l ++;
+                         $TaxTerms[$i][$j][$k][$l] = 'Cakes';
+                         $l ++;
+                         $TaxTerms[$i][$j][$k][$l] = 'Confectionery and candies';
+                         $l ++;
+                         $TaxTerms[$i][$j][$k][$l] = 'Cookies';
+                         $l ++;
+                         $TaxTerms[$i][$j][$k][$l] = 'Custards';
+                         $l ++;
+                         $TaxTerms[$i][$j][$k][$l] = 'Dessert sauces';
+                         $l ++;
+                         $TaxTerms[$i][$j][$k][$l] = 'Doughnuts';
+                         $l ++;
+                         $TaxTerms[$i][$j][$k][$l] = 'Frozen desserts';
+                         $l ++;
+                         $TaxTerms[$i][$j][$k][$l] = 'Pastries';
+                         $l ++;
+                         $TaxTerms[$i][$j][$k][$l] = 'Pies';
+                         $l ++;
+                         $TaxTerms[$i][$j][$k][$l] = 'Puddings';
+
+
+               $j++;
+               $k = 0;
+               $TaxTerms[$i][$j][$k] = 'By main ingredient';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Chicken';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Fish';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Eggs';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Meat';
+
+               $j++;
+               $k = 0;
+               $TaxTerms[$i][$j][$k] = 'By dietary restrictions';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Gluten-free';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Vegetarian';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Vegan';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Nut-free';
+
+               $j++;
+               $k = 0;
+               $TaxTerms[$i][$j][$k] = 'By holiday';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Christmas';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Lunar New Year';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Passover';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Thanksgiving';
+               $j++;
+               $k = 0;
+               $TaxTerms[$i][$j][$k] = 'By preparation time';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Quick Recipes';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Time-consuming';
+               $j++;
+               $k = 0;
+               $TaxTerms[$i][$j][$k] = 'By status';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Untested';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'old favorites';
+
+               $j++;
+               $k = 0;
+               $TaxTerms[$i][$j][$k] = 'By cooking method';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'outdoor grill';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'slow cooker';
+
+               $j++;
+               $k = 0;
+               $TaxTerms[$i][$j][$k] = 'By source';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Family Recipes';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Bon Appétit magazine';
+               $j++;
+               $k = 0;
+               $TaxTerms[$i][$j][$k] = 'By part of the world';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Indian';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Italian';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Korean';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Thai';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Spanish';
+                    $k ++;
+                    $TaxTerms[$i][$j][$k] = 'Guatemalan';
+
+
+          // $input['taxonomy'] = '';
+          foreach ($DefaultTax as $i => $input )
+          {
+               if ( ! ( isset ( $this->taxonomies[$input['taxonomy']] ) ) )
+               {
+                    $output = $this->tax_callbacks->taxSanitize ( $input );
+                    /* update option */
+                    $option = 'mtk_plugin_tax';
+                    update_option( $option, $output);
+                    /* Update the array */
+                    $this->storeCustomTaxonomies();
+
+                    $x = 0;
+
+
+                    foreach ( $TaxTerms[$i] as $j => $termInfo )
+                    {
+                         $parentTerm = $termInfo[0];
+                         $term = term_exists( $parentTerm, $input['taxonomy'] );
+                         if ( 0 == $term && null == $term )
+                         {
+                              /* Generate the slug */
+                              $slug = str_replace ( " " , "-" , $parentTerm );
+                              $slug = strtolower ( $slug );
+
+                              $this->TermsToInsert[$x]['term'] = $parentTerm;
+                              $this->TermsToInsert[$x]['taxonomy'] = $input['taxonomy'];
+                              $this->TermsToInsert[$x]['args'] = array(
+                                   'description'=> $parentTerm,
+                                   'slug' => $slug
+                              );
+                              $x++;
+                         }
+                         /* has another level */
+                         if ( count ($termInfo) > 1 )
+                         {
+
+                              foreach ($termInfo as $k => $childTerm)
+                              {
+                                   /* last one */
+
+                                   if (( ! is_array ($childTerm) )&& ( $k !=0 ))
+                                   {
+                                        $term = term_exists( $childTerm, $input['taxonomy'] );
+                                        if ( 0 == $term && null == $term )
+                                        {
+                                             $slug = str_replace ( " " , "-" , $childTerm );
+                                             $slug = strtolower ( $slug );
+
+
+                                             $this->TermsToInsert[$x]['term'] = $childTerm;
+                                             $this->TermsToInsert[$x]['taxonomy'] = $input['taxonomy'];
+                                             $this->TermsToInsert[$x]['args'] = array(
+                                                  'description'=> $childTerm,
+                                                  'slug' => $slug,
+                                                  'parent'=> $termInfo[0]
+                                             );
+                                             $x++;
+                                        }
+
+                                   }
+                                   else if ( is_array ($childTerm) )
+                                   {
+                                        $term = term_exists( $childTerm[0], $input['taxonomy'] );
+                                        if ( 0 == $term && null == $term )
+                                        {
+
+                                             $slug = str_replace ( " " , "-" , $childTerm[0] );
+                                             $slug = strtolower ( $slug );
+
+                                             $this->TermsToInsert[$x]['term'] = $childTerm[0];
+                                             $this->TermsToInsert[$x]['taxonomy'] = $input['taxonomy'];
+                                             $this->TermsToInsert[$x]['args'] = array(
+                                                  'description'=> $childTerm[0],
+                                                  'slug' => $slug,
+                                                  'parent'=> $parentTerm
+                                             );
+                                             $x++;
+                                        }
+                                        foreach ($childTerm as $l => $GrandTerm)
+                                        {
+                                             if ( $l != 0 )
+                                             {
+                                                  $term = term_exists( $GrandTerm, $input['taxonomy'] );
+                                                  if ( 0 == $term && null == $term )
+                                                  {
+                                                       $slug = str_replace ( " " , "-" , $GrandTerm );
+                                                       $slug = strtolower ( $slug );
+                                                       $this->TermsToInsert[$x]['term'] = $GrandTerm;
+                                                       $this->TermsToInsert[$x]['taxonomy'] = $input['taxonomy'];
+                                                       $this->TermsToInsert[$x]['args'] = array(
+                                                            'description'=> $GrandTerm,
+                                                            'slug' => $slug,
+                                                            'parent'=> $childTerm[0]
+                                                       );
+                                                       $x++;
+                                                  }
+                                             }
+                                        }
+                                   }
+
+                              }
+                         }
+                    }
+
+               }
+          }
+
+
+     }
+     public function registerTerms ()
+     {
+
+          if ( isset ($this->TermsToInsert) )
+          {
+               foreach ($this->TermsToInsert as $key => $value)
+               {
+                    /* Get the parent Id */
+                    if ( isset ($value['args']['parent']) )
+                    {
+                         $parent_term = term_exists( $value['args']['parent'], $value['taxonomy'] );
+                         $value['args']['parent'] = $parent_term['term_id'];
+                    }
+                    //error_log (print_r ( $value , true ));
+                    /* Register the new term */
+                    wp_insert_term(
+                         $value['term'], // the term
+                         $value['taxonomy'], // the taxonomy
+                         $value['args']
+                    );
+               }
+          }
+
+
      }
      public function registerCustomTaxonomy ()
      {

@@ -49,7 +49,9 @@ class TaxonomyCallbacks
                     $output[$input['taxonomy']] = $input;
                }
           }
-          // var_dump( $output );
+          // error_log (__FILE__ . ' - ' . __LINE__ . ' - ' . __FUNCTION__);
+          // error_log(print_r($input, true));
+          // error_log('--------------------------------------------');
           return ( $output );
      }
      public function textField ( $args )

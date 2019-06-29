@@ -30,44 +30,25 @@
      var el = wp.element.createElement;
      var registgerBlockType = wp.blocks.registerBlockType;
      var PlainText = wp.editor.PlainText;
-     registgerBlockType('mtk-plugin/myfirstblock' , {
-          title: 'My First Block',
+     registgerBlockType('mtk-plugin/cptshortcode' , {
+          title: 'Recipe Shortcode',
           icon: 'welcome-add-page',
           category: 'common',
-          attributes: {
-               text: {
-                    source: 'children',
-                    selector: 'p',
-                    default: ''
-               }
-          },
+          attributes: { },
           edit: function ( props ){
                console.log ( props );
                return (
                     el
                     (
-                         PlainText,
-                         {
-                              className: 'mtk-block',
-                              onChange: function ( value )
-                              {
-                                   props.setAttributes ( {text: value});
-                              },
-                              value: props.attributes.text
-                         }
+                         'p',
+                         { className: 'mtk-block' },
+                         '[cpt_shortcode]'
 
                     )
                );
           },
           save: function ( props ){
-               return (
-                    el
-                    (
-                         'p',
-                         { className: 'mtk-block' },
-                         props.attributes.text
-                    )
-               );
+               return ( '[cpt_shortcode]' );
           },
      });
 
