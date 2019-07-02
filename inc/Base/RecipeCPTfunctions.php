@@ -464,6 +464,10 @@ class RecipeCPTFunctions extends BaseController
                               {
                                    $Fieldvalue = ' value="' . $data[$ExtendedIdValue] . '" ';
                               }
+                              else if (strpos ( $ExtendedIdValue , 'step_number' ) >-1 )
+                              {
+                                   $Fieldvalue = ' value="1" ';
+                              }
                               $labelText = $value['field-info']['Name'];
                               $textForId = $fieldName.'[input]';
                               $textForId = str_replace( "[" , "-" , $textForId );
@@ -497,12 +501,6 @@ class RecipeCPTFunctions extends BaseController
 
                               if ( strpos($value['field-info']['ID'] ,"image_file")  )
                               {
-                                   /* <p>
-                                        <label for="<?php echo esc_attr( $this->get_field_id( 'image' ) ); ?>"><?php esc_attr_e( 'Image:', 'mtk_recipe_plugin' ); ?></label>
-                                        <input class="widefat image-upload" id="<?php echo esc_attr( $this->get_field_id( 'image' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'image' ) ); ?>" type="text" value="<?php echo esc_url( $image ); ?>">
-
-                                        <button type="button" class="button button-primary js-image-upload">Select Image</button>
-                                   </p> */
                                    echo ('<input id="'.$textForIdInput.'" name="'.$fieldName.'" class="image-upload '.$value['field-info']['Type'].'_input '.$value['field-info']['ID'].'_input " type="text"'. $Fieldvalue .'/>');
                                    echo ('<button type="button" class="button button-primary js-image-upload">Select Image</button>');
 
