@@ -1,6 +1,6 @@
 window.addEventListener ( "load" , function ()
 {
-     var TargetId;
+     var ClonedTargetId;
      /*1. We are going to add eventst to this buttons - Add and remove */
      /*2. Create the add function - Gets the parent div and multiplies it updating the id's */
      /*3. Create the remove function - updating id's */
@@ -77,27 +77,52 @@ window.addEventListener ( "load" , function ()
      /* clear the field content */
      function clearFields( )
      {
-          console.log ( TargetId );
+
           /* Addtarget class  */
-          var TargetObject = document.getElementById(TargetId);
-          checkAllNodes ();
+          var TargetObject = document.getElementById(ClonedTargetId);
+          checkAllNodes ( TargetObject );
      }
      function checkAllNodes ( TargetObject )
      {
-          var allElements = TargetObject.childNodes;
-          console.log ( allElements );
-          for (var i = 0; i < allElements.length; i++)
+          if ( TargetObject )
           {
-               console.log ('allElements - ' + allElements[i].nodeName);
-               /* Check if it has kids */
-               console.log ('ChildNodes - ' + allElements[i].childNodes.length);
-               // var classes = allElements[i].className.toString().split(/\s+/);
-               // for (var j = 0; j < classes.length; j++)
-               // {
-               //      var cls = classes[j];
-               //      console.log ( cls );
-               // }
+               var allElements = TargetObject.childNodes;
+               for (var i = 0; i < allElements.length; i++)
+               {
+                    if ( allElements[i].nodeName == 'INPUT')
+                    {
+                         /* Check if it has kids */
+
+                         allElements[i].value = "";
+                         /* autofill the necesary */
+                         /* Step */
+
+                         if ( allElements[i].name.indexOf ( 'step_number' ) > -1 )
+                         {
+
+                              var StepIndex = allElements[i].name.substring(allElements[i].name.indexOf ( 'recipe_instructions_step_' ) + 25, allElements[i].name.indexOf ( 'recipe_instructions_step_' ) + 27);
+
+                              if ( ! Number(StepIndex) )
+                              {
+                                   StepIndex = Number( StepIndex.replace("]", ""));
+                              }
+                              StepIndex ++;
+                              allElements[i].value = StepIndex;
+                         }
+
+                    }
+                    else if (( allElements[i].childNodes.length > 1) || ( allElements[i].nodeName != 'DIV' ))
+                    {
+                         checkAllNodes ( allElements[i] );
+                    }
+                    else
+                    {
+
+                    }
+
+               }
           }
+
      }
      /* all the functions to duplicate elements */
      function duplicateSection ( Id )
@@ -116,7 +141,7 @@ window.addEventListener ( "load" , function ()
           /* we go through all the the elements */
           /* fix all the children ids */
           FixChildrenId ( LastValidId , FirstAvailable  );
-          TargetId = FirstAvailable;
+          ClonedTargetId = FirstAvailable;
 
      }
      function duplicateSubSection ( Id , GreatGrandParent )
@@ -138,7 +163,7 @@ window.addEventListener ( "load" , function ()
           /* fix all the children ids */
           FixChildrenId ( IdArray['simple']['LastValidId'] , IdArray['simple']['FirstAvailable'] , IdArray['parent']['FirstAvailable'] );
 
-          TargetId = IdArray['parent']['FirstAvailable'];
+          ClonedTargetId = IdArray['parent']['FirstAvailable'];
 
      }
 
@@ -174,7 +199,6 @@ window.addEventListener ( "load" , function ()
                /* Only Item we don't erase id */
                if ((LastTargetId === BaseId + '_0') && (IdCombination['LastValidId'] === BaseId + '_0'))
                {
-                    // console.log ('Cant erase ' + BaseId + '_0');
                     return;
                }
                else if (IdCombination['LastValidId'] === LastTargetId)
@@ -195,7 +219,6 @@ window.addEventListener ( "load" , function ()
                     Section = document.getElementById( BaseId + "_" + erasedExtension );
 
                     Section.id = BaseId + "_" + previousExtension;
-                    console.log (BaseId + "_" + erasedExtension + ' - ' + BaseId + "_" + previousExtension + ' - ' + Section.id);
                }
                return;
           }
@@ -274,16 +297,7 @@ window.addEventListener ( "load" , function ()
                return;
           }
      }
-     function removeThisItem ( Target )
-     {
-          // console.log ( 'removeSection' );
-          // console.log ( Target );
-     }
-     function UpdateIds ( BaseId , RemovedExtension,  LastExtension )
-     {
-          // console.log ( 'removeSection' );
-          // console.log ( BaseId + ' - ' + RemovedExtension + ' - ' + LastExtension );
-     }
+
 
      /* ---------------------------------------------- */
      /*                  common function               */
@@ -301,7 +315,6 @@ window.addEventListener ( "load" , function ()
           var FirstAvailable;
           while ( FoundQuery )
           {
-               // console.log (BaseId + '_' + i);
                if ( $('#' + BaseId + '_' + i).length > 0 )
                {
                     LastValidId = BaseId + '_' + i;
@@ -351,7 +364,6 @@ window.addEventListener ( "load" , function ()
      }
      function FixChildrenId ( PreviousId , NewId , targetID=''  )
      {
-          //console.log (PreviousId + ' - ' + NewId + ' - ' + targetID);
           if ( targetID == '' )
           {
                /* look for all the children */
