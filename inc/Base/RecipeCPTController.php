@@ -322,7 +322,7 @@ public function storeCustomPostTypes()
           return;
      }
      $options = get_option ('mtk_plugin_cpt');
-     
+
      foreach ( $options as $option)
      {
           /* we fix the taxonomies array */
@@ -417,7 +417,7 @@ public function register_default_cpt ()
           $input['has_archive'] = 1;
 
           /* General Section */
-          $i = 0;
+          $i = 'general';
           $input['customFields'][$i]['ID'] = 'general';
           $input['customFields'][$i]['Name'] = 'Recipe';
           $input['customFields'][$i]['Type'] = 'Section';
@@ -426,15 +426,15 @@ public function register_default_cpt ()
           $input['customFields'][$i]['add_remove_buttons'] = false;
 
 
-               $i++;
+               $i = 'recipe_name';
                $input['customFields'][$i]['ID'] = 'recipe_name';
-               $input['customFields'][$i]['Name'] = 'Name';
+               $input['customFields'][$i]['Name'] = 'Recipe Name';
                $input['customFields'][$i]['Type'] = 'Item';
                $input['customFields'][$i]['Parent'] = 'general';
                $input['customFields'][$i]['Show_in_columns'] = true;
                $input['customFields'][$i]['add_remove_buttons'] = false;
 
-               $i++;
+               $i = 'recipe_author';
                $input['customFields'][$i]['ID'] = 'recipe_author';
                $input['customFields'][$i]['Name'] = 'Author';
                $input['customFields'][$i]['Type'] = 'Item';
@@ -442,7 +442,7 @@ public function register_default_cpt ()
                $input['customFields'][$i]['Show_in_columns'] = true;
                $input['customFields'][$i]['add_remove_buttons'] = false;
 
-               $i++;
+               $i = 'recipe_image_file';
                $input['customFields'][$i]['ID'] = 'recipe_image_file';
                $input['customFields'][$i]['Name'] = 'Image';
                $input['customFields'][$i]['Type'] = 'Item';
@@ -450,7 +450,7 @@ public function register_default_cpt ()
                $input['customFields'][$i]['Show_in_columns'] = false;
                $input['customFields'][$i]['add_remove_buttons'] = false;
 
-               $i++;
+               $i = 'recipe_description';
                $input['customFields'][$i]['ID'] = 'recipe_description';
                $input['customFields'][$i]['Name'] = 'Description';
                $input['customFields'][$i]['Type'] = 'Item';
@@ -458,7 +458,7 @@ public function register_default_cpt ()
                $input['customFields'][$i]['Show_in_columns'] = true;
                $input['customFields'][$i]['add_remove_buttons'] = false;
 
-               $i++;
+               $i = 'recipe_servings';
                $input['customFields'][$i]['ID'] = 'recipe_servings';
                $input['customFields'][$i]['Name'] = 'Servings';
                $input['customFields'][$i]['Type'] = 'Item';
@@ -466,16 +466,24 @@ public function register_default_cpt ()
                $input['customFields'][$i]['Show_in_columns'] = false;
                $input['customFields'][$i]['add_remove_buttons'] = false;
 
+               $i = 'recipe_rating';
+               $input['customFields'][$i]['ID'] = 'recipe_rating';
+               $input['customFields'][$i]['Name'] = 'Rating';
+               $input['customFields'][$i]['Type'] = 'Item';
+               $input['customFields'][$i]['Parent'] = 'general';
+               $input['customFields'][$i]['Show_in_columns'] = false;
+               $input['customFields'][$i]['add_remove_buttons'] = false;
+
                /* Cooking Time */
-               $i++;
+               $i = 'recipe_times';
                $input['customFields'][$i]['ID'] = 'recipe_times';
                $input['customFields'][$i]['Name'] = 'Times';
                $input['customFields'][$i]['Type'] = 'Item';
                $input['customFields'][$i]['Parent'] = 'general';
-               $input['customFields'][$i]['Show_in_columns'] = true;
+               $input['customFields'][$i]['Show_in_columns'] = false;
                $input['customFields'][$i]['add_remove_buttons'] = false;
 
-                    $i++;
+                    $i = 'recipe_prep_time';
                     $input['customFields'][$i]['ID'] = 'recipe_prep_time';
                     $input['customFields'][$i]['Name'] = 'Prep Time';
                     $input['customFields'][$i]['Type'] = 'SubItem';
@@ -483,7 +491,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['Show_in_columns'] = true;
                     $input['customFields'][$i]['add_remove_buttons'] = false;
 
-                    $i++;
+                    $i = 'recipe_cook_time';
                     $input['customFields'][$i]['ID'] = 'recipe_cook_time';
                     $input['customFields'][$i]['Name'] = 'Cook Time';
                     $input['customFields'][$i]['Type'] = 'SubItem';
@@ -491,7 +499,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['Show_in_columns'] = true;
                     $input['customFields'][$i]['add_remove_buttons'] = false;
 
-                    $i++;
+                    $i = 'recipe_passive_time';
                     $input['customFields'][$i]['ID'] = 'recipe_passive_time';
                     $input['customFields'][$i]['Name'] = 'Passive Time';
                     $input['customFields'][$i]['Type'] = 'SubItem';
@@ -500,7 +508,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['add_remove_buttons'] = false;
 
           /* Group Section */
-          $i++;
+          $i = 'group';
           $input['customFields'][$i]['ID'] = 'group';
           $input['customFields'][$i]['Name'] = 'Group';
           $input['customFields'][$i]['Type'] = 'Section';
@@ -509,7 +517,7 @@ public function register_default_cpt ()
           $input['customFields'][$i]['add_remove_buttons'] = true;
 
                /* Ingredients Section */
-               $i++;
+               $i = 'recipe_group_general';
                $input['customFields'][$i]['ID'] = 'recipe_group_general';
                $input['customFields'][$i]['Name'] = 'Group General';
                $input['customFields'][$i]['Type'] = 'SubSection';
@@ -518,7 +526,7 @@ public function register_default_cpt ()
                $input['customFields'][$i]['add_remove_buttons'] = false;
 
                     /* Gropup detials */
-                    $i++;
+                    $i = 'recipe_group_general_name';
                     $input['customFields'][$i]['ID'] = 'recipe_group_general_name';
                     $input['customFields'][$i]['Name'] = 'Procedure Name';
                     $input['customFields'][$i]['Type'] = 'Item';
@@ -526,7 +534,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['Show_in_columns'] = false;
                     $input['customFields'][$i]['add_remove_buttons'] = false;
 
-                    $i++;
+                    $i = 'recipe_group_general_notes';
                     $input['customFields'][$i]['ID'] = 'recipe_group_general_notes';
                     $input['customFields'][$i]['Name'] = 'Procedure Notes';
                     $input['customFields'][$i]['Type'] = 'Item';
@@ -534,7 +542,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['Show_in_columns'] = false;
                     $input['customFields'][$i]['add_remove_buttons'] = false;
 
-                    $i++;
+                    $i = 'recipe_group_general_image_file';
                     $input['customFields'][$i]['ID'] = 'recipe_group_general_image_file';
                     $input['customFields'][$i]['Name'] = 'Procedure Image';
                     $input['customFields'][$i]['Type'] = 'Item';
@@ -543,7 +551,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['add_remove_buttons'] = false;
 
                /* Ingredients Section */
-               $i++;
+               $i = 'recipe_ingredients';
                $input['customFields'][$i]['ID'] = 'recipe_ingredients';
                $input['customFields'][$i]['Name'] = 'Ingredients';
                $input['customFields'][$i]['Type'] = 'SubSection';
@@ -552,7 +560,7 @@ public function register_default_cpt ()
                $input['customFields'][$i]['add_remove_buttons'] = false;
 
                     /* Single Ingredient Section */
-                    $i++;
+                    $i = 'recipe_ingredient_item';
                     $input['customFields'][$i]['ID'] = 'recipe_ingredient_item';
                     $input['customFields'][$i]['Name'] = 'Ingredient';
                     $input['customFields'][$i]['Type'] = 'Item';
@@ -560,7 +568,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['Show_in_columns'] = false;
                     $input['customFields'][$i]['add_remove_buttons'] = true;
 
-                    $i++;
+                    $i = 'recipe_ingredient_quantity';
                     $input['customFields'][$i]['ID'] = 'recipe_ingredient_quantity';
                     $input['customFields'][$i]['Name'] = 'Quantity';
                     $input['customFields'][$i]['Type'] = 'SubItem';
@@ -568,7 +576,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['Show_in_columns'] = false;
                     $input['customFields'][$i]['add_remove_buttons'] = false;
 
-                    $i++;
+                    $i = 'recipe_ingredient_unit';
                     $input['customFields'][$i]['ID'] = 'recipe_ingredient_unit';
                     $input['customFields'][$i]['Name'] = 'Unit';
                     $input['customFields'][$i]['Type'] = 'SubItem';
@@ -576,7 +584,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['Show_in_columns'] = false;
                     $input['customFields'][$i]['add_remove_buttons'] = false;
 
-                    $i++;
+                    $i = 'recipe_ingredient_name';
                     $input['customFields'][$i]['ID'] = 'recipe_ingredient_name';
                     $input['customFields'][$i]['Name'] = 'Ingredient Name';
                     $input['customFields'][$i]['Type'] = 'SubItem';
@@ -584,7 +592,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['Show_in_columns'] = false;
                     $input['customFields'][$i]['add_remove_buttons'] = false;
 
-                    $i++;
+                    $i = 'recipe_ingredient_notes';
                     $input['customFields'][$i]['ID'] = 'recipe_ingredient_notes';
                     $input['customFields'][$i]['Name'] = 'Notes';
                     $input['customFields'][$i]['Type'] = 'SubItem';
@@ -593,7 +601,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['add_remove_buttons'] = false;
 
                /* Instructions Section */
-               $i++;
+               $i = 'recipe_instructions';
                $input['customFields'][$i]['ID'] = 'recipe_instructions';
                $input['customFields'][$i]['Name'] = 'Instructions';
                $input['customFields'][$i]['Type'] = 'SubSection';
@@ -602,7 +610,7 @@ public function register_default_cpt ()
                $input['customFields'][$i]['add_remove_buttons'] = false;
 
                     /* Step Section */
-                    $i++;
+                    $i = 'recipe_instructions_step';
                     $input['customFields'][$i]['ID'] = 'recipe_instructions_step';
                     $input['customFields'][$i]['Name'] = 'Step';
                     $input['customFields'][$i]['Type'] = 'Item';
@@ -610,7 +618,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['Show_in_columns'] = false;
                     $input['customFields'][$i]['add_remove_buttons'] = true;
 
-                    $i++;
+                    $i = 'recipe_step_number';
                     $input['customFields'][$i]['ID'] = 'recipe_step_number';
                     $input['customFields'][$i]['Name'] = 'Step Number';
                     $input['customFields'][$i]['Type'] = 'SubItem';
@@ -618,7 +626,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['Show_in_columns'] = false;
                     $input['customFields'][$i]['add_remove_buttons'] = false;
 
-                    $i++;
+                    $i = 'recipe_step_instruction';
                     $input['customFields'][$i]['ID'] = 'recipe_step_instruction';
                     $input['customFields'][$i]['Name'] = 'Instruction';
                     $input['customFields'][$i]['Type'] = 'SubItem';
@@ -626,7 +634,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['Show_in_columns'] = false;
                     $input['customFields'][$i]['add_remove_buttons'] = false;
 
-                    $i++;
+                    $i = 'recipe_step_image_file';
                     $input['customFields'][$i]['ID'] = 'recipe_step_image_file';
                     $input['customFields'][$i]['Name'] = 'Instructions Image';
                     $input['customFields'][$i]['Type'] = 'SubItem';
@@ -635,7 +643,7 @@ public function register_default_cpt ()
                     $input['customFields'][$i]['add_remove_buttons'] = false;
 
           /* Extras Section */
-          $i++;
+          $i = 'recipe_extras';
           $input['customFields'][$i]['ID'] = 'recipe_extras';
           $input['customFields'][$i]['Name'] = 'Extra Information';
           $input['customFields'][$i]['Type'] = 'Section';
@@ -643,7 +651,7 @@ public function register_default_cpt ()
           $input['customFields'][$i]['Show_in_columns'] = false;
           $input['customFields'][$i]['add_remove_buttons'] = false;
 
-          $i++;
+          $i = 'recipe_notes';
           $input['customFields'][$i]['ID'] = 'recipe_notes';
           $input['customFields'][$i]['Name'] = 'Recipe notes';
           $input['customFields'][$i]['Type'] = 'Item';
@@ -651,7 +659,7 @@ public function register_default_cpt ()
           $input['customFields'][$i]['Show_in_columns'] = false;
           $input['customFields'][$i]['add_remove_buttons'] = true;
 
-          $i++;
+          $i = 'recipe_video';
           $input['customFields'][$i]['ID'] = 'recipe_video';
           $input['customFields'][$i]['Name'] = 'Recipe Video';
           $input['customFields'][$i]['Type'] = 'Item';
@@ -659,21 +667,23 @@ public function register_default_cpt ()
           $input['customFields'][$i]['Show_in_columns'] = false;
           $input['customFields'][$i]['add_remove_buttons'] = true;
 
-               $i++;
+               $i = 'recipe_video_file';
                $input['customFields'][$i]['ID'] = 'recipe_video_file';
                $input['customFields'][$i]['Name'] = 'Recipe Video';
                $input['customFields'][$i]['Type'] = 'SubItem';
                $input['customFields'][$i]['Parent'] = 'recipe_video';
                $input['customFields'][$i]['Show_in_columns'] = false;
                $input['customFields'][$i]['add_remove_buttons'] = false;
-               $i++;
+
+               $i = 'recipe_video_title';
                $input['customFields'][$i]['ID'] = 'recipe_video_title';
                $input['customFields'][$i]['Name'] = 'Video Title';
                $input['customFields'][$i]['Type'] = 'SubItem';
                $input['customFields'][$i]['Parent'] = 'recipe_video';
                $input['customFields'][$i]['Show_in_columns'] = false;
                $input['customFields'][$i]['add_remove_buttons'] = false;
-               $i++;
+
+               $i = 'recipe_video_notes';
                $input['customFields'][$i]['ID'] = 'recipe_video_notes';
                $input['customFields'][$i]['Name'] = 'Video Notes';
                $input['customFields'][$i]['Type'] = 'SubItem';
@@ -723,10 +733,12 @@ public function manage_cpt_columns (  )
           {
                $this->current_post_type = $post_type;
 
+
+
                /* Edit the custom columns of the custom post type */
                add_action ( 'manage_' . $post_type . '_posts_columns' , array ( $this , 'set_custom_column' ) );
                /* We are going to hook the custom columns with the information */
-               add_action ( 'manage_' . $post_type . '_custom_column' , array ( $this , 'set_custom_columns_data' ) , 10 , 2 );
+               add_action ( 'manage_' . $post_type . '_posts_custom_column' , array ( $this , 'set_custom_columns_data' ), 10, 2 );
                /* add a filter to make the columns sortable */
                add_filter ( 'manage_edit-' . $post_type . '_sortable_columns' , array ( $this , 'set_custom_columns_sortable' ) );
           }
@@ -812,10 +824,6 @@ public function orderCustomcolumns ( $customFields )
 public function enqueue ()
 {
      /* Enqueue the styles and scripts*/
-     // error_log (__FUNCTION__ . ' - ' . __LINE__) . '<pre>';
-     // error_log ($this->plugin_url . 'assets/cpt_customFields.css');
-     // error_log ($this->plugin_url . 'assets/cpt_customFields.js');
-     // error_log ('<br>----------------------------</pre>');
      wp_enqueue_style ( 'authStyle' , $this->plugin_url . 'assets/cpt_customFields.css');
      wp_enqueue_script ( 'authScript' , $this->plugin_url . 'assets/cpt_customFields.js');
 
@@ -859,11 +867,6 @@ public function add_meta_boxes( $post_type )
 
           foreach ($id_value as $i => $FixedId)
           {
-               // error_log (__FUNCTION__ . ' - ' . __LINE__);
-               // error_log ( print_r ( $FixedId , true ) );
-               // error_log ( print_r ( $fields , true ) );
-               // error_log ('----------------------------');
-
                $title = $fields['field-info']['Name'];
                $callback = array ( $this , 'render_features_box');
                $screen = $post_type;
@@ -981,9 +984,6 @@ public function save_meta_box( $post_id)
 
      /*  order the post into an data array */
      $index = 'mtk_' . $post_type;
-     // error_log (__FILE__ . ' - ' . __LINE__ . ' - ' . __FUNCTION__);
-     // error_log(print_r($_POST, true));
-     // error_log('--------------------------------------------');
      $data = $this->r_cptFuntions->orderForSaveMeta ( $index );
      /*---------------- Store this metabox ----------------*/
      /* We get the values saved in the post mtk_default_recipe*/
@@ -1006,10 +1006,6 @@ public function save_meta_box( $post_id)
                          update_post_meta( $post_id, $index, $section );
 
                     }
-                    // error_log (__FILE__ . ' - ' . __LINE__ . ' - ' . __FUNCTION__);
-                    // error_log($index);
-                    // error_log(print_r($section, true));
-                    // error_log('--------------------------------------------');
                }
 
 
@@ -1042,22 +1038,53 @@ public function set_custom_column( $columns )
      return ( $columns );
 }
 /* Sets the data that will be display in the list */
-public function set_custom_columns_data( $column , $post_id )
+public function set_custom_columns_data( $column, $post_id  )
 {
-
-     $data  = get_post_meta ( $post_id , '_mtk_'.$post_type.'_key' , true );
-     switch ( $column )
+     $post_type = get_post_type ($post_id);
+     /* we look for the top level */
+     $i = 0;
+     $gerarchy[$i] = $column;
+     /*get the gerarchy*/
+     while ($this->customFields[$post_type][$gerarchy[$i]]['Parent'] != $gerarchy[$i])
      {
-          case 'name':
-          echo '<strong>' . $name . '</strong><br /><a href="mailto:'. $email .'">'. $email .'</a>';
-          break;
-          case 'approved':
-          echo ($approved);
-          break;
-          case 'featured':
-          echo ($featured);
-          break;
+          $j = $i +1;
+          $gerarchy[$j] = $this->customFields[$post_type][$gerarchy[$i]]['Parent'];
+          $i ++;
+
      }
+     $gerarchy = array_reverse($gerarchy, false);
+     /* get the values */
+     $data  = get_post_meta ( $post_id , '_mtk_'.$post_type.'_'.$gerarchy[0].'_0' , true );
+     /*
+     [recipe_name_0] => Testing Recipe
+    [recipe_author_0] => Vicky
+    [recipe_description_0] => testing the plugin
+    [recipe_servings_0] => serves 12
+    [recipe_times_0] => Array
+        (
+            [recipe_prep_time_0] => 10 min
+            [recipe_cook_time_0] => 20 min
+            [recipe_passive_time_0] => 10 min
+        )
+        */
+     $i = 1;
+     foreach ($gerarchy as $i => $fieldName)
+     {
+          if ( $i != 0)
+          {
+               $tempdata = $data  [ $gerarchy[$i] . '_0'];
+               unset ($data);
+               $data = $tempdata;
+
+
+          }
+
+     }
+     echo  ('<p>' . $data . '</p>') ;
+     print_r ($data);
+
+
+
 }
 /* Sets Which fields are sortable */
 public function set_custom_columns_sortable ( $columns )

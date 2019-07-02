@@ -510,6 +510,28 @@ class RecipeCPTFunctions extends BaseController
                                    echo ('<input id="'.$textForIdInput.'" name="'.$fieldName.'" class="'.$value['field-info']['Type'].'_input '.$value['field-info']['ID'].'_input " type="text"'. $Fieldvalue .'/>');
                                    echo ('<br><small class="small-youtube">Copy the embed text from <br>YouTube.com</small>');
                               }
+                              else if ( strpos($value['field-info']['ID'] ,"rating")  )
+                              {
+                                   $rating = str_replace(" value=", "" , $Fieldvalue );
+                                   $rating = str_replace('"', "" , $rating );
+                                   for ($star = 1; $star < 6; $star ++)
+                                   {
+                                        if ($star <= $rating)
+                                        {
+                                             echo ('<span class="rating">&#9733;</span>');
+                                        }
+                                        else
+                                        {
+                                             echo ('<span class="rating">&#9734;</span>');
+                                        }
+                                   }
+                              }
+                              else if ( strpos($value['field-info']['ID'] ,"instruction")  )
+                              {
+                                   echo ('<textarea  rows="7" id="'.$textForIdInput.'" name="'.$fieldName.'" class="'.$value['field-info']['Type'].'_input '.$value['field-info']['ID'].'_input " '. $Fieldvalue .'/>');
+                                   echo ( str_replace('"', "" , str_replace(" value=", "" , $Fieldvalue ) ) );
+                                   echo ('</textarea>');
+                              }
                               else
                               {
                                    echo ('<input id="'.$textForIdInput.'" name="'.$fieldName.'" class="'.$value['field-info']['Type'].'_input '.$value['field-info']['ID'].'_input " type="text"'. $Fieldvalue .'/>');

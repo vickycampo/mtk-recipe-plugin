@@ -283,6 +283,7 @@ class TestimonialController extends BaseController
      public function set_custom_columns_data( $column , $post_id )
      {
           $data  = get_post_meta ( $post_id , '_mtk_testimonial_key' , true );
+
           /* Create the variables where we are going to sort the information */
           /* Author Name */
           $name = isset($data['name']) ? $data['name'] : '';
