@@ -12,7 +12,7 @@ RecipeCPTController.PHP
 namespace Inc\Base;
 use Inc\Api\SettingsApi;
 use Inc\Base\BaseController;
-use Inc\Base\RecipeCPTFunctions;
+use Inc\Base\CPTFunctions;
 use Inc\Api\Widgets\MediaWidget;
 use Inc\Api\Callbacks\CptCallbacks;
 use Inc\Api\Callbacks\AdminCallbacks;
@@ -21,7 +21,7 @@ use Inc\Api\Callbacks\AdminCallbacks;
 /**
 * Enqueue - Enqueue the scripts and style files
 */
-class RecipeCPTController extends BaseController
+class CPTController extends BaseController
 {
      public $settings;
      public $callbacks;
@@ -48,7 +48,7 @@ class RecipeCPTController extends BaseController
           /* Initialize the class that manages the */
           $this->cpt_callbacks = new CptCallbacks();
           /* Initialize the class that manages the */
-          $this->r_cptFuntions = new RecipeCPTFunctions();
+          $this->r_cptFuntions = new CPTFunctions();
           /* Call the subpages method */
           $this->setSubpages();
 
@@ -375,7 +375,12 @@ public function storeCustomPostTypes()
                'filter_items_list'     => 'Filter ' . $option['plural_name'] . ' list',
                'label'                 => $option['singular_name'],
                'description'           => $option['plural_name'] . ' Custom Post Type',
-               'supports'              => array ( 'title' , 'editor' , 'thumbnail' ),
+               'supports'              => array ( 'title',
+                                                  'editor',
+                                                  'author',
+                                                  'excerpt',
+                                                  'comments',
+                                                  'revisions' ),
                'show_in_rest'          => true,
                'taxonomies'            => $option['taxonomies'],
                'hierarchical'          => false,

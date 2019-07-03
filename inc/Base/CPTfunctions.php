@@ -14,7 +14,7 @@ namespace Inc\Base;
 /**
  * Enqueue - Enqueue the scripts and style files
 */
-class RecipeCPTFunctions extends BaseController
+class CPTFunctions extends BaseController
 {
      public function getThisPostId ( $post_id )
      {
