@@ -18,7 +18,7 @@ class ExtendComment extends BaseController
 {
      public function register ()
      {
-          // Add custom meta (ratings) fields to the default comment form
+
           // Default comment form includes name, email address and website URL
           // Default comment form elements are hidden when user is logged in
           add_filter( 'comment_form_default_fields', array ( $this , 'custom_fields' ) );
@@ -40,13 +40,12 @@ class ExtendComment extends BaseController
           // Add an edit option to comment editing screen
           add_action( 'add_meta_boxes_comment', array ( $this , 'extend_comment_add_meta_box' ) );
 
-          // Update comment meta data from comment editing screen 
+          // Update comment meta data from comment editing screen
           add_action( 'edit_comment', array ( $this , 'extend_comment_edit_metafields' ));
      }
 
      public function custom_fields( $fields )
      {
-          // Add custom meta (ratings) fields to the default comment form
           // Default comment form includes name, email address and website URL
           // Default comment form elements are hidden when user is logged in
 
@@ -80,32 +79,56 @@ class ExtendComment extends BaseController
      }
      public function additional_fields ()
      {
-          // Add fields after default fields above the comment box, always visible
-          echo ('<p class="comment-form-rating">');
-          echo ('<label for="rating">'. __('Rating'));
-          echo ('<span class="required">*</span>');
-          echo ('</label>');
-          echo ('<span class="commentratingbox">');
-          for( $i=1; $i <= 5; $i++ )
+          // Add fields after default fields above the comment box, always visible+
+          /* only if is a custom post type */
+          $post_type = get_post_type ();
+          $post_types = array (
+               'post',
+               'page',
+               'attachment',
+               'revision',
+               'nav_menu_item'
+          );
+          if ( ! ( in_array($post_type, $post_types) ) )
           {
-               echo '<span class="commentrating"><input type="radio" name="rating" id="rating" value="'. $i .'"/>'. $i .'</span>';
+               echo ('</pre>');
+               echo ('<p class="comment-form-rating">');
+               echo ('<label for="rating">'. __('Rating'));
+               echo ('<span class="required">*</span>');
+               echo ('</label>');
+               echo ('<span class="commentratingbox">');
+               for( $i=1; $i <= 5; $i++ )
+               {
+                    echo '<span class="commentrating"><input type="radio" name="rating" id="rating" value="'. $i .'"/>'. $i .'</span>';
+               }
+               echo'</span></p>';
           }
-          echo'</span></p>';
+
      }
      function save_comment_meta_data( $comment_id )
      {
+
+
           // Save the comment meta data along with comment
           if ( ( isset( $_POST['phone'] ) ) && ( $_POST['phone'] != ’) )
-          $phone = wp_filter_nohtml_kses($_POST['phone']);
-          add_comment_meta( $comment_id, 'phone', $phone );
-
+          {
+               $phone = wp_filter_nohtml_kses($_POST['phone']);
+               add_comment_meta( $comment_id, 'phone', $phone );
+          }
           if ( ( isset( $_POST['title'] ) ) && ( $_POST['title'] != ’) )
-          $title = wp_filter_nohtml_kses($_POST['title']);
-          add_comment_meta( $comment_id, 'title', $title );
-
+          {
+               $title = wp_filter_nohtml_kses($_POST['title']);
+               add_comment_meta( $comment_id, 'title', $title );
+          }
           if ( ( isset( $_POST['rating'] ) ) && ( $_POST['rating'] != ’) )
-          $rating = wp_filter_nohtml_kses($_POST['rating']);
-          add_comment_meta( $comment_id, 'rating', $rating );
+          {
+               $rating = wp_filter_nohtml_kses($_POST['rating']);
+               add_comment_meta( $comment_id, 'rating', $rating );
+               /* Now that we have saved the rating we need to refresh the rating in the post metadata */
+               error_log (__FILE__ . ' - ' . __LINE__);
+               error_log ( print_r ( get_post_type() , true ) );
+               error_log ('--------------------------');
+          }
      }
      public function verify_comment_meta_data( $commentdata )
      {
