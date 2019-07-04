@@ -230,7 +230,7 @@ class CPTController extends BaseController
                // has_rating
                array(
                     'id' => 'has_rating',
-                    'title' => 'Rating',
+                    'title' => 'Rating<br> <small>You need to add a Custom field with Field ID = rating.</small>',
                     'callback' => array ($this->cpt_callbacks , 'checkboxField'),
                     'page' => 'mtk_cpt', //The slug of the page
                     'section' => 'mtk_cpt_index', // The id of the seciton
@@ -492,8 +492,8 @@ public function register_default_cpt ()
                $input['customFields'][$i]['Show_in_columns'] = false;
                $input['customFields'][$i]['add_remove_buttons'] = false;
 
-               $i = 'recipe_rating';
-               $input['customFields'][$i]['ID'] = 'recipe_rating';
+               $i = 'rating';
+               $input['customFields'][$i]['ID'] = 'rating';
                $input['customFields'][$i]['Name'] = 'Rating';
                $input['customFields'][$i]['Type'] = 'Item';
                $input['customFields'][$i]['Parent'] = 'general';
@@ -1107,7 +1107,6 @@ public function set_custom_columns_data( $column, $post_id  )
 
      }
      echo  ('<p>' . $data . '</p>') ;
-     print_r ($data);
 
 
 

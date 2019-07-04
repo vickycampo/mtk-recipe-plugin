@@ -45,6 +45,9 @@ class ExtendComment extends BaseController
 
           //Display the average rating above the content.
           add_filter( 'the_content', array ( $this , 'display_average_rating') );
+
+          //Saves the average in the post meta data
+          add_action('transition_comment_status', array ( $this , 'save_average_ratings' ), 10, 3);
      }
 
      public function custom_fields( $fields )
@@ -85,6 +88,7 @@ class ExtendComment extends BaseController
           // Add fields after default fields above the comment box, always visible+
           /* only if is a custom post type */
           $post_type = get_post_type ();
+          var_dump ($post_type);
           $cpt_options = get_option ( 'mtk_plugin_cpt');
           if ( ( isset ( $cpt_options[$post_type] ) )  && ( $cpt_options[$post_type]['has_rating'] == 1 ) )
           {
@@ -93,12 +97,13 @@ class ExtendComment extends BaseController
                echo ('<span class="required">*</span>');
                echo ('</label>');
                echo ('<span class="commentratingbox">');
+               echo (__FILE__ . ' - '. __LINE__ .  '<br>Add the stars and create the js file with the event handler.<br>');
                for( $i=1; $i <= 5; $i++ )
                {
                     echo '<span class="commentrating"><input type="radio" name="rating" id="rating" value="'. $i .'"/>'. $i .'</span>';
                }
                echo'</span></p>';
-               echo ('<input type="hidden" id="post_type" name="post_type" value="$post_type">');
+               echo ('<input type="hidden" id="post_type" name="post_type" value="'.$post_type.'">');
           }
 
      }
@@ -113,7 +118,7 @@ class ExtendComment extends BaseController
           if ( ( isset( $_POST['post_type'] ) ) && ( $_POST['post_type'] != '') )
           {
                $post_type = wp_filter_nohtml_kses($_POST['post_type']);
-               add_comment_meta( $comment_id, 'post_type', $rating );
+               add_comment_meta( $comment_id, 'post_type', $post_type );
           }
      }
      public function verify_comment_meta_data( $commentdata )
@@ -131,11 +136,21 @@ class ExtendComment extends BaseController
           // You can also output the comment meta values directly to the comments template
           $plugin_url_path = WP_PLUGIN_URL;
 
-          if( $commentrating = get_comment_meta( get_comment_ID(), 'rating', true ) )
+          if( $rating = get_comment_meta( get_comment_ID(), 'rating', true ) )
           {
-               $commentrating = '<p class="comment-rating"><img src="'. $plugin_url_path .
-          '/ExtendComment/images/'. $commentrating . 'star.gif"/><br/>Rating: <strong>'. $commentrating .' / 5</strong></p>';
-               $text = $text . $commentrating;
+               $text = '<p class="comment-rating">';
+               for ($star = 1; $star < 6; $star ++)
+               {
+                    if ($star <= $rating)
+                    {
+                         $text .= ('<span class="rating">&#9733;</span>');
+                    }
+                    else
+                    {
+                         $text .= ('<span class="rating">&#9734;</span>');
+                    }
+               }
+               $text .= '<br/>Rating: <strong>'. $rating .' / 5</strong></p>';
                return $text;
           }
           else
@@ -146,7 +161,6 @@ class ExtendComment extends BaseController
      function extend_comment_add_meta_box()
      {
           $post_type = get_post_type ();
-          error_log (__FILE__ . ' - ' . __LINE__ . 'post_type - ' . $post_type);
 
           if ( ( isset ( $cpt_options[$post_type] ) )  && ( $cpt_options[$post_type]['has_rating'] == 1 ) )
           {
@@ -159,14 +173,18 @@ class ExtendComment extends BaseController
      {
           $post_type = get_comment_meta( $comment->comment_ID, 'post_type', true );
           $rating = get_comment_meta( $comment->comment_ID, 'rating', true );
-          if ( $post_type = '')
+
+          if ( $post_type != '')
           {
                wp_nonce_field( 'extend_comment_update', 'extend_comment_update', false );
+               echo (__FILE__ . ' - '. __LINE__ .  '<br>Add the stars and create the js file with the event handler.<br>');
                ?>
                <p>
                     <label for="rating"><?php _e( 'Rating: ' ); ?></label>
                     <span class="commentratingbox">
-                         <?php for( $i=1; $i <= 5; $i++ ) {
+                         <?php
+                         for( $i=1; $i <= 5; $i++ )
+                         {
                          echo '<span class="commentrating"><input type="radio" name="rating" id="rating" value="'. $i .'"';
                          if ( $rating == $i ) echo ' checked="checked"';
                          echo ' />'. $i .' </span>';
@@ -256,5 +274,54 @@ class ExtendComment extends BaseController
           $custom_content  = '<p class="average-rating">This post\'s average rating is: ' . $average .' ' . $stars .'</p>';
           $custom_content .= $content;
           return $custom_content;
+     }
+     public function save_average_ratings($new_status, $old_status, $comment)
+     {
+          if($old_status != $new_status)
+          {
+               if($new_status == 'approved')
+               {
+                    $post_id = $comment->comment_post_ID;
+                    $post_type = get_post_type ($post_id);
+                    $cpt_options = get_option ( 'mtk_plugin_cpt');
+
+                    if ( isset ($cpt_options[$post_type]) && $cpt_options[$post_type]['has_rating'] == 1 && isset ( $cpt_options[$post_type]['customFields'] ) && isset ( $cpt_options[$post_type]['customFields']['rating'] ) )
+                    {
+
+
+                         $parent = $cpt_options[$post_type]['customFields']['rating']['Parent'];
+                         $meta_key = '_mtk_default_recipe_'.$parent.'_0';
+                         if ($cpt_options[$post_type]['customFields'][$parent]['Parent'] != $parent)
+                         {
+                              $grandParent = $cpt_options[$post_type]['customFields'][$parent]['Parent'];
+                              $meta_key = '_mtk_default_recipe_'.$grandParent.'_0';
+                              if ($cpt_options[$post_type]['customFields'][$grandParent]['Parent'] != $grandParent)
+                              {
+                                   $GreatGrandParent = $cpt_options[$post_type]['customFields'][$grandParent]['Parent'];
+                                   $meta_key = '_mtk_default_recipe_'.$grandParent.'_0';
+                                   if ($cpt_options[$post_type]['customFields'][$GreatGrandParent]['Parent'] != $GreatGrandParent)
+                                   {
+                                        $TataGreatGrandParent = $cpt_options[$post_type]['customFields'][$GreatGrandParent]['Parent'];
+                                        $meta_key = '_mtk_default_recipe_'.$TataGreatGrandParent.'_0';
+                                   }
+                              }
+                         }
+                         $prev_value = get_post_meta($post_id, $meta_key);
+                         $meta_value = $prev_value;
+                         $average_ratings = $this->get_average_ratings( $post_id );
+                         $meta_value[0]['rating_0'] = $average_ratings;
+
+                         update_post_meta( $post_id, $meta_key, $meta_value[0] );
+                         error_log (print_r ($post_id , true));
+                         error_log (print_r ($post_type , true));
+                         error_log (print_r ($meta_key , true));
+                         error_log (print_r ($prev_value , true));
+                         error_log (print_r ($meta_value , true));
+
+                    }
+
+
+               }
+          }
      }
 }
