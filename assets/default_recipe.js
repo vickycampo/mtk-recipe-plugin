@@ -29,6 +29,7 @@ jQuery(function ($)
      });
      $("#commentform").submit(function( event )
      {
+          var formValues = new Array;
           event.preventDefault();
           /* Check that all the fields are filled */
           var kids = event.target.getElementsByTagName('input');
@@ -42,23 +43,27 @@ jQuery(function ($)
                     if ( kids[i].name == 'author')
                     {
                          errorMessage ( kids[i] , kids[i].name );
-                         return;
+
                     }
                     else if ( kids[i].name == 'email')
                     {
                          errorMessage ( kids[i] , kids[i].name );
-                         return;
+
                     }
                     else if ( kids[i].name == 'phone')
                     {
                          errorMessage ( kids[i] , kids[i].name );
-                         return;
+
                     }
                     else if ( kids[i].name == 'rating')
                     {
                          errorMessage ( kids[i] , kids[i].name );
-                         return;
+
                     }
+               }
+               else
+               {
+                    ajaxSubmitForm ( event );
                }
 
 
@@ -72,7 +77,7 @@ jQuery(function ($)
                if (kids[i].value == '')
                {
                     errorMessage ( kids[i] , kids[i].name );
-                    return;
+
                }
           }
           /* if we reach this point means no errors were found */
@@ -87,5 +92,6 @@ jQuery(function ($)
      function errorMessage ( e , fieldName )
      {
           console.log (fieldName);
+          return (false);
      }
 });
