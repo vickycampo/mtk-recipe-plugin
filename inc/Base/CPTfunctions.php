@@ -512,10 +512,11 @@ class CPTFunctions extends BaseController
                               }
                               else if ( $value['field-info']['ID'] == "rating"  )
                               {
-
-                                   $rating = $data[$ExtendedIdValue];
-
-                                   if (( $rating == '') || ( $rating == ' '))
+                                   if ( isset ( $data[$ExtendedIdValue] ) )
+                                   {
+                                        $rating = $data[$ExtendedIdValue];
+                                   }
+                                   else
                                    {
                                         $rating = 0;
                                    }
@@ -524,11 +525,11 @@ class CPTFunctions extends BaseController
                                    {
                                         if ($star <= $rating)
                                         {
-                                             echo ('<span class="rating">&#9733;</span>');
+                                             echo ('<span class="rating-star active-star">&#9733;</span>');
                                         }
                                         else
                                         {
-                                             echo ('<span class="rating">&#9734;</span>');
+                                             echo ('<span class="rating-star inactive-star">&#9734;</span>');
                                         }
                                    }
                               }

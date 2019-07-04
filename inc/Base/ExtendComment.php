@@ -90,7 +90,7 @@ class ExtendComment extends BaseController
           $post_type = get_post_type ();
           var_dump ($post_type);
           $cpt_options = get_option ( 'mtk_plugin_cpt');
-          if ( ( isset ( $cpt_options[$post_type] ) )  && ( $cpt_options[$post_type]['has_rating'] == 1 ) )
+          if ( ( isset ( $cpt_options[$post_type] ) )  && ( isset ( $cpt_options[$post_type]['has_rating'] ) )  && ( $cpt_options[$post_type]['has_rating'] == 1 ) )
           {
                echo ('<p class="comment-form-rating">');
                echo ('<label for="rating">'. __('Rating'));
@@ -100,9 +100,10 @@ class ExtendComment extends BaseController
                echo (__FILE__ . ' - '. __LINE__ .  '<br>Add the stars and create the js file with the event handler.<br>');
                for( $i=1; $i <= 5; $i++ )
                {
-                    echo '<span class="commentrating"><input type="radio" name="rating" id="rating" value="'. $i .'"/>'. $i .'</span>';
+                    echo '<span id="input_rating_'.$i.'" class="rating-star input_rating inactive-star">&#9733;</span>';
                }
                echo'</span></p>';
+               echo ('<input type="hidden" id="rating" name="rating">');
                echo ('<input type="hidden" id="post_type" name="post_type" value="'.$post_type.'">');
           }
 
@@ -143,11 +144,11 @@ class ExtendComment extends BaseController
                {
                     if ($star <= $rating)
                     {
-                         $text .= ('<span class="rating">&#9733;</span>');
+                         $text .= ('<span class="rating-star active-star">&#9733;</span>');
                     }
                     else
                     {
-                         $text .= ('<span class="rating">&#9734;</span>');
+                         $text .= ('<span class="rating-star inactive-star">&#9734;</span>');
                     }
                }
                $text .= '<br/>Rating: <strong>'. $rating .' / 5</strong></p>';

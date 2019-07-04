@@ -1,6 +1,91 @@
-// !function u(i,f,c){function a(e,r){if(!f[e]){if(!i[e]){var n="function"==typeof require&&require;if(!r&&n)return n(e,!0);if(p)return p(e,!0);var t=new Error("Cannot find module '"+e+"'");throw t.code="MODULE_NOT_FOUND",t}var o=f[e]={exports:{}};i[e][0].call(o.exports,function(r){return a(i[e][1][r]||r)},o,o.exports,u,i,f,c)}return f[e].exports}for(var p="function"==typeof require&&require,r=0;r<c.length;r++)a(c[r]);return a}({1:[function(r,e,n){},{}]},{},[1]);
-//# sourceMappingURL=default_recipe.js.map
-window.addEventListener ( "load" , function ()
+
+/* IIFE function */
+jQuery(function ($)
 {
-     console.log (':D');
+     /*
+     Add the event to the star...
+     when clicked the field value is updated
+     and the stars are swaped to marked
+     */
+     $(".input_rating").click(function( e )
+     {
+          var rating = e.target.id.replace("input_rating_", "");
+          $("#rating").val(rating);
+          for (var i=1; i<6; i++)
+          {
+               console.log ("#input_rating_" + i + ' - ' + rating);
+               if (i <= rating)
+               {
+                    $( "#input_rating_" + i ).addClass( "active-star" );
+                    $( "#input_rating_" + i ).removeClass( "inactive-star" );
+               }
+               else
+               {
+                    $( "#input_rating_" + i ).addClass( "inactive-star" );
+                    $( "#input_rating_" + i ).removeClass( "active-star" );
+               }
+          }
+
+     });
+     $("#commentform").submit(function( event )
+     {
+          event.preventDefault();
+          /* Check that all the fields are filled */
+          var kids = event.target.getElementsByTagName('input');
+
+          console.log (kids.length);
+          for ( var i = 0; i < kids.length ; i++ )
+          {
+               console.log (kids[i].id);
+               if (kids[i].value == '')
+               {
+                    if ( kids[i].name == 'author')
+                    {
+                         errorMessage ( kids[i] , kids[i].name );
+                         return;
+                    }
+                    else if ( kids[i].name == 'email')
+                    {
+                         errorMessage ( kids[i] , kids[i].name );
+                         return;
+                    }
+                    else if ( kids[i].name == 'phone')
+                    {
+                         errorMessage ( kids[i] , kids[i].name );
+                         return;
+                    }
+                    else if ( kids[i].name == 'rating')
+                    {
+                         errorMessage ( kids[i] , kids[i].name );
+                         return;
+                    }
+               }
+
+
+
+          }
+          /* now for the text area */
+          kids = (event.target.getElementsByTagName('textarea'));
+          for ( var i = 0; i < kids.length ; i++ )
+          {
+               console.log (kids[i].name);
+               if (kids[i].value == '')
+               {
+                    errorMessage ( kids[i] , kids[i].name );
+                    return;
+               }
+          }
+          /* if we reach this point means no errors were found */
+          /* ajax submit */
+          ajaxSubmitForm ( e );
+
+     });
+     function ajaxSubmitForm ( e )
+     {
+          console.log ('Create the ajax submit form ');
+     }
+     function errorMessage ( e , fieldName )
+     {
+          console.log (fieldName);
+     }
 });
