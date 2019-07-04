@@ -48,18 +48,21 @@ echo ( "<script src=\"$this->plugin_url/assets/dashicons-picker.js\"></script> "
                          echo ('<th><span>Plural Name</span></th>');
                          echo ('<th><span>Public</span></th>');
                          echo ('<th><span>Has Archive</span></th>');
+                         echo ('<th><span>Has Rating</span></th>');
                          echo ('<th><span></span></th>');
                     echo ('</tr>');
                     foreach ($options as $option)
                     {
                          $public = isset ( $option['public'] ) ? "TRUE" : "FALSE";
                          $has_archive = isset ( $option['has_archive'] ) ? "TRUE" : "FALSE";
+                         $has_rating = isset ( $option['has_rating'] ) ? "TRUE" : "FALSE";
                          echo ("<tr>");
                               echo ("<td><span>{$option['post_type']}</span></td>");
                               echo ("<td><span>{$option['singular_name']}</span></td>");
                               echo ("<td><span>{$option['plural_name']}</span></td>");
                               echo ("<td><span>$public</span></td>");
                               echo ("<td><span>$has_archive</span></td>");
+                              echo ("<td><span>$has_rating</span></td>");
                               echo ('<td>');
                               /* add the edit form */
                               ?>

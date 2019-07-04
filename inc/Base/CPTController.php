@@ -227,6 +227,20 @@ class CPTController extends BaseController
                          'array' => 'post_type'
                     )
                ),
+               // has_rating
+               array(
+                    'id' => 'has_rating',
+                    'title' => 'Rating',
+                    'callback' => array ($this->cpt_callbacks , 'checkboxField'),
+                    'page' => 'mtk_cpt', //The slug of the page
+                    'section' => 'mtk_cpt_index', // The id of the seciton
+                    'args' => array(
+                         'option_name' => 'mtk_plugin_cpt',
+                         'label_for' => 'has_rating', /* The label should always match the id, that is the way we are sending the information to the callback function */
+                         'class' => 'ui-toggle',
+                         'array' => 'post_type'
+                    )
+               ),
                /* customFields */
                array(
                     'id' => 'customFields',
@@ -397,6 +411,7 @@ public function storeCustomPostTypes()
                'show_in_nav_menus'     => true,
                'can_export'            => true,
                'has_archive'           => isset ( $option['has_archive'] ) ?: false,
+               'has_rating'           => isset ( $option['has_rating'] ) ?: false,
                'exclude_from_search'   => false,
                'publicly_queryable'    => true,
                'capability_type'       => 'post'
@@ -424,6 +439,8 @@ public function register_default_cpt ()
           $input['menu_icon'] = 'dashicons-carrot';
           $input['public'] = 1;
           $input['has_archive'] = 1;
+          $input['has_rating'] = 1;
+
 
           /* General Section */
           $i = 'general';
