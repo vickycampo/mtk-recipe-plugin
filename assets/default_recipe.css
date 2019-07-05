@@ -1,9 +1,23 @@
+.default_recipe_container
+{
+     display: inline;
+     margin: 5%;
+     padding: 3%;
+     background-color: white;
+     max-width: 100%;
+     width: 100%;
+     overflow: hidden;
+     word-wrap: break-word;
+     border-radius: 10%;
+}
+.mtk_default_recipe_shortcode
+{
 
-
+}
 .rating-star
 {
      font-size: 24px;
-     
+
 }
 .input_rating
 {
@@ -16,4 +30,19 @@
 .inactive-star
 {
      color: black;
+}
+.field-msg
+{
+     display: none;
+     position: absolute;
+     left: 2px;
+     bottom: -14px;
+     font-size: 9px;
+     text-transform: uppercase;
+     font-weight: 600;
+     letter-spacing: 0.05em;
+}
+.field-msg.show
+{
+     display: block;
 }

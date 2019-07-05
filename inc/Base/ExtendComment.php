@@ -48,6 +48,13 @@ class ExtendComment extends BaseController
 
           //Saves the average in the post meta data
           add_action('transition_comment_status', array ( $this , 'save_average_ratings' ), 10, 3);
+
+          /* Add the jQuery parameters */
+          /* Listen to the action that was specified in the hidden field in the form */
+          add_action( 'wp_ajax_submit_comments_form', array( $this, 'submit_comments_form' ) );
+		add_action( 'wp_ajax_nopriv_submit_comments_form', array( $this, 'submit_comments_form' ) );
+          // Send all comment submissions through my "ajaxComment" method
+          add_action('comment_post', array ( $this , 'ajaxComment'), 20, 2);
      }
 
      public function custom_fields( $fields )
@@ -88,7 +95,6 @@ class ExtendComment extends BaseController
           // Add fields after default fields above the comment box, always visible+
           /* only if is a custom post type */
           $post_type = get_post_type ();
-          var_dump ($post_type);
           $cpt_options = get_option ( 'mtk_plugin_cpt');
           if ( ( isset ( $cpt_options[$post_type] ) )  && ( isset ( $cpt_options[$post_type]['has_rating'] ) )  && ( $cpt_options[$post_type]['has_rating'] == 1 ) )
           {
@@ -103,8 +109,18 @@ class ExtendComment extends BaseController
                     echo '<span id="input_rating_'.$i.'" class="rating-star input_rating inactive-star">&#9733;</span>';
                }
                echo'</span></p>';
-               echo ('<input type="hidden" id="rating" name="rating">');
+               /* Sending hidden values */
+               echo ('<input type="hidden" id="rating" name="rating" value="0">');
                echo ('<input type="hidden" id="post_type" name="post_type" value="'.$post_type.'">');
+               echo ('<input type="hidden" id="data-url" name="data-url" value="'.admin_url('admin-ajax.php').'">');
+               echo ('<input type="hidden" name="action" value="submit_comments_form">');
+               echo ('<input type="hidden" name="nonce" value="'.wp_create_nonce("comment_form-nonce").'">');
+
+               /* Dipslying messages for ajax form */
+               echo ('<small class="field-msg js-form-submission">Submission in process, please wait&hellip;</small>');
+               echo ('<small class="field-msg success js-form-success">Comment Successfully submitted, thank you!</small>');
+               echo ('<small class="field-msg error js-form-error">There was a problem with the comment, please try again!</small>');
+
           }
 
      }
@@ -324,5 +340,77 @@ class ExtendComment extends BaseController
 
                }
           }
+     }
+     public function ajaxComment($comment_ID, $comment_status)
+     {
+     	// If it's an AJAX-submitted comment
+     	if( isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
+          {
+     		// Get the comment data
+     		$comment = get_comment($comment_ID);
+     		// Allow the email to the author to be sent
+     		wp_notify_postauthor($comment_ID, $comment->comment_type);
+     		// Get the comment HTML from my custom comment HTML function
+     		$commentContent = getCommentHTML($comment);
+     		// Kill the script, returning the comment HTML
+     		die($commentContent);
+     	}
+     }
+     public function submit_comments_form ()
+     {
+
+
+          /* double check if this is an actual ajax call */
+          if ( ! ( DOING_AJAX  ||  check_ajax_referer ( 'comment_form-nonce' , 'nonce' )  ) )
+          {
+               return ( $this->return_json('error') );
+          }
+
+
+          /* Store the data into testimonial CPT */
+          /** Sets up the WordPress Environment. */
+          $path = preg_replace('/wp-content.*$/','',__DIR__);
+          require( $path.'wp-load.php' );
+          nocache_headers();
+          $comment = wp_handle_comment_submission( wp_unslash( $_POST ) );
+
+          if ( is_wp_error( $comment ) )
+          {
+          	$data = intval( $comment->get_error_data() );
+          	if ( ! empty( $data ) )
+               {
+
+                    $message['status'] = 'error';
+                    $message['message'] = $comment->get_error_message();
+                    return ( $this->return_json($message) );
+          		wp_die();
+
+          	}
+               else
+               {
+          		exit;
+          	}
+          }
+
+          $user            = wp_get_current_user();
+          $cookies_consent = ( isset( $_POST['wp-comment-cookies-consent'] ) );
+          do_action( 'set_comment_cookies', $comment, $user, $cookies_consent );
+
+          $message['status'] = 'success';
+          $message['message'] = 'Your comment has been saved';
+          return ( $this->return_json($message) );
+          exit;
+     }
+     public function return_json ( $message )
+     {
+          error_log (__FUNCTION__ . ' - ' . __LINE__);
+          error_log( print_r ( $message , true ) );
+          error_log ('----------------------------');
+          $return = array (
+               'status' => $message['status'],
+               'message' => $message['message'],
+          );
+          wp_send_json( $return );
+          wp_die ();
      }
 }
