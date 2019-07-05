@@ -103,7 +103,6 @@ class ExtendComment extends BaseController
                echo ('<span class="required">*</span>');
                echo ('</label>');
                echo ('<span class="commentratingbox">');
-               echo (__FILE__ . ' - '. __LINE__ .  '<br>Add the stars and create the js file with the event handler.<br>');
                for( $i=1; $i <= 5; $i++ )
                {
                     echo '<span id="input_rating_'.$i.'" class="rating-star input_rating inactive-star">&#9733;</span>';
@@ -329,11 +328,7 @@ class ExtendComment extends BaseController
                          $meta_value[0]['rating_0'] = $average_ratings;
 
                          update_post_meta( $post_id, $meta_key, $meta_value[0] );
-                         error_log (print_r ($post_id , true));
-                         error_log (print_r ($post_type , true));
-                         error_log (print_r ($meta_key , true));
-                         error_log (print_r ($prev_value , true));
-                         error_log (print_r ($meta_value , true));
+
 
                     }
 
@@ -398,14 +393,25 @@ class ExtendComment extends BaseController
 
           $message['status'] = 'success';
           $message['message'] = 'Your comment has been saved';
+
+          /* Update the average */
+          // error_log (__FUNCTION__ . ' - ' . __LINE__);
+          // error_log( print_r ( $comment , true ) );
+          // error_log ('----------------------------');
+          if ( $comment->comment_approved == 1)
+          {
+               $new_status = 'approved';
+               $this->save_average_ratings($new_status, $new_status, $comment);
+          }
+
+          //
+
           return ( $this->return_json($message) );
           exit;
      }
      public function return_json ( $message )
      {
-          error_log (__FUNCTION__ . ' - ' . __LINE__);
-          error_log( print_r ( $message , true ) );
-          error_log ('----------------------------');
+
           $return = array (
                'status' => $message['status'],
                'message' => $message['message'],

@@ -31,3 +31,18 @@
 {
      color: black;
 }
+.field-msg
+{
+     display: none;
+     position: absolute;
+     left: 2px;
+     bottom: -14px;
+     font-size: 9px;
+     text-transform: uppercase;
+     font-weight: 600;
+     letter-spacing: 0.05em;
+}
+.field-msg.show
+{
+     display: block;
+}

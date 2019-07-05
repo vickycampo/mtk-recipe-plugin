@@ -497,7 +497,7 @@ public function register_default_cpt ()
                $input['customFields'][$i]['Name'] = 'Rating';
                $input['customFields'][$i]['Type'] = 'Item';
                $input['customFields'][$i]['Parent'] = 'general';
-               $input['customFields'][$i]['Show_in_columns'] = false;
+               $input['customFields'][$i]['Show_in_columns'] = true;
                $input['customFields'][$i]['add_remove_buttons'] = false;
 
                /* Cooking Time */
@@ -1098,15 +1098,44 @@ public function set_custom_columns_data( $column, $post_id  )
      {
           if ( $i != 0)
           {
-               $tempdata = $data  [ $gerarchy[$i] . '_0'];
-               unset ($data);
-               $data = $tempdata;
+               if ( isset ( $data  [ $gerarchy[$i] . '_0'] ) )
+               {
+                    $tempdata = $data  [ $gerarchy[$i] . '_0'];
+                    unset ($data);
+                    $data = $tempdata;
+               }
+               else if ($i == 1)
+               {
+
+                    $data = "unset";
+               }
+
 
 
           }
 
      }
-     echo  ('<p>' . $data . '</p>') ;
+     if ( $column == 'rating')
+     {
+          $text = '<p class="comment-rating">';
+          for ($star = 1; $star < 6; $star ++)
+          {
+               if ($star <= $data)
+               {
+                    $text .= ('<span class="rating-star active-star">&#9733;</span>');
+               }
+               else
+               {
+                    $text .= ('<span class="rating-star inactive-star">&#9734;</span>');
+               }
+          }
+          $text .= '<br/>Rating: <strong>'. $data .' / 5</strong></p>';
+          echo ($text);
+     }
+     else
+     {
+          echo  ('<p>' . $data . '</p>') ;
+     }
 
 
 
