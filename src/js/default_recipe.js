@@ -143,6 +143,7 @@ jQuery(function ($)
                     }
                     commentForm.querySelector('.js-form-success').classList.add('show');
                     commentForm.reset();
+                    resetStars ();
                })
 
      }
@@ -150,6 +151,14 @@ jQuery(function ($)
      {
           console.log ('errorMessage - ' + fieldName);
           return ( true );
+     }
+     function resetStars ()
+     {
+          for (var i=1; i<6; i++)
+          {
+               $( "#input_rating_" + i ).addClass( "inactive-star" );
+               $( "#input_rating_" + i ).removeClass( "active-star" );
+          }
      }
      function resetMessages (commentForm)
      {
