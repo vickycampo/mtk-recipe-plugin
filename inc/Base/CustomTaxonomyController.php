@@ -32,7 +32,7 @@ class CustomTaxonomyController extends BaseController
           if ( ! ( $this->activated( 'taxonomy_manager' ) ) ) return;
           /* Initialize the class that will actually generate the menu pages and subpages */
 		$this->settings = new SettingsApi();
-          /* Initialize the class that manages the */
+          /* Initialize the class that manages the CallBacks*/
 		$this->callbacks = new AdminCallbacks();
           /* New instance of TaxonomyCallbacks */
           $this->tax_callbacks = new TaxonomyCallbacks();
